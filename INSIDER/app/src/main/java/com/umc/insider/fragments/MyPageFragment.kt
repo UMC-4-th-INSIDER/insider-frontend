@@ -33,19 +33,7 @@ class MyPageFragment : Fragment() {
     }
 
     private fun initView(){
-        binding.gLogout.setOnClickListener {
-            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
-            val googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
-            googleSignInClient.signOut()
-            startActivity(Intent(activity, LogInActivity::class.java))
-            activity?.finish()
-        }
 
-        binding.fLogout.setOnClickListener {
-            LoginManager.getInstance().logOut()
-            startActivity(Intent(activity, LogInActivity::class.java))
-            activity?.finish()
-        }
     }
 
     override fun onDestroyView() {

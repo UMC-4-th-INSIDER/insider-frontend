@@ -22,6 +22,7 @@
     <color name="gray30">#BBBBBB</color>
 
     <color name="statusBarColor">#999999</color>
+    <color name="statusBarGreenColor">#416A38</color>
     <color name="googleLoginColor">#EA4335</color>
     <color name="facebookLoginColor">#4267B2</color>
     <color name="loginSingUpTextColor">#8F959E</color>1

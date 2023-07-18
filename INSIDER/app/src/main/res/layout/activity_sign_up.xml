@@ -61,7 +61,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:inputType="text"
-                    android:text="@string/userId"
+                    android:text="@string/userIdSignUp"
                     android:textColor="@color/loginSingUpTextColor" />
 
                 <EditText
@@ -213,12 +213,12 @@
 
             <Button
                 android:id="@+id/logIn"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/main"
                 android:fontFamily="@font/roboto"
-                android:text="@string/singUp"
-                android:textSize="20sp"
+                android:text="@string/singUpComplete"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

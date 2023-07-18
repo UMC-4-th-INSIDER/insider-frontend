@@ -39,12 +39,7 @@ class SignUpViewModel : ViewModel() {
     }
 
     val securityState: LiveData<SecurityState> = Transformations.map(_userPWD) { password ->
-        when {
-            password.length > 7 -> SecurityState.SAFE
-            password.length > 4 -> SecurityState.NORMAL
-            password.isNotEmpty() -> SecurityState.DANGER
-            else -> SecurityState.EMPTY
-        }
+        checkPWD(password)
     }
 
     val checkState : LiveData<EditState> = Transformations.map(_checkPWD) { checkPassword ->
@@ -61,6 +56,24 @@ class SignUpViewModel : ViewModel() {
             REGEX_EMAIL.toRegex().matches(email) -> EditState.CHECK
             else -> EditState.CLOSE
         }
+    }
+
+    private fun checkPWD(password : String) : SecurityState {
+
+        if (password.isNullOrBlank()) return SecurityState.EMPTY
+
+        val hasSpecialChars = Regex(REGEX_SPECIALCHAR).findAll(password).count() >= 1
+        val hasUppercase = password.any { it.isUpperCase() }
+        val hasConsecutiveChars = (0 until password.length - 2).any { password[it + 2].toInt() == password[it + 1].toInt() + 1 && password[it + 1].toInt() == password[it].toInt() + 1 }
+
+        val conditionCount = listOf(hasSpecialChars, hasUppercase, !hasConsecutiveChars).count { it }
+
+        return when (conditionCount) {
+            3 -> SecurityState.SAFE
+            2 -> SecurityState.NORMAL
+            else -> SecurityState.DANGER
+        }
+
     }
 
     fun setUserId(id : String){
@@ -90,9 +103,12 @@ class SignUpViewModel : ViewModel() {
         //특수 문자 사용 불가
         private const val REGEX_ID = "^(?=.*[a-zA-Z])[a-zA-Z0-9]{6,10}\$"
 
-        //닉네임은 한글, 영문자, 숫자, 언더스코어(_)만 포함
-        //닉네임의 길이는 2자 이상 10자 이하
-        private const val REGEX_NICKNAME = "^[가-힣a-zA-Z0-9_]{2,10}\$"
+        //최소 2자, 최대 10자
+        //알파벳 대소문자, 한글 허용
+        //특수문자 밑줄(_)과 하이폰(-) 허용
+        private const val REGEX_NICKNAME = "^[a-zA-Z가-힣_-]{2,10}\$"
+
+        private const val REGEX_SPECIALCHAR = "[!@#\$%^&*()-=_+]"
 
         private const val REGEX_EMAIL = "^[a-zA-Z0-9+-\\_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+\$"
     }
