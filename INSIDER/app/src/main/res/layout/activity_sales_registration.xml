@@ -47,11 +47,18 @@
 
             <!--제목 입력-->
             <LinearLayout
-                android:layout_width="380dp"
-                android:layout_height="59dp"
+                android:id="@+id/title_insert_layout"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/sell_round_rectangle"
                 android:orientation="horizontal"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout">
@@ -62,12 +69,158 @@
                     android:layout_height="match_parent"
                     android:background="null"
                     android:hint="제목을 입력하세요."
+                    android:margin_left="16dp"
                     android:textColorHint="#BBBBBB"
-                    android:textSize="30dp"
-                    android:textStyle="bold"
-                    android:margin_left="15dp"/>
+                    android:textSize="25dp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
+            <!--이미지 불러오기-->
+            <ImageView
+                android:id="@+id/sell_image_view"
+                android:layout_width="340dp"
+                android:layout_height="340dp"
+                android:layout_marginTop="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/title_insert_layout"
+                app:srcCompat="@drawable/image_registration" />
+
+            <!--상품 이름-->
+            <LinearLayout
+                android:id="@+id/product_name_layout"
+                android:layout_width="340dp"
+                android:layout_height="40dp"
+                android:background="@drawable/sell_round_rectangle"
+                android:orientation="horizontal"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/sell_image_view">
+
+                <TextView
+                    android:layout_width="90dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="10dp"
+                    android:text="상품이름"
+                    android:textAlignment="textStart"
+                    android:gravity="center"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    tools:ignore="RtlCompat" />
+
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="18dp"
+                    android:background="@color/gray30"
+                    android:layout_gravity="center" />
+
+
+                <EditText
+                    android:id="@+id/product_name_insert"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="null"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="15dp"
+                    android:hint="상품명을 입력하세요."
+                    android:textColorHint="#BBBBBB"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!--총량-->
+            <LinearLayout
+                android:id="@+id/product_weight_layout"
+                android:layout_width="340dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/sell_round_rectangle"
+                android:orientation="horizontal"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.507"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/product_name_layout">
+
+                <TextView
+                    android:layout_width="90dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="10dp"
+                    android:gravity="center"
+                    android:text="총량(g)"
+                    android:textAlignment="textStart"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    tools:ignore="RtlCompat" />
+
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="18dp"
+                    android:layout_gravity="center"
+                    android:background="@color/gray30" />
+
+
+                <EditText
+                    android:id="@+id/product_weight_insert"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="15dp"
+                    android:background="null"
+                    android:hint="총량을 입력하세요."
+                    android:textColorHint="#BBBBBB"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!--판매포인트-->
+            <LinearLayout
+                android:id="@+id/product_sell_point_layout"
+                android:layout_width="340dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/sell_round_rectangle"
+                android:orientation="horizontal"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.507"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/product_weight_layout">
+
+                <TextView
+                    android:layout_width="90dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="10dp"
+                    android:gravity="center"
+                    android:text="판매포인트"
+                    android:textAlignment="textStart"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    tools:ignore="RtlCompat" />
+
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="18dp"
+                    android:layout_gravity="center"
+                    android:background="@color/gray30" />
+
+
+                <EditText
+                    android:id="@+id/product_sell_point_insert"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="15dp"
+                    android:background="null"
+                    android:hint="판매포인트를 입력하세요."
+                    android:textColorHint="#BBBBBB"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
