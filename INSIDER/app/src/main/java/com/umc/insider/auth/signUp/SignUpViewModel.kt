@@ -85,10 +85,10 @@ class SignUpViewModel : ViewModel() {
     }
 
     companion object{
-        //영문자, 숫자, 하이픈(-), 언더스코어(_) 만 포함
-        //아이디의 길이는 5자 이상 20자 이하
-        //아이디는 숫자로 시작할 수 없음
-        private const val REGEX_ID = "^[a-zA-Z_\\-][a-zA-Z0-9_\\-]{4,19}\$"
+        //최소 6자 이상, 10자 이하
+        //알파벳 소문자와 대문자 포함
+        //특수 문자 사용 불가
+        private const val REGEX_ID = "^(?=.*[a-zA-Z])[a-zA-Z0-9]{6,10}\$"
 
         //닉네임은 한글, 영문자, 숫자, 언더스코어(_)만 포함
         //닉네임의 길이는 2자 이상 10자 이하

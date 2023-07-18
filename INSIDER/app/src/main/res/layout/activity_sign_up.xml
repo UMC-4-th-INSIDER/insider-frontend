@@ -72,6 +72,7 @@
                     android:backgroundTint="@color/editTextTint"
                     android:inputType="text"
                     android:maxLines="1"
+                    android:maxLength="10"
                     android:nextFocusDown="@id/nicknameEdit"
                     android:text="@{vm.userId}"
                     tools:drawableEnd="@drawable/baseline_check_24" />
@@ -103,6 +104,7 @@
                     android:backgroundTint="@color/editTextTint"
                     android:inputType="text"
                     android:maxLines="1"
+                    android:maxLength="10"
                     android:nextFocusDown="@id/pwdEdit"
                     android:text="@{vm.userNickname}"
                     tools:drawableEnd="@drawable/baseline_check_24" />
@@ -133,7 +135,6 @@
                     android:backgroundTint="@color/editTextTint"
                     android:drawableEnd="@drawable/danger"
                     android:inputType="textPassword"
-                    android:maxLength="20"
                     android:nextFocusDown="@id/pwdCheckEdit"
                     android:text="@{vm.userPWD}" />
 
@@ -163,7 +164,6 @@
                     android:backgroundTint="@color/editTextTint"
                     android:drawableEnd="@drawable/baseline_check_24"
                     android:inputType="textPassword"
-                    android:maxLength="20"
                     android:nextFocusDown="@id/emailEdit"
                     android:text="@{vm.checkPWD}" />
 

@@ -33,5 +33,7 @@
     <string name="realTimeSearchTermsRanking">실시간 검색어 순위</string>
     <string name="recentSearches">최근 검색어</string>
     <string name="removeAllText"><u>모두 지우기</u></string>
+    <string name="myPoint">내 평점</string>
+    <string name="sellMove">판매 등록 바로가기</string>
 
 </resources>
