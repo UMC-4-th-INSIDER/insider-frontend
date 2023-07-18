@@ -16,33 +16,57 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <!--맨위 Insier 로고-->
             <LinearLayout
+                android:id="@+id/linearLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:background="@drawable/bottom_round_rectangle"
+                android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:orientation="horizontal"
-                android:background="@drawable/bottom_round_rectangle">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/loading_logo"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"/>
+                    android:layout_marginBottom="8dp"
+                    android:src="@drawable/loading_logo" />
 
                 <ImageView
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/app_name_english_yellow"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginStart="10dp"/>
+                    android:layout_marginStart="10dp"
+                    android:src="@drawable/app_name_english_yellow" />
 
 
             </LinearLayout>
 
+            <!--제목 입력-->
+            <LinearLayout
+                android:layout_width="380dp"
+                android:layout_height="59dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/sell_round_rectangle"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+                <EditText
+                    android:id="@+id/sellTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="null"
+                    android:hint="제목을 입력하세요."
+                    android:textColorHint="#BBBBBB"
+                    android:textSize="30dp"
+                    android:textStyle="bold"
+                    android:margin_left="15dp"/>
+            </LinearLayout>
 
 
 
