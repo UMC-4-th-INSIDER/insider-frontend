@@ -47,10 +47,15 @@ class HomeFragment : Fragment() {
                 transaction.commit()
             }
 
+            // 판매 등록 바로가기
             sellLayout.setOnClickListener {
-                startActivity(Intent(activity, SalesRegistrationActivity::class.java))
+                val intent = Intent(requireContext(), SalesRegistrationActivity::class.java)
+                startActivity(intent)
             }
+
         }
+
+
     }
 
     override fun onDestroyView() {
