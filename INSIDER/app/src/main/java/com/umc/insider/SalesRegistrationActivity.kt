@@ -40,6 +40,16 @@ class SalesRegistrationActivity : AppCompatActivity() {
             activityResult.launch(intent)
         }
 
+        // 판매 등록하기 버튼
+        binding.sellRegistorBtn.setOnClickListener {
+
+
+
+
+            // 판매 등록한 다음에 어떤걸 원하시는지?
+
+        }
+
     }
 
     // 결과 가져오기
