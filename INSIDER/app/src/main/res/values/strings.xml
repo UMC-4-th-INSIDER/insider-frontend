@@ -36,4 +36,8 @@
     <string name="myPoint">내 평점</string>
     <string name="sellMove">판매 등록 바로가기</string>
 
+    <!-- 판매 등록 화면 -->
+    <string name="addressCerify">우편번호 인증</string>
+    <string name="sellRegistor">판매 등록하기</string>
+
 </resources>
