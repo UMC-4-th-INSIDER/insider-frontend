@@ -43,7 +43,10 @@
     <string name="liveAddress">거주지</string>
     <string name="singUpComplete">회원가입 완료</string>
     <string name="shoppingList">구매 목록</string>
+    <string name="saleList">판매 목록</string>
     <string name="detailShow"><u>자세히 보기</u></string>
+    <string name="logout"><u>로그아웃</u></string>
+    <string name="withdrawal"><u>계정탈퇴</u></string>
 
 
 </resources>
