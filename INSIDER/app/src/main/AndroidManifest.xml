@@ -18,6 +18,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".SalesRegistrationActivity"
+            android:exported="false" />
+        <activity
             android:name=".FavoritesActivity"
             android:exported="false" />
         <activity
@@ -25,11 +28,10 @@
             android:exported="false" />
         <activity
             android:name=".auth.signUp.AddressActivity"
-            android:exported="true" />
-        <!-- Facebook -->
+            android:exported="true" /> <!-- Facebook -->
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id"/>
+            android:value="@string/facebook_app_id" />
 
         <activity
             android:name="com.facebook.FacebookActivity"
@@ -46,8 +48,7 @@
 
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
-        </activity>
-        <!-- Facebook -->
+        </activity> <!-- Facebook -->
         <activity
             android:name=".auth.signUp.SignUpActivity"
             android:exported="false"
