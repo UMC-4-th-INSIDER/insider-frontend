@@ -30,8 +30,18 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:id="@+id/messageImg"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/message"
+                app:layout_constraintBottom_toBottomOf="@id/appName"
+                android:layout_marginEnd="15dp"
+                app:layout_constraintEnd_toStartOf="@id/notificationImg"/>
+
+            <ImageView
+                android:id="@+id/notificationImg"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:src="@drawable/notifications"
                 app:layout_constraintBottom_toBottomOf="@id/appName"
                 app:layout_constraintEnd_toEndOf="parent" />

@@ -13,9 +13,9 @@
     <string name="singUp">회원가입</string>
 
     <!--SingUp-->
-    <string name="userIdSignUp">사용자 ID()</string>
-    <string name="userNicknameSignUp">닉네임()</string>
-    <string name="userPasswordSignUp">비밀번호()</string>
+    <string name="userIdSignUp">사용자 ID(6자 이상, 특수 문자x, 숫자만 x)</string>
+    <string name="userNicknameSignUp">닉네임(2자 이상, 특수 문자 _,- 가능)</string>
+    <string name="userPasswordSignUp">비밀번호(대문자, 특수 문자 1개 이상. 연속된 숫자 3자리 x)</string>
     <string name="passwordCheckSignUp">비밀번호 확인(위의 비밀번호와 일치)</string>
     <string name="userEmailSignUp">이메일 주소</string>
     <string name="address">주소</string>
@@ -35,6 +35,16 @@
     <string name="removeAllText"><u>모두 지우기</u></string>
     <string name="myPoint">내 평점</string>
     <string name="sellMove">판매 등록 바로가기</string>
+    <string name="myPageText">마이 페이지</string>
+
+    <!-- myPage -->
+    <string name="modify"><u>수정하기</u></string>
+    <string name="detailReview"><u>후기 자세히 보기</u></string>
+    <string name="liveAddress">거주지</string>
+    <string name="singUpComplete">회원가입 완료</string>
+    <string name="shoppingList">구매 목록</string>
+    <string name="detailShow"><u>자세히 보기</u></string>
+
 
     <!-- 판매 등록 화면 -->
     <string name="addressCerify">우편번호 인증</string>
