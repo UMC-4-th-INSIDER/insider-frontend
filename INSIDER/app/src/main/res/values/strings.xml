@@ -53,4 +53,8 @@
     <string name="addressCerify">우편번호 인증</string>
     <string name="sellRegistor">판매 등록하기</string>
 
+    <!-- 채팅 리스트 화면 -->
+    <string name="chatListTextView">교환하실래요?</string>
+    <string name="delete"><u>삭제하기</u></string>
+
 </resources>

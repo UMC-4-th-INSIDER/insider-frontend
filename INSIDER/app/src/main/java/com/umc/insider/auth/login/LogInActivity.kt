@@ -72,6 +72,7 @@ class LogInActivity : AppCompatActivity() {
             .build()
 
         mGoogleSignClient = GoogleSignIn.getClient(this, gso)
+        val account = GoogleSignIn.getLastSignedInAccount(this)
 
         // Facebook
         callbackManager = CallbackManager.Factory.create()
@@ -81,6 +82,11 @@ class LogInActivity : AppCompatActivity() {
 
     private fun initView(){
         with(binding){
+
+            logIn.setOnClickListener {
+                startActivity(Intent(this@LogInActivity, MainActivity::class.java))
+            }
+
             singUp.setOnClickListener {
                 startActivity(Intent(this@LogInActivity, SignUpActivity::class.java))
             }
@@ -139,7 +145,8 @@ class LogInActivity : AppCompatActivity() {
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account = completedTask.getResult(ApiException::class.java)
-//            val email = account?.email.toString()
+            val email = account?.email.toString()
+//            Toast.makeText(this, email, Toast.LENGTH_SHORT).show()
 //            val familyName = account?.familyName.toString()
 //            val givenName = account?.givenName.toString()
 //            val displayName = account?.displayName.toString()

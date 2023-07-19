@@ -34,7 +34,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginEnd="15dp"
-                android:src="@drawable/message"
+                app:srcCompat="@drawable/message"
                 app:layout_constraintBottom_toBottomOf="@id/appName"
                 app:layout_constraintEnd_toStartOf="@id/notificationImg" />
 
@@ -42,7 +42,7 @@
                 android:id="@+id/notificationImg"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/notifications"
+                app:srcCompat="@drawable/notifications"
                 app:layout_constraintBottom_toBottomOf="@id/appName"
                 app:layout_constraintEnd_toEndOf="parent" />
 
@@ -77,7 +77,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_marginEnd="10dp"
-                    android:src="@drawable/search"
+                    app:srcCompat="@drawable/search"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -164,7 +164,7 @@
                                 android:layout_width="100dp"
                                 android:layout_height="50dp"
                                 android:layout_marginTop="20dp"
-                                android:src="@drawable/loading_logo"
+                                app:srcCompat="@drawable/loading_logo"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
