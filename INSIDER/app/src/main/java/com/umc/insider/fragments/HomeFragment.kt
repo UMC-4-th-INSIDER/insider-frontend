@@ -1,5 +1,6 @@
 package com.umc.insider.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import com.umc.insider.R
+import com.umc.insider.SalesRegistrationActivity
 import com.umc.insider.databinding.FragmentHomeBinding
 import com.umc.insider.utils.changeStatusBarColor
 
@@ -44,7 +46,16 @@ class HomeFragment : Fragment() {
 
                 transaction.commit()
             }
+
+            // 판매 등록 바로가기
+            sellLayout.setOnClickListener {
+                val intent = Intent(requireContext(), SalesRegistrationActivity::class.java)
+                startActivity(intent)
+            }
+
         }
+
+
     }
 
     override fun onDestroyView() {
