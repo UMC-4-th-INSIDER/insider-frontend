@@ -1,5 +1,6 @@
 package com.umc.insider.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import com.umc.insider.R
+import com.umc.insider.SalesRegistrationActivity
 import com.umc.insider.databinding.FragmentHomeBinding
 import com.umc.insider.utils.changeStatusBarColor
 
@@ -43,6 +45,10 @@ class HomeFragment : Fragment() {
                 transaction.addToBackStack(null)
 
                 transaction.commit()
+            }
+
+            sellLayout.setOnClickListener {
+                startActivity(Intent(activity, SalesRegistrationActivity::class.java))
             }
         }
     }
