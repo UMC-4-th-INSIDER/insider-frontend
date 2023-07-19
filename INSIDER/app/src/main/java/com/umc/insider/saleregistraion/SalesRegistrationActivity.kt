@@ -1,23 +1,15 @@
-package com.umc.insider
+package com.umc.insider.saleregistraion
 
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
-import com.google.android.gms.fido.fido2.api.common.RequestOptions
+import com.umc.insider.R
 import com.umc.insider.databinding.ActivitySalesRegistrationBinding
-import com.umc.insider.utils.SaleRegistrationViewModel
-import java.io.File
 
 class SalesRegistrationActivity : AppCompatActivity() {
 

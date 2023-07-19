@@ -1,4 +1,4 @@
-package com.umc.insider.utils
+package com.umc.insider.saleregistraion
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

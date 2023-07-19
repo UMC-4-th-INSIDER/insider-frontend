@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import com.umc.insider.R
-import com.umc.insider.SalesRegistrationActivity
+import com.umc.insider.saleregistraion.SalesRegistrationActivity
 import com.umc.insider.databinding.FragmentHomeBinding
 import com.umc.insider.utils.changeStatusBarColor
 
