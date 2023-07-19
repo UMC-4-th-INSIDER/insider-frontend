@@ -5,6 +5,9 @@
     android:background="@color/white">
 
     <data>
+        <variable
+            name="sellvm"
+            type="com.umc.insider.utils.SaleRegistrationViewModel"/>
 
     </data>
 
