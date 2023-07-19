@@ -7,8 +7,8 @@
     </data>
 
     <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         app:cardElevation="5dp"
         android:background="@drawable/gray30_round_rectangle"
         app:cardCornerRadius="18dp"
@@ -29,8 +29,7 @@
                 android:orientation="horizontal"
                 android:layout_gravity="bottom"
                 android:gravity="center"
-                android:paddingHorizontal="5dp"
-                android:paddingVertical="10dp"
+                android:padding="5dp"
                 android:background="@drawable/item_background_gradient">
 
                 <TextView
@@ -39,7 +38,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto"
                     android:text="양파"
-                    android:textSize="18dp"
+                    android:textSize="12sp"
                     android:textColor="@color/white"
                     android:textStyle="bold" />
                 <TextView
@@ -47,7 +46,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="(200g)"
-                    android:textSize="18sp"
+                    android:textSize="12sp"
                     android:textColor="@color/white"
                     android:textStyle="bold"
                     android:layout_marginStart="10dp"/>
@@ -56,7 +55,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="3,000원"
-                    android:textSize="18sp"
+                    android:textSize="12sp"
                     android:textColor="@color/white"
                     android:textStyle="bold"
                     android:layout_marginStart="10dp"/>
@@ -66,5 +65,4 @@
         </FrameLayout>
 
     </androidx.cardview.widget.CardView>
-    
 </layout>

@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
+import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getColor
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +19,7 @@ import com.umc.insider.adapter.SearchTermsRankingAdapter
 import com.umc.insider.databinding.FragmentSearchResultBinding
 import com.umc.insider.model.RankingItem
 import com.umc.insider.model.SearchItem
+import com.umc.insider.utils.changeStatusBarColor
 
 class SearchResultFragment : Fragment() {
 
@@ -28,11 +30,9 @@ class SearchResultFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val statusBarColor = getColor(requireContext(), R.color.statusBarGreenColor)
-        changeStatusBarColor(statusBarColor)
+        val statusBarColor = ContextCompat.getColor(requireContext(), R.color.statusBarGreenColor)
+        activity?.changeStatusBarColor(statusBarColor)
     }
-
 
 
     override fun onCreateView(
@@ -76,17 +76,6 @@ class SearchResultFragment : Fragment() {
         arr.add(dummy5)
 
         return arr
-    }
-
-    private fun changeStatusBarColor(color: Int) {
-        val window: Window? = activity?.window
-        window?.let {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                it.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-                it.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-                it.statusBarColor = color
-            }
-        }
     }
 
     override fun onDestroyView() {
