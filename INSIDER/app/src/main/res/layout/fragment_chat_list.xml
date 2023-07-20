@@ -73,7 +73,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/chatListTextView" />
+                app:layout_constraintTop_toBottomOf="@id/chatListTextView"
+                tools:listitem="@layout/chat_room_item"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
