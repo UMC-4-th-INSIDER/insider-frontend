@@ -17,6 +17,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.INSIDER"
+        android:screenOrientation="portrait"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
@@ -24,19 +25,26 @@
             android:exported="false" />
         <activity
             android:name=".EditProfileActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".saleregistraion.SalesRegistrationActivity"
-            android:exported="false"></activity>
+            android:screenOrientation="portrait"
+            android:exported="false" >
+        </activity>
         <activity
             android:name=".FavoritesActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".ProductDetailActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".auth.signUp.AddressActivity"
-            android:exported="true" /> <!-- Facebook -->
+            android:screenOrientation="portrait"
+            android:exported="true" />
+        <!-- Facebook -->
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -56,7 +64,8 @@
 
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
-        </activity> <!-- Facebook -->
+        </activity>
+        <!-- Facebook -->
         <activity
             android:name=".auth.signUp.SignUpActivity"
             android:exported="false"

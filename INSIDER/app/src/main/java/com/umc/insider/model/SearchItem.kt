@@ -9,5 +9,7 @@ data class SearchItem (
     val id : Int,
     val itemName : String,
     val itemWeight : String,
-    val itemPrice : String
+    val itemPrice : String,
+    var salePrice : String?,
+    var discountRate : String?
 )
