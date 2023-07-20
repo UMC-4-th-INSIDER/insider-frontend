@@ -48,6 +48,11 @@
     <string name="logout"><u>로그아웃</u></string>
     <string name="withdrawal"><u>계정탈퇴</u></string>
 
+    <!-- 내 정보 수정 -->
+    <string name="editprofile">내 정보 수정</string>
+    <string name="bringImage"><u>이미지 불러오기</u></string>
+    <string name="userEmailProfile">이메일 주소</string>
+
 
     <!-- 판매 등록 화면 -->
     <string name="addressCerify">우편번호 인증</string>
