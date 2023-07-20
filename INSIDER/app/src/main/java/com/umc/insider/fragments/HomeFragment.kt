@@ -127,6 +127,11 @@ class DiscountAdapterDecoration : RecyclerView.ItemDecoration(){
     ) {
         super.getItemOffsets(outRect, view, parent, state)
 
+        val position = parent.getChildAdapterPosition(view)
+
+        if(position % 2 == 0) outRect.right = 10
+        else outRect.left = 10
+
         outRect.bottom = 25
     }
 }
