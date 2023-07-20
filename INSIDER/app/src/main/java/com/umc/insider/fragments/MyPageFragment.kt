@@ -64,11 +64,11 @@ class MyPageFragment : Fragment() {
     }
 
     private fun DummyDate() : ArrayList<SearchItem>{
-        val dummy1 = SearchItem(1, "양파1", "100g", "1000원")
-        val dummy2 = SearchItem(2, "양파2", "200g", "2000원")
-        val dummy3 = SearchItem(3, "양파3", "300g", "2800원")
-        val dummy4 = SearchItem(4, "양파4", "400g", "3800원")
-        val dummy5 = SearchItem(5, "양파5", "500g", "4500원")
+        val dummy1 = SearchItem(1, "양파1", "100g", "1000원",null, null)
+        val dummy2 = SearchItem(2, "양파2", "200g", "2000원",null, null)
+        val dummy3 = SearchItem(3, "양파3", "300g", "2800원",null, null)
+        val dummy4 = SearchItem(4, "양파4", "400g", "3800원",null, null)
+        val dummy5 = SearchItem(5, "양파5", "500g", "4500원",null, null)
 
         val arr = ArrayList<SearchItem>()
         arr.add(dummy1)

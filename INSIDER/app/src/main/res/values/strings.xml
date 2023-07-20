@@ -27,6 +27,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- home, search -->
+    <string name="categoryText">어떤거 찾아?</string>
+    <string name="todayDiscount">오늘의 할인 상품 !</string>
     <string name="searchHint">원하는 상품을 검색하세요!</string>
     <string name="favoriteList">찜목록</string>
     <string name="ProductDetail">상품 상세 정보</string>
@@ -61,5 +63,6 @@
     <!-- 채팅 리스트 화면 -->
     <string name="chatListTextView">교환하실래요?</string>
     <string name="delete"><u>삭제하기</u></string>
+
 
 </resources>
