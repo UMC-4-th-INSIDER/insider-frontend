@@ -3,6 +3,7 @@ package com.umc.insider.saleregistraion
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ArrayAdapter
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
@@ -31,6 +32,9 @@ class SalesRegistrationActivity : AppCompatActivity() {
             intent.type = "image/*"
             activityResult.launch(intent)
         }
+
+        binding.categorySpinner.adapter = ArrayAdapter.createFromResource(
+            this, R.array.categoryList, android.R.layout.simple_spinner_item)
 
         // 판매 등록하기 버튼
         binding.sellRegistorBtn.setOnClickListener {

@@ -46,7 +46,6 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:paddingHorizontal="15dp"
             app:layout_constraintBottom_toTopOf="@id/divisionLine"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -64,6 +63,8 @@
                     android:layout_width="0dp"
                     android:layout_height="52dp"
                     android:layout_marginTop="15dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
                     android:background="@drawable/sell_round_rectangle"
                     android:orientation="horizontal"
                     android:paddingTop="10dp"
@@ -92,12 +93,31 @@
                     android:layout_width="0dp"
                     android:layout_height="350dp"
                     android:layout_marginTop="10dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
                     android:adjustViewBounds="true"
-                    android:scaleType="fitXY"
+                    android:background="@drawable/product_image_round"
+                    android:elevation="8dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/title_insert_layout"
                     app:srcCompat="@drawable/image_registration" />
+
+                <!--카테고리-->
+                <Spinner
+                    android:id="@+id/categorySpinner"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:background="@drawable/sell_round_rectangle"
+                    android:textColor="@color/black"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/sell_image_view"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
 
                 <!--상품 이름-->
                 <LinearLayout
@@ -105,13 +125,15 @@
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_marginTop="12dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
                     android:background="@drawable/sell_round_rectangle"
                     android:orientation="horizontal"
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/sell_image_view">
+                    app:layout_constraintTop_toBottomOf="@+id/categorySpinner">
 
                     <TextView
                         android:layout_width="90dp"
@@ -152,6 +174,8 @@
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_marginTop="12dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
                     android:background="@drawable/sell_round_rectangle"
                     android:orientation="horizontal"
                     android:paddingStart="16dp"
@@ -199,6 +223,8 @@
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_marginTop="12dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
                     android:background="@drawable/sell_round_rectangle"
                     android:orientation="horizontal"
                     android:paddingLeft="16dp"
@@ -242,6 +268,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/product_sell_price_layout">
@@ -309,19 +337,18 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/Expiration_date" />
 
-                    <TextView
+                    <Button
                         android:id="@+id/addressFindBtn"
                         android:layout_width="wrap_content"
-                        android:layout_height="25dp"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/gray30_round_rectangle"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="11dp"
                         android:backgroundTint="@color/gray30"
-                        android:paddingHorizontal="10dp"
                         android:text="@string/addressCerify"
                         android:textColor="@color/black"
                         android:textSize="13dp"
                         app:layout_constraintBottom_toBottomOf="@id/sell_location"
-                        app:layout_constraintStart_toStartOf="@id/Expiration_date_layout" />
+                        app:layout_constraintStart_toStartOf="@id/Expiration_date_layout"
+                        app:layout_constraintTop_toBottomOf="@+id/Expiration_date_layout" />
 
                     <LinearLayout
                         android:id="@+id/sell_location_layout"
@@ -342,7 +369,6 @@
                             android:id="@+id/sell_location_insert"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:layout_marginStart="16dp"
                             android:background="@null"
                             android:inputType="text"
                             android:hint="판매 위치를 입력하세요"
