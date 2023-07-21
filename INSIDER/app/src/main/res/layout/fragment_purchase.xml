@@ -45,7 +45,6 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:paddingHorizontal="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -64,8 +63,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/purchase_info_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="30dp"
+                    android:layout_height="160dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -73,9 +71,11 @@
                     <ImageView
                         android:id="@+id/Purchase_image"
                         android:elevation="8dp"
-                        android:layout_width="150dp"
-                        android:layout_height="150dp"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:layout_marginStart="15dp"
                         android:layout_marginEnd="15dp"
+                        android:layout_marginTop="15dp"
                         android:radius="18dp"
                         android:background="@drawable/product_image_round"
                         app:layout_constraintTop_toTopOf="parent"
@@ -87,6 +87,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="15dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/Purchase_image"
                         app:layout_constraintTop_toTopOf="parent">
@@ -136,8 +138,11 @@
                         android:id="@+id/product_detail_info_layout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="30dp"
                         android:layout_marginStart="10dp"
+                        android:layout_marginEnd="15dp"
+                        android:layout_marginTop="18dp"
+                        android:layout_marginBottom="15dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/Purchase_image"
                         app:layout_constraintTop_toBottomOf="@id/product_info_layout">
@@ -158,7 +163,7 @@
                             android:id="@+id/Purchase_ExpirationDate_layout"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
+                            android:layout_marginTop="3dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/detailtv">
 
@@ -181,8 +186,8 @@
                                 android:textColor="@color/black"
                                 android:textSize="15dp"
                                 android:textStyle="bold"
-                                app:layout_constraintStart_toEndOf="@+id/textView2"
-                                app:layout_constraintBottom_toBottomOf="parent" />
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/textView2" />
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -190,7 +195,7 @@
                             android:id="@+id/purchaseLocation_layout"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
+                            android:layout_marginTop="3dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/Purchase_ExpirationDate_layout">
 
@@ -212,8 +217,8 @@
                                 android:text="서울시 어디구 어디동"
                                 android:textColor="@color/black"
                                 android:textSize="15dp"
-                                app:layout_constraintStart_toEndOf="@+id/purchaseLocation_tv"
-                                app:layout_constraintBottom_toBottomOf="parent" />
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/purchaseLocation_tv" />
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -225,7 +230,9 @@
                     android:id="@+id/mapView"
                     android:layout_width="match_parent"
                     android:layout_height="500dp"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
                     android:name="com.naver.maps.map.MapFragment"
                     app:layout_constraintTop_toBottomOf="@id/purchase_info_layout"
                     app:layout_constraintStart_toStartOf="parent"
