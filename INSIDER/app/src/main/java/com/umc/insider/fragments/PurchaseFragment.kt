@@ -53,6 +53,11 @@ class PurchaseFragment : Fragment(), OnMapReadyCallback {
         return binding.root
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     override fun onMapReady(naverMap: NaverMap){
         PurchaseFragment.naverMap = naverMap
 

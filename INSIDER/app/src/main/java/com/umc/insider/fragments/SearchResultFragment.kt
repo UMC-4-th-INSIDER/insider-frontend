@@ -1,31 +1,38 @@
 package com.umc.insider.fragments
 
+import android.app.Activity.RESULT_OK
+import android.content.Intent
 import android.graphics.Rect
-import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
-import android.view.WindowManager
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getColor
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.umc.insider.OnNoteListener
 import com.umc.insider.R
 import com.umc.insider.adapter.SearchResultAdapter
-import com.umc.insider.adapter.SearchTermsRankingAdapter
 import com.umc.insider.databinding.FragmentSearchResultBinding
 import com.umc.insider.model.RankingItem
 import com.umc.insider.model.SearchItem
+import com.umc.insider.purchase.PurchaseDetailActivity
 import com.umc.insider.utils.changeStatusBarColor
 
-class SearchResultFragment : Fragment() {
+class SearchResultFragment : Fragment(), OnNoteListener {
 
     private var _binding : FragmentSearchResultBinding? = null
     private val binding get() = _binding!!
-    private val adapter = SearchResultAdapter()
+
+    private lateinit var getResultText: ActivityResultLauncher<Intent>
+    private val adapter = SearchResultAdapter(object: OnNoteListener{
+        override fun onNotePurchaseDetail(position: Int) {
+            getResultText.launch(Intent(requireContext(), PurchaseDetailActivity::class.java))
+        }
+    })
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -59,6 +66,11 @@ class SearchResultFragment : Fragment() {
             searchRV.addItemDecoration(SearchResultAdapterDecoration())
             adapter.submitList(DummyDate())
         }
+
+        getResultText = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+            result -> if(result.resultCode == RESULT_OK){}
+        }
+
     }
 
     private fun DummyDate() : ArrayList<SearchItem>{
@@ -81,6 +93,10 @@ class SearchResultFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onNotePurchaseDetail(position: Int) {
+        getResultText.launch(Intent(requireContext(), PurchaseDetailActivity::class.java))
     }
 }
 
