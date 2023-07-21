@@ -1,4 +1,4 @@
-package com.umc.insider.purchase
+package com.umc.insider
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
