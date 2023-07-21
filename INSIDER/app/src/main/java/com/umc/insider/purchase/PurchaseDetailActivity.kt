@@ -1,8 +1,9 @@
-package com.umc.insider
+package com.umc.insider.purchase
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
+import com.umc.insider.R
 import com.umc.insider.databinding.ActivityPurchaseDetailBinding
 
 class PurchaseDetailActivity : AppCompatActivity() {

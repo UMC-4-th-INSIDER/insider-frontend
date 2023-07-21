@@ -5,14 +5,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.google.android.gms.maps.model.LatLng
+import com.naver.maps.map.CameraPosition
+import com.naver.maps.map.MapFragment
+import com.naver.maps.map.MapView
+import com.naver.maps.map.NaverMap
+import com.naver.maps.map.OnMapReadyCallback
 import com.umc.insider.R
+import com.umc.insider.databinding.FragmentPurchaseBinding
 
 /**
  * A simple [Fragment] subclass.
  * Use the [PurchaseFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class PurchaseFragment : Fragment() {
+class PurchaseFragment : Fragment(), OnMapReadyCallback {
+
+    companion object{
+        lateinit var naverMap : NaverMap
+    }
+
+    private var _binding : FragmentPurchaseBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,26 +39,29 @@ class PurchaseFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_purchase, container, false)
-    }
+        _binding = FragmentPurchaseBinding.inflate(inflater, container, false)
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment PurchaseFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            PurchaseFragment().apply {
-                arguments = Bundle().apply {
-
-                }
+        val fm = childFragmentManager
+        val mapFragment = fm.findFragmentById(R.id.mapView) as MapFragment?
+            ?: MapFragment.newInstance().also {
+                fm.beginTransaction().add(R.id.mapView, it).commit()
             }
+
+        mapFragment.getMapAsync(this)
+
+
+        return binding.root
     }
+
+    override fun onMapReady(naverMap: NaverMap){
+        PurchaseFragment.naverMap = naverMap
+
+        var camPos = CameraPosition(
+            com.naver.maps.geometry.LatLng(34.38, 128.55),
+            9.0)
+        naverMap.cameraPosition = camPos
+    }
+
+
+
 }

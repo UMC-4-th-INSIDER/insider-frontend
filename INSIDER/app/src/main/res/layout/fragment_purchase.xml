@@ -221,17 +221,27 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <ImageView
+                <fragment
+                    android:id="@+id/mapView"
+                    android:layout_width="match_parent"
+                    android:layout_height="500dp"
+                    android:layout_marginTop="30dp"
+                    android:name="com.naver.maps.map.MapFragment"
+                    app:layout_constraintTop_toBottomOf="@id/purchase_info_layout"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <!--
+                <com.google.android.gms.maps.MapView
                     android:id="@+id/imageView"
                     android:layout_width="0dp"
                     android:layout_height="500dp"
-                    android:src="@drawable/ic_launcher_background"
                     android:scaleType="fitXY"
                     android:layout_marginTop="30dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/purchase_info_layout" />
-
+                    -->
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
