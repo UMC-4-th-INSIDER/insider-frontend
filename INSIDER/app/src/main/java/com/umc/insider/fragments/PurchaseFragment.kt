@@ -17,11 +17,6 @@ import com.naver.maps.map.util.MarkerIcons
 import com.umc.insider.R
 import com.umc.insider.databinding.FragmentPurchaseBinding
 
-/**
- * A simple [Fragment] subclass.
- * Use the [PurchaseFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class PurchaseFragment : Fragment(), OnMapReadyCallback {
 
     companion object{
@@ -46,7 +41,13 @@ class PurchaseFragment : Fragment(), OnMapReadyCallback {
     ): View? {
         _binding = FragmentPurchaseBinding.inflate(inflater, container, false)
 
+        val productName = arguments?.getString("productName")
+        val productWeight = arguments?.getString("productWeight")
+        val productPrice = arguments?.getString("productPrice")
 
+        binding.productName.text = productName
+        binding.productWeight.text = productWeight
+        binding.productPrice.text = productPrice
 
         // 지도 사용하기
         val fm = childFragmentManager

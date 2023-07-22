@@ -42,10 +42,21 @@ class MainActivity : AppCompatActivity(), PurchaseDetailActivity.SellRegistorCli
         // 구매하기 버튼 클릭시
         if (intent.getBooleanExtra("SELL_REGISTOR_CLICKED", false)){
 
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.frame_layout, PurchaseFragment())
-                .commit()
+            val productName = intent.getStringExtra("productName")
+            val productWeight = intent.getStringExtra("productWeight")
+            val productPrice = intent.getStringExtra("productPrice")
 
+            val purchaseFragment = PurchaseFragment()
+
+            val args = Bundle()
+            args.putString("productName", productName)
+            args.putString("productWeight", productWeight)
+            args.putString("productPrice", productPrice)
+            purchaseFragment.arguments = args
+
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.frame_layout, purchaseFragment)
+                .commit()
         }
 
         initView()
