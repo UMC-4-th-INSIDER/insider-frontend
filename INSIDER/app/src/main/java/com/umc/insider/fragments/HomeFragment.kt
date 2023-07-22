@@ -57,6 +57,16 @@ class HomeFragment : Fragment() {
 
                 transaction.commit()
             }
+            //채팅 목록
+            messageImg.setOnClickListener {
+                val chatListFragment = ChatListFragment()
+                val transaction = parentFragmentManager.beginTransaction()
+
+                transaction.replace(R.id.frame_layout, chatListFragment)
+                transaction.addToBackStack(null)
+
+                transaction.commit()
+            }
 
             // 판매 등록 바로가기
             sellLayout.setOnClickListener {
