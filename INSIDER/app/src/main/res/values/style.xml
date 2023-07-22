@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!--카테고리 스피너 커스텀-->
+    <style name = "SpinnerDivideStyle">
+        <item name="android:divider">@color/gray30</item>
+        <item name="android:dividerHeight">2dp</item>
+    </style>
+    <style name = "SpinnerTheme" parent="Theme.AppCompat">
+        <item name = "android:dropDownListViewStyle">@style/SpinnerDivideStyle</item>
+    </style>
+
+
 </resources>
