@@ -46,12 +46,14 @@ class PurchaseFragment : Fragment(), OnMapReadyCallback {
     ): View? {
         _binding = FragmentPurchaseBinding.inflate(inflater, container, false)
 
+
+
+        // 지도 사용하기
         val fm = childFragmentManager
         val mapFragment = fm.findFragmentById(R.id.mapView) as MapFragment?
             ?: MapFragment.newInstance().also {
                 fm.beginTransaction().add(R.id.mapView, it).commit()
             }
-
         mapFragment.getMapAsync(this)
 
         return binding.root
@@ -62,6 +64,7 @@ class PurchaseFragment : Fragment(), OnMapReadyCallback {
         _binding = null
     }
 
+    // 지도 설정하기
     override fun onMapReady(naverMap: NaverMap){
         PurchaseFragment.naverMap = naverMap
 
@@ -78,7 +81,5 @@ class PurchaseFragment : Fragment(), OnMapReadyCallback {
         marker.height = 90
 
     }
-
-
 
 }

@@ -24,16 +24,11 @@ import com.umc.insider.utils.changeStatusBarColor
 
 class SearchResultFragment : Fragment(), OnNoteListener {
 
-    private var _binding : FragmentSearchResultBinding? = null
+    private var _binding: FragmentSearchResultBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var getResultText: ActivityResultLauncher<Intent>
-    private val adapter = SearchResultAdapter(object: OnNoteListener{
-        override fun onNotePurchaseDetail(position: Int) {
-            getResultText.launch(Intent(requireContext(), PurchaseDetailActivity::class.java))
-        }
-    })
-
+    private val adapter = SearchResultAdapter(this)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -41,44 +36,39 @@ class SearchResultFragment : Fragment(), OnNoteListener {
         activity?.changeStatusBarColor(statusBarColor)
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-
         _binding = FragmentSearchResultBinding.inflate(inflater, container, false)
-
         initView()
-
         val searchQuery = arguments?.getString("search_query")
         binding.searchText.text = "\"$searchQuery\" 검색 결과"
-
         return binding.root
-
     }
 
-    private fun initView(){
-        with(binding){
+    private fun initView() {
+        with(binding) {
             searchRV.adapter = adapter
             searchRV.layoutManager = LinearLayoutManager(context)
             searchRV.addItemDecoration(SearchResultAdapterDecoration())
             adapter.submitList(DummyDate())
         }
 
-        getResultText = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-            result -> if(result.resultCode == RESULT_OK){}
-        }
-
+        getResultText =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == RESULT_OK) {
+                    // Handle any result if needed
+                }
+            }
     }
 
-    private fun DummyDate() : ArrayList<SearchItem>{
+    private fun DummyDate(): ArrayList<SearchItem> {
         val dummy1 = SearchItem(1, "양파1", "100g", "1000원", null, null)
-        val dummy2 = SearchItem(2, "양파2", "200g", "2000원",null, null)
-        val dummy3 = SearchItem(3, "양파3", "300g", "2800원",null, null)
-        val dummy4 = SearchItem(4, "양파4", "400g", "3800원",null, null)
-        val dummy5 = SearchItem(5, "양파5", "500g", "4500원",null, null)
+        val dummy2 = SearchItem(2, "양파2", "200g", "2000원", null, null)
+        val dummy3 = SearchItem(3, "양파3", "300g", "2800원", null, null)
+        val dummy4 = SearchItem(4, "양파4", "400g", "3800원", null, null)
+        val dummy5 = SearchItem(5, "양파5", "500g", "4500원", null, null)
 
         val arr = ArrayList<SearchItem>()
         arr.add(dummy1)
@@ -96,11 +86,18 @@ class SearchResultFragment : Fragment(), OnNoteListener {
     }
 
     override fun onNotePurchaseDetail(position: Int) {
-        getResultText.launch(Intent(requireContext(), PurchaseDetailActivity::class.java))
+        val selectedItem = adapter.getItemAtPosition(position)
+
+        val intent = Intent(requireContext(), PurchaseDetailActivity::class.java)
+        intent.putExtra("productName", selectedItem.itemName)
+        intent.putExtra("productWeight", selectedItem.itemWeight)
+        intent.putExtra("productPrice", selectedItem.itemPrice)
+
+        startActivity(intent)
     }
 }
 
-class SearchResultAdapterDecoration : RecyclerView.ItemDecoration(){
+class SearchResultAdapterDecoration : RecyclerView.ItemDecoration() {
 
     override fun getItemOffsets(
         outRect: Rect,
@@ -109,7 +106,6 @@ class SearchResultAdapterDecoration : RecyclerView.ItemDecoration(){
         state: RecyclerView.State
     ) {
         super.getItemOffsets(outRect, view, parent, state)
-
         outRect.bottom = 20
     }
 }

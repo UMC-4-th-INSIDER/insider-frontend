@@ -16,6 +16,16 @@ class PurchaseDetailActivity : AppCompatActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_purchase_detail)
 
+        // Get the intent extras
+        val productName = intent.getStringExtra("productName")
+        val productWeight = "(" + intent.getStringExtra("productWeight") + ")"
+        val productPrice = intent.getStringExtra("productPrice")
+
+        // Set the data to the views
+        binding.productName.text = productName
+        binding.productWeight.text = productWeight
+        binding.productPrice.text = productPrice
+
         // 구매하기 버튼 클릭시 mainActivity로 넘어가고 Fragment는 구매하기 PurchaseFragment
         binding.sellRegistorBtn.setOnClickListener {
             val intent = Intent(this@PurchaseDetailActivity, MainActivity::class.java)

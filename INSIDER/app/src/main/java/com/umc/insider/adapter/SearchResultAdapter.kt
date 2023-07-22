@@ -56,4 +56,8 @@ class SearchResultAdapter(private val onNoteListener: OnNoteListener) :
     override fun onBindViewHolder(holder: SearchResultViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
+
+    fun getItemAtPosition(position: Int): SearchItem {
+        return getItem(position)
+    }
 }
