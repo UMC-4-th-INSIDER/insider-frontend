@@ -2,9 +2,12 @@ package com.umc.insider.saleregistraion
 
 import android.content.ContentValues.TAG
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -12,6 +15,7 @@ import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
@@ -25,9 +29,7 @@ class SalesRegistrationActivity : AppCompatActivity() {
     private lateinit var viewModel : SaleRegistrationViewModel
 
     private lateinit var categorySpinner: Spinner
-    private lateinit var spinner: Spinner
     private lateinit var adapter: CustomSpinnerAdapter
-    private var selectedItem: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,6 +63,8 @@ class SalesRegistrationActivity : AppCompatActivity() {
                 // Do nothing
             }
         }
+
+        // 우편번호 인증 누를때 이벤트
 
 
 
