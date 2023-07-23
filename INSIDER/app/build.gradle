@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'com.google.gms.google-services'
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 
@@ -73,4 +74,7 @@ dependencies {
     implementation 'com.facebook.android:facebook-login:11.3.0'
 
     implementation 'com.google.code.gson:gson:2.9.0'
+
+    // Kakao Login
+    implementation 'com.kakao.sdk:v2-user:2.10.0'
 }
