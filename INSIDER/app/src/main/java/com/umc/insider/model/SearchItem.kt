@@ -7,6 +7,7 @@ data class SearchItemListResponse(
 
 data class SearchItem (
     val id : Int,
+    //val imgUrl : String,
     val itemName : String,
     val itemWeight : String,
     val itemPrice : String,
