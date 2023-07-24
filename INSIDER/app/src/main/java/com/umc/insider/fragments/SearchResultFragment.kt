@@ -95,6 +95,7 @@ class SearchResultFragment : Fragment(), OnNoteListener {
 
         startActivity(intent)
     }
+
 }
 
 class SearchResultAdapterDecoration : RecyclerView.ItemDecoration() {

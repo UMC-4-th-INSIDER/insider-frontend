@@ -11,6 +11,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.umc.insider.auth.login.LogInActivity
 import com.umc.insider.databinding.ActivityMainBinding
+import com.umc.insider.fragments.FavoriteFragment
 import com.umc.insider.fragments.HomeFragment
 import com.umc.insider.fragments.MyPageFragment
 import com.umc.insider.fragments.PurchaseFragment
@@ -22,6 +23,7 @@ class MainActivity : AppCompatActivity(), PurchaseDetailActivity.SellRegistorCli
 
     private val homeFragment = HomeFragment()
     private val myPageFragment = MyPageFragment()
+    private val favoriteFragment = FavoriteFragment()
 
     override fun onBackPressed() {
         // 바텀 네비게이션의 선택된 아이템이 홈(또는 첫번째)이 아니라면 홈으로 이동
@@ -73,7 +75,7 @@ class MainActivity : AppCompatActivity(), PurchaseDetailActivity.SellRegistorCli
                         return@setOnItemSelectedListener true
                     }
                     R.id.favorite -> {
-                        //replaceFragment(cameraFragment)
+                        replaceFragment(favoriteFragment)
                         return@setOnItemSelectedListener true
                     }
                     R.id.trade -> {
