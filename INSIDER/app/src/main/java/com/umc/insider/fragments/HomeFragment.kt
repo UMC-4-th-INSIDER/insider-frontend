@@ -74,6 +74,10 @@ class HomeFragment : Fragment() {
                 startActivity(intent)
             }
 
+            pointLayout.setOnClickListener {
+                return@setOnClickListener
+            }
+
             categoryRV.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             categoryRV.addItemDecoration(CategoryAdapterDecoration())
             categoryRV.adapter = categoryAdapter

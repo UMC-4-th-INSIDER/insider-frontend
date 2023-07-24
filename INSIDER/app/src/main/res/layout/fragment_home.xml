@@ -20,12 +20,12 @@
                 android:id="@+id/barLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 android:background="@drawable/home_bar_bottom_radius"
                 android:elevation="5dp"
-                android:paddingBottom="15dp">
+                android:paddingBottom="15dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
                     android:id="@+id/appName"
@@ -59,10 +59,10 @@
                     app:srcCompat="@drawable/notifications" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_marginHorizontal="10dp"
                     android:id="@+id/searchLayout"
                     android:layout_width="0dp"
                     android:layout_height="45dp"
+                    android:layout_marginHorizontal="10dp"
                     android:layout_marginTop="15dp"
                     android:background="@drawable/search_background"
                     android:gravity="center_vertical"
@@ -135,7 +135,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="7.5dp"
-                                android:background="@drawable/home_round_rectangle"
+                                android:background="@drawable/home_round_rectangle_selector"
                                 app:layout_constraintEnd_toStartOf="@+id/sellLayout"
                                 app:layout_constraintHorizontal_bias="0.5"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -149,7 +149,7 @@
                                     android:autoSizeTextType="uniform"
                                     android:fontFamily="@font/roboto"
                                     android:text="80"
-                                    android:textColor="@color/white"
+                                    android:textColor="@drawable/home_text_color_selector"
                                     android:textSize="40sp"
                                     android:textStyle="bold"
                                     app:layout_constraintEnd_toEndOf="parent"
@@ -179,7 +179,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="7.5dp"
-                                android:background="@drawable/home_round_rectangle"
+                                android:background="@drawable/home_round_rectangle_selector"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintHorizontal_bias="0.5"
                                 app:layout_constraintStart_toEndOf="@+id/pointLayout"
@@ -278,10 +278,10 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="15dp"
-                                app:spanCount="2"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@id/todayDiscountTextView" />
+                                app:layout_constraintTop_toBottomOf="@id/todayDiscountTextView"
+                                app:spanCount="2" />
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
