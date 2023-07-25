@@ -46,6 +46,7 @@
 
 
       <androidx.constraintlayout.widget.ConstraintLayout
+          android:id="@+id/editInfoLayout"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:paddingHorizontal="15dp"
@@ -60,7 +61,7 @@
             android:layout_marginTop="15dp"
             android:fontFamily="@font/roboto"
             android:text="@string/editprofile"
-            android:textSize="24sp"
+            android:textSize="25sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -110,10 +111,13 @@
               android:text="@string/bringImage"
               android:textColor="@color/gray30"
               android:textSize="15sp"
-              app:layout_constraintStart_toStartOf="parent"
+              android:layout_marginTop="3dp"
+              app:layout_constraintEnd_toEndOf="@+id/profileImgLayout"
+              app:layout_constraintStart_toStartOf="@+id/profileImgLayout"
               app:layout_constraintTop_toBottomOf="@id/profileImgLayout" />
 
-          <LinearLayout
+          <androidx.constraintlayout.widget.ConstraintLayout
+              android:id="@+id/nicknameLayout"
               android:layout_width="0dp"
               android:layout_height="wrap_content"
               android:layout_marginStart="15dp"
@@ -124,19 +128,27 @@
 
             <TextView
                 android:id="@+id/nicknameTextView"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto"
-                android:text="\@@님"
+                android:text="\@@ 님"
                 android:textSize="20sp"
-                android:textStyle="bold" />
-            <ImageButton
-                android:layout_width="20sp"
-                android:layout_height="match_parent"
-                android:background="@drawable/edit_on"
-                android:adjustViewBounds="true"/>
+                android:textStyle="bold"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/imageButton"
+                app:layout_constraintTop_toTopOf="parent" />
 
-          </LinearLayout>
+            <ImageButton
+                android:id="@+id/imageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_default"
+                android:layout_marginBottom="3dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+          </androidx.constraintlayout.widget.ConstraintLayout>
 
 
           <TextView
@@ -147,14 +159,15 @@
               android:textColor="@color/gray30"
               android:textSize="15sp"
               android:textStyle="bold"
-              app:layout_constraintBottom_toBottomOf="parent"
+              android:layout_marginTop="16dp"
+              app:layout_constraintTop_toBottomOf="@id/nicknameLayout"
               app:layout_constraintEnd_toEndOf="parent" />
 
           <View
               android:layout_width="0dp"
               android:layout_height="1dp"
               android:layout_marginTop="10dp"
-              android:background="@color/gray30"
+              android:background="#E7E8EA"
               app:layout_constraintEnd_toEndOf="parent"
               app:layout_constraintStart_toStartOf="parent"
               app:layout_constraintTop_toBottomOf="@id/bring_image" />
@@ -165,6 +178,7 @@
             android:id="@+id/emailLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/profileLayout">
@@ -173,13 +187,46 @@
               android:id="@+id/emailText"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:layout_marginTop="10dp"
               android:fontFamily="@font/roboto"
               android:text="@string/userEmailProfile"
-              android:textSize="15sp"
+              android:textColor="@color/black"
+              android:textSize="18sp"
               android:textStyle="bold"
               app:layout_constraintStart_toStartOf="parent"
               app:layout_constraintTop_toTopOf="parent" />
+
+          <androidx.constraintlayout.widget.ConstraintLayout
+              android:id="@+id/emailEditLayout"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="12dp"
+              app:layout_constraintEnd_toEndOf="parent"
+              app:layout_constraintStart_toStartOf="parent"
+              app:layout_constraintTop_toBottomOf="@id/emailText">
+
+            <TextView
+                android:id="@+id/emailTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="5sy11@gmail.com"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/emaiEditButton"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/emaiEditButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_default"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+          </androidx.constraintlayout.widget.ConstraintLayout>
 
 
           <View
@@ -189,7 +236,7 @@
               android:background="@color/editTextTint"
               app:layout_constraintEnd_toEndOf="parent"
               app:layout_constraintStart_toStartOf="parent"
-              app:layout_constraintTop_toBottomOf="@id/emailText" />
+              app:layout_constraintTop_toBottomOf="@id/emailEditLayout" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -209,10 +256,34 @@
               android:layout_marginTop="10dp"
               android:fontFamily="@font/roboto"
               android:text="@string/liveAddress"
-              android:textSize="15sp"
+              android:textSize="18sp"
+              android:textColor="@color/black"
               android:textStyle="bold"
               app:layout_constraintStart_toStartOf="parent"
               app:layout_constraintTop_toTopOf="parent" />
+
+          <Button
+              android:id="@+id/addressFindBtn"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:backgroundTint="@color/gray30"
+              android:text="@string/addressFind"
+              android:textColor="@color/black"
+              android:layout_marginTop="11dp"
+              app:layout_constraintStart_toStartOf="parent"
+              app:layout_constraintTop_toBottomOf="@id/addressText" />
+
+          <TextView
+              android:id="@+id/addressNum"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginStart="6dp"
+              android:text="11111"
+              android:textColor="@color/black"
+              android:textSize="18dp"
+              app:layout_constraintBottom_toBottomOf="@+id/addressFindBtn"
+              app:layout_constraintStart_toEndOf="@id/addressFindBtn"
+              app:layout_constraintTop_toTopOf="@id/addressFindBtn" />
 
           <TextView
               android:id="@+id/liveAddress"
@@ -220,24 +291,73 @@
               android:layout_height="wrap_content"
               android:layout_marginTop="10dp"
               android:text="서울시 어디구 어디동"
+              android:textColor="@color/black"
+              android:textSize="18dp"
               app:layout_constraintStart_toStartOf="parent"
-              app:layout_constraintTop_toBottomOf="@id/addressText"/>
+              app:layout_constraintTop_toBottomOf="@id/addressFindBtn"/>
 
-          <View
-              android:layout_width="0dp"
-              android:layout_height="1dp"
-              android:layout_marginTop="10dp"
-              android:background="@color/editTextTint"
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/endLine"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/editTextTint"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/addressLayout" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/endLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingVertical="20dp"
+            app:layout_constraintTop_toBottomOf="@id/endLine"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+          <TextView
+              android:id="@+id/logoutTextView"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="@string/logout"
+              app:layout_constraintBottom_toBottomOf="parent"
+              app:layout_constraintEnd_toStartOf="@+id/withdrawalTextView"
+              app:layout_constraintHorizontal_bias="0.5"
+              app:layout_constraintStart_toStartOf="parent" />
+
+          <TextView
+              android:id="@+id/withdrawalTextView"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="@string/withdrawal"
+              app:layout_constraintBottom_toBottomOf="parent"
               app:layout_constraintEnd_toEndOf="parent"
-              app:layout_constraintStart_toStartOf="parent"
-              app:layout_constraintTop_toBottomOf="@id/liveAddress" />
+              app:layout_constraintHorizontal_bias="0.5"
+              app:layout_constraintStart_toEndOf="@+id/logoutTextView" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
       </androidx.constraintlayout.widget.ConstraintLayout>
+
+      <Button
+          android:id="@+id/infoSaveBtn"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:backgroundTint="@color/main"
+          android:fontFamily="@font/roboto"
+          android:text="@string/singUpComplete"
+          android:textSize="18sp"
+          android:layout_marginBottom="15dp"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
