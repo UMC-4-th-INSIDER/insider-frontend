@@ -13,6 +13,7 @@ import com.facebook.login.LoginManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.kakao.sdk.user.UserApiClient
+import com.umc.insider.EditProfileActivity
 import com.umc.insider.R
 import com.umc.insider.adapter.ShoppingSaleAdapter
 import com.umc.insider.auth.login.LogInActivity
@@ -69,6 +70,12 @@ class MyPageFragment : Fragment() {
                 startActivity(Intent(activity, LogInActivity::class.java))
                 activity?.finish()
             }
+
+            // 내 정보 수정하기 화면으로 넘어가기
+            editTV.setOnClickListener {
+                startActivity(Intent(activity, EditProfileActivity::class.java))
+            }
+
         }
     }
 

@@ -66,15 +66,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto"
-            android:text="@string/modify"
-            app:layout_constraintBottom_toBottomOf="@id/editProfileTextView"
-            app:layout_constraintEnd_toEndOf="parent" />
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/profileLayout"
             android:layout_width="0dp"
@@ -245,6 +236,7 @@
             android:id="@+id/addressLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/emailLayout">
@@ -352,8 +344,9 @@
           android:layout_height="wrap_content"
           android:backgroundTint="@color/main"
           android:fontFamily="@font/roboto"
-          android:text="@string/singUpComplete"
+          android:text="정보 저장"
           android:textSize="18sp"
+          android:paddingHorizontal="45dp"
           android:layout_marginBottom="15dp"
           app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintEnd_toEndOf="parent"
