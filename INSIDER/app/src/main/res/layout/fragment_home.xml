@@ -163,7 +163,7 @@
                                     android:layout_marginTop="5dp"
                                     android:layout_marginBottom="20dp"
                                     android:fontFamily="@font/roboto"
-                                    android:text="@string/myPoint"
+                                    android:text="@string/myScore"
                                     android:textColor="@color/point"
                                     android:textSize="18sp"
                                     android:textStyle="bold"
