@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         app:cardElevation="5dp"
-        android:background="@drawable/gray30_round_rectangle"
+        android:background="@drawable/gray30_round_18_rectangle"
         app:cardCornerRadius="18dp"
         android:layout_margin="1dp">
 

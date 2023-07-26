@@ -1,6 +1,7 @@
 package com.umc.insider.model
 
-data class ChatItem(
-    val chatId:String,
-    val recentMessage:String
+data class ChatListItem(
+    val chatId : String,
+    val interlocutor : String,
+    val recentMessage : String?
 )

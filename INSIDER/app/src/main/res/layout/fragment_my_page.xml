@@ -102,7 +102,7 @@
                                 android:id="@+id/profileImgLayout"
                                 android:layout_width="100dp"
                                 android:layout_height="100dp"
-                                android:background="@drawable/gray30_round_rectangle"
+                                android:background="@drawable/gray30_round_18_rectangle"
                                 android:elevation="3dp"
                                 android:gravity="center"
                                 app:layout_constraintStart_toStartOf="parent"

@@ -10,7 +10,7 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         app:cardElevation="5dp"
-        android:background="@drawable/gray30_round_rectangle"
+        android:background="@drawable/gray30_round_18_rectangle"
         app:cardCornerRadius="18dp"
         android:layout_margin="1dp">
 

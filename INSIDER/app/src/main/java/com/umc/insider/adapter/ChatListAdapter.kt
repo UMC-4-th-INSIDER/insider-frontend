@@ -1,14 +1,15 @@
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.umc.insider.databinding.ChatRoomItemBinding
-import com.umc.insider.model.ChatItem
+import com.umc.insider.databinding.ChatListItemBinding
+import com.umc.insider.model.ChatListItem
+import com.umc.insider.utils.ChatListClickListener
 
-class ChatListAdapter(private val chatList: List<ChatItem>) : RecyclerView.Adapter<ChatListAdapter.ChatListViewHolder>() {
+class ChatListAdapter(private val chatList: List<ChatListItem>, private val listener : ChatListClickListener)
+    : RecyclerView.Adapter<ChatListAdapter.ChatListViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatListViewHolder {
-        val binding = ChatRoomItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ChatListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ChatListViewHolder(binding)
     }
 
@@ -21,12 +22,16 @@ class ChatListAdapter(private val chatList: List<ChatItem>) : RecyclerView.Adapt
         return chatList.size
     }
 
-    inner class ChatListViewHolder(private val binding: ChatRoomItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ChatListViewHolder(private val binding : ChatListItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bindData(chatItem: ChatItem) {
-            binding.interlocutor.text = chatItem.chatId
+        fun bindData(chatItem: ChatListItem) {
+            binding.interlocutor.text = chatItem.interlocutor
             binding.recentMessageTextView.text = chatItem.recentMessage
             // You can set other views in the ViewHolder as needed
+
+            binding.root.setOnClickListener {
+                listener.ChatListItemClick()
+            }
         }
     }
 }
