@@ -76,7 +76,6 @@
                     android:maxLength="10"
                     android:nextFocusDown="@id/nicknameEdit"
                     android:text="@{vm.userId}"
-                    android:textColor="@color/black"
                     tools:drawableEnd="@drawable/baseline_check_24" />
 
             </LinearLayout>
@@ -109,7 +108,6 @@
                     android:maxLength="10"
                     android:nextFocusDown="@id/pwdEdit"
                     android:text="@{vm.userNickname}"
-                    android:textColor="@color/black"
                     tools:drawableEnd="@drawable/baseline_check_24" />
 
             </LinearLayout>
@@ -139,8 +137,7 @@
                     android:drawableEnd="@drawable/danger"
                     android:inputType="textPassword"
                     android:nextFocusDown="@id/pwdCheckEdit"
-                    android:text="@{vm.userPWD}"
-                    android:textColor="@color/black"/>
+                    android:text="@{vm.userPWD}" />
 
             </LinearLayout>
 
@@ -169,8 +166,7 @@
                     android:drawableEnd="@drawable/baseline_check_24"
                     android:inputType="textPassword"
                     android:nextFocusDown="@id/emailEdit"
-                    android:text="@{vm.checkPWD}"
-                    android:textColor="@color/black"/>
+                    android:text="@{vm.checkPWD}" />
 
             </LinearLayout>
 
@@ -200,7 +196,6 @@
                     android:imeOptions="actionDone"
                     android:inputType="textWebEmailAddress"
                     android:text="@{vm.userEmail}"
-                    android:textColor="@color/black"
                     tools:drawableEnd="@drawable/baseline_check_24" />
 
             </LinearLayout>
@@ -225,7 +220,7 @@
                 android:fontFamily="@font/roboto"
                 android:text="@string/singUpComplete"
                 android:textSize="18sp"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -266,7 +261,6 @@
                 android:id="@+id/addressNum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
                 tools:text="111111"
                 app:layout_constraintBottom_toBottomOf="@id/addressFindBtn"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -280,7 +274,6 @@
                 android:layout_marginTop="5dp"
                 tools:text="서울시 어쩌구 저쩌구"
                 android:paddingStart="5dp"
-                android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/addressFindBtn" />
