@@ -11,15 +11,19 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.umc.insider.auth.login.LogInActivity
 import com.umc.insider.databinding.ActivityMainBinding
+import com.umc.insider.fragments.FavoriteFragment
 import com.umc.insider.fragments.HomeFragment
 import com.umc.insider.fragments.MyPageFragment
+import com.umc.insider.fragments.PurchaseFragment
+import com.umc.insider.purchase.PurchaseDetailActivity
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), PurchaseDetailActivity.SellRegistorClickListener {
 
     private lateinit var binding: ActivityMainBinding
 
     private val homeFragment = HomeFragment()
     private val myPageFragment = MyPageFragment()
+    private val favoriteFragment = FavoriteFragment()
 
     override fun onBackPressed() {
         // 바텀 네비게이션의 선택된 아이템이 홈(또는 첫번째)이 아니라면 홈으로 이동
@@ -36,11 +40,33 @@ class MainActivity : AppCompatActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         replaceFragment(homeFragment)
+
+        // 구매하기 버튼 클릭시
+        if (intent.getBooleanExtra("SELL_REGISTOR_CLICKED", false)){
+
+            val productName = intent.getStringExtra("productName")
+            val productWeight = intent.getStringExtra("productWeight")
+            val productPrice = intent.getStringExtra("productPrice")
+
+            val purchaseFragment = PurchaseFragment()
+
+            val args = Bundle()
+            args.putString("productName", productName)
+            args.putString("productWeight", productWeight)
+            args.putString("productPrice", productPrice)
+            purchaseFragment.arguments = args
+
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.frame_layout, purchaseFragment)
+                .commit()
+        }
+
         initView()
 
     }
 
     private fun initView(){
+
         with(binding){
             bottomNav.setOnItemSelectedListener {
                 when(it.itemId){
@@ -49,7 +75,7 @@ class MainActivity : AppCompatActivity() {
                         return@setOnItemSelectedListener true
                     }
                     R.id.favorite -> {
-                        //replaceFragment(cameraFragment)
+                        replaceFragment(favoriteFragment)
                         return@setOnItemSelectedListener true
                     }
                     R.id.trade -> {
@@ -75,4 +101,11 @@ class MainActivity : AppCompatActivity() {
             commit()
         }
     }
+
+    override fun onSellRegistorClicked() {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.frame_layout, PurchaseFragment())
+            .commit()
+    }
+
 }

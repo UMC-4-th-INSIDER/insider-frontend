@@ -1,20 +1,36 @@
 package com.umc.insider.saleregistraion
 
+import android.content.ContentValues.TAG
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.MotionEvent
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.umc.insider.R
+import com.umc.insider.adapter.CustomSpinnerAdapter
 import com.umc.insider.databinding.ActivitySalesRegistrationBinding
 
 class SalesRegistrationActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySalesRegistrationBinding
     private lateinit var viewModel : SaleRegistrationViewModel
+
+    private lateinit var categorySpinner: Spinner
+    private lateinit var adapter: CustomSpinnerAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -31,6 +47,27 @@ class SalesRegistrationActivity : AppCompatActivity() {
             intent.type = "image/*"
             activityResult.launch(intent)
         }
+
+        // 카테고리
+        val categories = listOf("카테고리", "과일", "정육/계란", "채소", "유제품", "수산/건어물", "기타")
+        categorySpinner = findViewById(R.id.categorySpinner)
+        adapter = CustomSpinnerAdapter(this, categories)
+        categorySpinner.adapter = adapter
+
+        categorySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                adapter.setSelectedItemVisibility(position == 0)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // Do nothing
+            }
+        }
+
+        // 우편번호 인증 누를때 이벤트
+
+
+
 
         // 판매 등록하기 버튼
         binding.sellRegistorBtn.setOnClickListener {

@@ -20,18 +20,21 @@
                 android:id="@+id/barLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:paddingVertical="2.5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:background="@drawable/bottom_round_rectangle">
 
                 <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="20dp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"/>
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_gravity="right"
+                    app:srcCompat="@drawable/search_white"/>
 
             </LinearLayout>
 
@@ -53,6 +56,7 @@
                     android:text='"양파" 검색 결과'
                     android:fontFamily="@font/roboto"
                     android:layout_marginTop="15dp"
+                    android:textColor="@color/black"
                     android:textSize="24sp"
                     android:textStyle="bold"/>
 
@@ -65,7 +69,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/searchText"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    tools:listitem="@layout/srarch_item"/>
+                    tools:listitem="@layout/search_result_item"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -2,6 +2,7 @@ package com.umc.insider
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.umc.insider.R
 
 class ProductDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

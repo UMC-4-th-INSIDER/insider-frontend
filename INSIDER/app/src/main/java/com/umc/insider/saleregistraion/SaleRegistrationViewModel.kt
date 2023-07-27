@@ -25,4 +25,10 @@ class SaleRegistrationViewModel : ViewModel() {
 
 
 
+    private var selectedCategory: String? = null
+
+    fun setSelectedCategory(category: String) {
+        selectedCategory = category
+    }
+
 }

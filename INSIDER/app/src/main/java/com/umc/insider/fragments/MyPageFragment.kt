@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.facebook.login.LoginManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.kakao.sdk.user.UserApiClient
+import com.umc.insider.EditProfileActivity
 import com.umc.insider.R
 import com.umc.insider.adapter.ShoppingSaleAdapter
 import com.umc.insider.auth.login.LogInActivity
@@ -57,9 +59,23 @@ class MyPageFragment : Fragment() {
                 val googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
                 googleSignInClient.signOut()
                 LoginManager.getInstance().logOut()
+                UserApiClient.instance.logout { error ->
+                    if (error != null) {
+                        //Toast.makeText(this, "로그아웃 실패 $error", Toast.LENGTH_SHORT).show()
+                        return@logout
+                    }else {
+                        //Toast.makeText(this, "로그아웃 성공", Toast.LENGTH_SHORT).show()
+                    }
+                }
                 startActivity(Intent(activity, LogInActivity::class.java))
                 activity?.finish()
             }
+
+            // 내 정보 수정하기 화면으로 넘어가기
+            editTV.setOnClickListener {
+                startActivity(Intent(activity, EditProfileActivity::class.java))
+            }
+
         }
     }
 
