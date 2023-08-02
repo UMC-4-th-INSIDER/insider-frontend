@@ -1,23 +1,16 @@
 package com.umc.insider
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import com.facebook.login.LoginManager
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.umc.insider.auth.login.LogInActivity
 import com.umc.insider.databinding.ActivityMainBinding
 import com.umc.insider.fragments.FavoriteFragment
 import com.umc.insider.fragments.HomeFragment
 import com.umc.insider.fragments.MyPageFragment
-import com.umc.insider.fragments.PurchaseFragment
 import com.umc.insider.purchase.PurchaseDetailActivity
 
-class MainActivity : AppCompatActivity(), PurchaseDetailActivity.SellRegistorClickListener {
+class MainActivity : AppCompatActivity(){
 
     private lateinit var binding: ActivityMainBinding
 
@@ -40,26 +33,6 @@ class MainActivity : AppCompatActivity(), PurchaseDetailActivity.SellRegistorCli
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         replaceFragment(homeFragment)
-
-        // 구매하기 버튼 클릭시
-        if (intent.getBooleanExtra("SELL_REGISTOR_CLICKED", false)){
-
-            val productName = intent.getStringExtra("productName")
-            val productWeight = intent.getStringExtra("productWeight")
-            val productPrice = intent.getStringExtra("productPrice")
-
-            val purchaseFragment = PurchaseFragment()
-
-            val args = Bundle()
-            args.putString("productName", productName)
-            args.putString("productWeight", productWeight)
-            args.putString("productPrice", productPrice)
-            purchaseFragment.arguments = args
-
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.frame_layout, purchaseFragment)
-                .commit()
-        }
 
         initView()
 
@@ -100,12 +73,6 @@ class MainActivity : AppCompatActivity(), PurchaseDetailActivity.SellRegistorCli
             replace(R.id.frame_layout, fragment)
             commit()
         }
-    }
-
-    override fun onSellRegistorClicked() {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.frame_layout, PurchaseFragment())
-            .commit()
     }
 
 }
