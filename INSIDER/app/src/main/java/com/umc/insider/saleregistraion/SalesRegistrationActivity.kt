@@ -21,12 +21,14 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.umc.insider.R
 import com.umc.insider.adapter.CustomSpinnerAdapter
+import com.umc.insider.auth.signUp.AddressActivity
 import com.umc.insider.databinding.ActivitySalesRegistrationBinding
 
 class SalesRegistrationActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySalesRegistrationBinding
     private lateinit var viewModel : SaleRegistrationViewModel
+    private lateinit var getSearchResult : ActivityResultLauncher<Intent>
 
     private lateinit var categorySpinner: Spinner
     private lateinit var adapter: CustomSpinnerAdapter
@@ -40,20 +42,49 @@ class SalesRegistrationActivity : AppCompatActivity() {
         binding.sellvm = viewModel
         binding.lifecycleOwner = this
 
-        binding.sellImageView.setOnClickListener{
+        getSearchResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+            val fulladdress = it.data?.getStringExtra("data")
+            if (!fulladdress.isNullOrBlank()){
+                val addressSplit = fulladdress.split(",")
+                binding.sellLocationInsert.text = addressSplit[0]
+            }
 
-            // 갤러리 호출
-            val intent = Intent(Intent.ACTION_PICK)
-            intent.type = "image/*"
-            activityResult.launch(intent)
         }
 
-        // 카테고리
         val categories = listOf("카테고리", "과일", "정육/계란", "채소", "유제품", "수산/건어물", "기타")
         categorySpinner = findViewById(R.id.categorySpinner)
         adapter = CustomSpinnerAdapter(this, categories)
         categorySpinner.adapter = adapter
 
+        initview()
+
+    }
+
+    private fun initview(){
+        with(binding){
+
+            // 갤러리 호출
+            sellImageView.setOnClickListener{
+                val intent = Intent(Intent.ACTION_PICK)
+                intent.type = "image/*"
+                activityResult.launch(intent)
+            }
+
+            // 판매 등록하기 버튼
+            sellRegistorBtn.setOnClickListener {
+
+                // 판매 등록한 다음에 어떤걸 원하시는지?
+            }
+
+            // 우편번호 인증
+            addressFindBtn.setOnClickListener {
+                val intent = Intent(this@SalesRegistrationActivity, AddressActivity::class.java)
+                getSearchResult.launch(intent)
+            }
+
+        }
+
+        // 카테고리
         categorySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 adapter.setSelectedItemVisibility(position == 0)
@@ -62,21 +93,6 @@ class SalesRegistrationActivity : AppCompatActivity() {
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 // Do nothing
             }
-        }
-
-        // 우편번호 인증 누를때 이벤트
-
-
-
-
-        // 판매 등록하기 버튼
-        binding.sellRegistorBtn.setOnClickListener {
-
-
-
-
-            // 판매 등록한 다음에 어떤걸 원하시는지?
-
         }
 
     }

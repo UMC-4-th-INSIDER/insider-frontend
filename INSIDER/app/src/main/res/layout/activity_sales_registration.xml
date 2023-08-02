@@ -170,9 +170,9 @@
                         android:textStyle="bold" />
                 </LinearLayout>
 
-                <!--총량-->
+                <!--판매 갯수-->
                 <LinearLayout
-                    android:id="@+id/product_weight_layout"
+                    android:id="@+id/product_amount_layout"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_marginTop="12dp"
@@ -206,7 +206,7 @@
 
 
                     <EditText
-                        android:id="@+id/product_weight_insert"
+                        android:id="@+id/product_amount_insert"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
@@ -222,7 +222,7 @@
                         android:textStyle="bold" />
                 </LinearLayout>
 
-                <!--판매포인트-->
+                <!--개당 가격-->
                 <LinearLayout
                     android:id="@+id/product_sell_price_layout"
                     android:layout_width="0dp"
@@ -236,7 +236,7 @@
                     android:paddingRight="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/product_weight_layout">
+                    app:layout_constraintTop_toBottomOf="@+id/product_amount_layout">
 
                     <TextView
                         android:layout_width="90dp"
@@ -264,7 +264,57 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="15dp"
                         android:background="@null"
-                        android:hint="판매포인트를 입력하세요."
+                        android:hint="개당 판매가격을 입력하세요."
+                        android:inputType="numberDecimal"
+                        android:textColorHint="@color/gray30"
+                        android:textColor="@color/black"
+                        android:textSize="15dp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <!--총량-->
+                <LinearLayout
+                    android:id="@+id/product_weight_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:background="@drawable/sell_round_rectangle"
+                    android:orientation="horizontal"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/product_sell_price_layout">
+
+                    <TextView
+                        android:layout_width="90dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="총량(g)"
+                        android:textColor="@color/black"
+                        android:textSize="20dp"
+                        android:textStyle="bold"
+                        android:textAlignment="viewStart"
+                        tools:ignore="RtlCompat"/>
+
+                    <View
+                        android:layout_width="2dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="10dp"
+                        android:background="@color/gray30" />
+
+
+                    <EditText
+                        android:id="@+id/product_weight_insert"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="15dp"
+                        android:background="@null"
+                        android:hint="총량을 입력하세요.(선택)"
                         android:inputType="numberDecimal"
                         android:textColorHint="@color/gray30"
                         android:textColor="@color/black"
@@ -280,7 +330,7 @@
                     android:layout_marginEnd="15dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/product_sell_price_layout">
+                    app:layout_constraintTop_toBottomOf="@id/product_weight_layout">
 
                     <TextView
                         android:id="@+id/detail_info_tv"
@@ -374,11 +424,12 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/addressFindBtn">
 
-                        <EditText
+                        <TextView
                             android:id="@+id/sell_location_insert"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:background="@null"
+                            android:gravity="center"
                             android:inputType="text"
                             android:hint="판매 위치를 입력하세요"
                             android:textColorHint="@color/gray30"

@@ -250,20 +250,19 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
 
-                <!--
-                <com.google.android.gms.maps.MapView
-                    android:id="@+id/imageView"
-                    android:layout_width="0dp"
-                    android:layout_height="500dp"
-                    android:scaleType="fitXY"
-                    android:layout_marginTop="30dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/purchase_info_layout" />
-                    -->
-
-
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="20dp"
+                    app:layout_constraintEnd_toEndOf="@+id/mapView"
+                    app:layout_constraintTop_toBottomOf="@+id/mapView"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:srcCompat="@drawable/my_location" />
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
         </androidx.core.widget.NestedScrollView>
 

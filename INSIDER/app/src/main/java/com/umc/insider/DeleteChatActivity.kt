@@ -7,7 +7,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.umc.insider.databinding.ActivityDeleteChatBinding
-import com.umc.insider.model.ChatItem
 import com.umc.insider.model.DeleteChatItem
 
 class DeleteChatActivity : AppCompatActivity() {
