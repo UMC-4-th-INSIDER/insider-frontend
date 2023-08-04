@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -32,13 +33,21 @@ import com.kakao.sdk.common.util.Utility
 import com.kakao.sdk.user.UserApiClient
 import com.umc.insider.MainActivity
 import com.umc.insider.R
+import com.umc.insider.auth.TokenManager
 import com.umc.insider.auth.signUp.SignUpActivity
 import com.umc.insider.databinding.ActivityLogInBinding
+import com.umc.insider.retrofit.RetrofitInstance
+import com.umc.insider.retrofit.api.UserInterface
+import com.umc.insider.retrofit.model.LoginPostReq
+import com.umc.insider.retrofit.model.LoginPostRes
+import kotlinx.coroutines.launch
+import retrofit2.create
 
 
 class LogInActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityLogInBinding
+    private val userAPI = RetrofitInstance.getInstance().create(UserInterface::class.java)
 
     // Google
     lateinit var mGoogleSignClient : GoogleSignInClient
@@ -119,7 +128,34 @@ class LogInActivity : AppCompatActivity() {
         with(binding){
 
             logIn.setOnClickListener {
-                startActivity(Intent(this@LogInActivity, MainActivity::class.java))
+
+                val id = idEdit.text.toString()
+                val pwd = pwdEdit.text.toString()
+                val loginPostReq = LoginPostReq(id,pwd)
+
+                lifecycleScope.launch {
+                    val response = userAPI.logIn(loginPostReq)
+
+                    if(response.isSuccessful){
+
+                        val baseResponse = response.body()
+
+                        if(baseResponse?.isSuccess == true){
+
+                            val loginPostRes = baseResponse.result
+                            TokenManager.saveToken(this@LogInActivity, loginPostRes?.jwt)
+
+                            Log.d("token", TokenManager.getToken(this@LogInActivity).toString())
+                            startActivity(Intent(this@LogInActivity, MainActivity::class.java))
+                        }else{
+                            // baseResponse가 실패한 경우의 처리
+                            //Log.d("loginerror",baseResponse!!.message)
+                        }
+
+                    }else{
+                        // 네트워크 에러 처리
+                    }
+                }
             }
 
             singUp.setOnClickListener {
