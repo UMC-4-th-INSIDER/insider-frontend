@@ -3,6 +3,7 @@ package com.umc.insider.auth.signUp
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -10,14 +11,21 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import com.google.gson.annotations.SerializedName
 import com.umc.insider.R
 import com.umc.insider.databinding.ActivitySignUpBinding
+import com.umc.insider.retrofit.RetrofitInstance
+import com.umc.insider.retrofit.api.UserInterface
+import com.umc.insider.retrofit.model.SignUpPostReq
+import kotlinx.coroutines.launch
 
 class SignUpActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivitySignUpBinding
     private lateinit var viewModel : SignUpViewModel
     private lateinit var getSearchResult : ActivityResultLauncher<Intent>
+    private val userAPI = RetrofitInstance.getInstance().create(UserInterface::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +62,34 @@ class SignUpActivity : AppCompatActivity() {
             addressFindBtn.setOnClickListener {
                 val intent = Intent(this@SignUpActivity, AddressActivity::class.java)
                 getSearchResult.launch(intent)
+            }
+
+            signUpBtn.setOnClickListener {
+                lifecycleScope.launch {
+
+                    val userId = idEdit.text.toString()
+                    val nickname = nicknameEdit.text.toString()
+                    val pwd = pwdEdit.text.toString()
+                    val email = emailEdit.text.toString()
+
+                    val signUpPostReq = SignUpPostReq(userId,nickname,pwd,email)
+
+                    val response = userAPI.createUser(signUpPostReq)
+
+                    if (response.isSuccessful){
+                        val baseResponse = response.body()
+                        if(baseResponse?.isSuccess == true){
+                            val loginPostRes = baseResponse.result
+                            Toast.makeText(this@SignUpActivity, "회원가입 성공하셨습니다.",Toast.LENGTH_SHORT).show()
+                            finish()
+                        }else{
+                            // baseResponse가 실패
+                            //Log.d("signuperror",baseResponse!!.message)
+                        }
+                    }else{
+                        // 네트워크 에러 처리
+                    }
+                }
             }
         }
 

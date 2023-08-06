@@ -16,6 +16,7 @@ import com.kakao.sdk.user.UserApiClient
 import com.umc.insider.EditProfileActivity
 import com.umc.insider.R
 import com.umc.insider.adapter.ShoppingSaleAdapter
+import com.umc.insider.auth.AutoLoginManager
 import com.umc.insider.auth.login.LogInActivity
 import com.umc.insider.databinding.FragmentMyPageBinding
 import com.umc.insider.model.SearchItem
@@ -67,6 +68,8 @@ class MyPageFragment : Fragment() {
                         //Toast.makeText(this, "로그아웃 성공", Toast.LENGTH_SHORT).show()
                     }
                 }
+                val autoLoginManager = AutoLoginManager(requireContext())
+                autoLoginManager.setAutoLogin(false)
                 startActivity(Intent(activity, LogInActivity::class.java))
                 activity?.finish()
             }

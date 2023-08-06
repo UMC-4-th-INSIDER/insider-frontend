@@ -127,7 +127,7 @@ class CategoryAdapterDecoration : RecyclerView.ItemDecoration(){
     ) {
         super.getItemOffsets(outRect, view, parent, state)
 
-        outRect.right = 10
+        outRect.right = -5
     }
 }
 
