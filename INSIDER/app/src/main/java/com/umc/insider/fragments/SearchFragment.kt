@@ -152,7 +152,7 @@ class SearchFragment : Fragment(),SearchesItemClickListener {
         recentSearchesAdapter.submitList(searchManager.getSearchHistory())
     }
 
-    private fun searchKeyword(keyword : String){
+    fun searchKeyword(keyword : String){
         searchManager.addSearchWord(keyword)
         val searchResultFragment = SearchResultFragment().apply {
             arguments = Bundle().apply {

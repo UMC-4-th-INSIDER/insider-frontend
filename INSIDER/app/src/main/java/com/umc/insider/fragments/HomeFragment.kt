@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,16 +18,18 @@ import com.umc.insider.adapter.DiscountGoodsAdapter
 import com.umc.insider.databinding.FragmentHomeBinding
 import com.umc.insider.model.SearchItem
 import com.umc.insider.saleregistraion.SalesRegistrationActivity
+import com.umc.insider.utils.CategoryClickListener
 import com.umc.insider.utils.changeStatusBarColor
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), CategoryClickListener {
 
     private var _binding : FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private val imageArray = intArrayOf(R.drawable.category_fruit,R.drawable.category_meat_egg,R.drawable.category_vegetable,R.drawable.category_dairy_product,R.drawable.category_seafood_driedfish,R.drawable.category_etc)
     private val clickImageArray = intArrayOf(R.drawable.category_fruit_click,R.drawable.category_meat_egg_click,R.drawable.category_vegetable_click,R.drawable.category_dairy_product_click,R.drawable.category_seafood_driedfish_click,R.drawable.category_etc_click)
-    private val categoryAdapter = CategoryAdapter(imageArray, clickImageArray)
-    private val discoutGoodsAdapter = DiscountGoodsAdapter()
+    private val categoryAdapter = CategoryAdapter(imageArray, clickImageArray, this)
+    private val categoryTextArray = mutableListOf<String>("과일", "정육/계란", "채소", "유제품", "수산/건어물", "기타")
+    private val discountGoodsAdapter = DiscountGoodsAdapter()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -82,10 +85,10 @@ class HomeFragment : Fragment() {
             categoryRV.addItemDecoration(CategoryAdapterDecoration())
             categoryRV.adapter = categoryAdapter
 
-            todayDiscountRV.adapter = discoutGoodsAdapter
+            todayDiscountRV.adapter = discountGoodsAdapter
             todayDiscountRV.layoutManager= GridLayoutManager(context, 2)
             todayDiscountRV.addItemDecoration(DiscountAdapterDecoration())
-            discoutGoodsAdapter.submitList(DummyDate())
+            discountGoodsAdapter.submitList(DummyDate())
 
         }
 
@@ -113,6 +116,21 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onImageTouch(position: Int) {
+        //Toast.makeText(requireContext(), categoryTextArray[position], Toast.LENGTH_SHORT).show()
+        val searchResultFragment = SearchResultFragment().apply {
+            arguments = Bundle().apply {
+                putString("search_query", categoryTextArray[position])
+            }
+        }
+        val transaction = parentFragmentManager.beginTransaction()
+
+        transaction.replace(R.id.frame_layout, searchResultFragment)
+        transaction.addToBackStack(null)
+
+        transaction.commit()
     }
 
 }
