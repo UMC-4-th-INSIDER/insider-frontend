@@ -235,14 +235,6 @@
                 android:text="@string/google"
                 android:textSize="18sp" />
 
-            <Button
-                android:id="@+id/facebookBtn"
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:backgroundTint="@color/facebookLoginColor"
-                android:text="@string/facebook"
-                android:textSize="18sp" />
-
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

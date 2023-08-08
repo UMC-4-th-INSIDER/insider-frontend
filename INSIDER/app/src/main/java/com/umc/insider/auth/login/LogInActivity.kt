@@ -51,10 +51,6 @@ class LogInActivity : AppCompatActivity() {
     lateinit var mGoogleSignClient : GoogleSignInClient
     lateinit var resultLauncher : ActivityResultLauncher<Intent>
 
-    // Facebook
-    private lateinit var callbackManager : CallbackManager
-    private lateinit var loginManager : LoginManager
-
     // Kakao
     private val mCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
         if (error != null) {
@@ -79,14 +75,6 @@ class LogInActivity : AppCompatActivity() {
 //            finish()
             goMainActivity()
         } ?: {}
-        // Facebook
-        val accessToken = AccessToken.getCurrentAccessToken()
-        val isLoggedIn = accessToken != null && !accessToken.isExpired
-        if(isLoggedIn){
-//            startActivity(Intent(this, MainActivity::class.java))
-//            finish()
-            goMainActivity()
-        }else { }
 
         // Kakao
         if (AuthApiClient.instance.hasToken()) {
@@ -124,10 +112,6 @@ class LogInActivity : AppCompatActivity() {
         mGoogleSignClient = GoogleSignIn.getClient(this, gso)
         val account = GoogleSignIn.getLastSignedInAccount(this)
 
-        // Facebook
-        callbackManager = CallbackManager.Factory.create()
-        loginManager = LoginManager.getInstance()
-
         // kakao - 카카오톡이 있으면 카카오톡 로그인, 없으면 카카오 이메일 로그인
         KakaoSdk.init(this, getString(R.string.kakao_native_app_key))
     }
@@ -136,6 +120,16 @@ class LogInActivity : AppCompatActivity() {
         with(binding){
 
             logIn.setOnClickListener {
+
+                if (idEdit.text.isNullOrBlank()) {
+                    Toast.makeText(this@LogInActivity, "아이디를 입력해주세요", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                if (pwdEdit.text.isNullOrBlank()) {
+                    Toast.makeText(this@LogInActivity, "비밀번호를 입력해주세요", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
 
                 val id = idEdit.text.toString()
                 val pwd = pwdEdit.text.toString()
@@ -177,33 +171,7 @@ class LogInActivity : AppCompatActivity() {
             googleBtn.setOnClickListener {
                 signIn()
             }
-            facebookBtn.setOnClickListener {
-                loginManager.logInWithReadPermissions(this@LogInActivity, listOf("public_profile", "email"))
-                loginManager.registerCallback(callbackManager, object : FacebookCallback<LoginResult?>{
-                    override fun onSuccess(loginResult: LoginResult?) {
-                        val graphRequest = GraphRequest.newMeRequest(loginResult?.accessToken) { f_object, response ->
-                            // {token: loginResult.accessToken / userObject: f_object}
-                            Toast.makeText(this@LogInActivity, "onSuccess: token: ${loginResult?.accessToken} \n\n userObject: ${f_object}}", Toast.LENGTH_LONG).show()
-                            startActivity(Intent(this@LogInActivity, MainActivity::class.java))
-                            finish()
 
-                        }
-                        val parameters = Bundle()
-                        parameters.putString("fields", "id,name,email,gender,birthday")
-                        graphRequest.parameters = parameters
-                        graphRequest.executeAsync()
-                    }
-
-                    override fun onCancel() {
-                        //Toast.makeText(this@LogInActivity, "로그인 취소", Toast.LENGTH_SHORT).show()
-                    }
-
-                    override fun onError(error: FacebookException?) {
-                        //Toast.makeText(this@LogInActivity, "로그인 에러", Toast.LENGTH_SHORT).show()
-                    }
-
-                })
-            }
             kakaoBtn.setOnClickListener {
                 if (UserApiClient.instance.isKakaoTalkLoginAvailable(this@LogInActivity)) {
                     UserApiClient.instance.loginWithKakaoTalk(this@LogInActivity) { token, error ->
@@ -225,11 +193,6 @@ class LogInActivity : AppCompatActivity() {
                 }
             }
         }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        callbackManager.onActivityResult(requestCode, resultCode, data)
     }
 
     private fun setResultSignUp() {
