@@ -44,7 +44,6 @@ class ChatListFragment : Fragment(), ChatListClickListener {
         chatListAdapter = ChatListAdapter(chatListData, this)
 
         binding.deleteTextView.setOnClickListener{
-            Toast.makeText(requireContext(), "Hello World", Toast.LENGTH_SHORT).show()
             startActivity(Intent(activity, DeleteChatActivity::class.java))
         }
 
