@@ -28,7 +28,7 @@ class PurchaseDetailActivity : AppCompatActivity() {
 
         // 구매하기 버튼 클릭시 mainActivity로 넘어가고 Fragment는 구매하기 PurchaseFragment
         binding.sellRegistorBtn.setOnClickListener {
-            val intent = Intent(this@PurchaseDetailActivity, MainActivity::class.java)
+            val intent = Intent(this@PurchaseDetailActivity, PurchaseActivity::class.java)
             intent.putExtra("SELL_REGISTOR_CLICKED", true)
             intent.putExtra("productName", binding.productName.text)
             intent.putExtra("productWeight", binding.productWeight.text)
