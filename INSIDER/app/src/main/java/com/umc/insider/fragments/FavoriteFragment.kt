@@ -19,6 +19,9 @@ class FavoriteFragment : Fragment(), OnNoteListener {
 
     private val adapter = SearchResultAdapter(this)
 
+    // bool 두고, true를 기본으로 설정. 기본적으로 일반 구매가 초록색으로 떠있어야함
+    // 교환하기를 누르면 false가 되면서 일반구매는 흰색, 교환하기는 초록색으로 변함
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
