@@ -81,6 +81,11 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".DeleteChatActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".loading.LoadingActivity"
             android:exported="true"
             android:screenOrientation="portrait"

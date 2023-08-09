@@ -78,6 +78,15 @@ class MyPageFragment : Fragment() {
                 startActivity(Intent(activity, EditProfileActivity::class.java))
             }
 
+            detailReview.setOnClickListener {
+                val searchFragment = ReviewListFragment()
+                val transaction = parentFragmentManager.beginTransaction()
+
+                transaction.replace(R.id.frame_layout, searchFragment)
+                transaction.addToBackStack(null)
+
+                transaction.commit()
+            }
         }
     }
 
