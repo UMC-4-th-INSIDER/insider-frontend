@@ -46,7 +46,7 @@ android {
 }
 
 dependencies {
-
+    implementation 'com.kakao.sdk:v2-user:2.6.0'
     implementation 'com.naver.maps:map-sdk:3.17.0'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
 

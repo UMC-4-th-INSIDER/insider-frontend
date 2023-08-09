@@ -9,7 +9,7 @@
         android:id="@+id/profileImgLayout"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:background="@drawable/gray30_round_10_rectangle"
+        android:background="@drawable/gray30_round_18_rectangle"
         android:elevation="3dp"
         android:gravity="center"
         app:layout_constraintStart_toStartOf="parent"
