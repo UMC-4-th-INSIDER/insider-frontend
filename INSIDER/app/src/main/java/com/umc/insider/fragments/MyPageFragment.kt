@@ -59,10 +59,6 @@ class MyPageFragment : Fragment() {
                 val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
                 val googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
                 googleSignInClient.signOut()
-<<<<<<< HEAD
-                //LoginManager.getInstance().logOut()
-=======
->>>>>>> main
                 UserApiClient.instance.logout { error ->
                     if (error != null) {
                         //Toast.makeText(this, "로그아웃 실패 $error", Toast.LENGTH_SHORT).show()

@@ -28,7 +28,6 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.KakaoSdk
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
-import com.kakao.sdk.common.util.Utility
 import com.kakao.sdk.user.UserApiClient
 import com.umc.insider.MainActivity
 import com.umc.insider.R
@@ -99,9 +98,6 @@ class LogInActivity : AppCompatActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_log_in)
         //Log.d("login", "keyhash : ${Utility.getKeyHash(this)}")
-
-//        val keyHash = Utility.getKeyHash(this)
-//        Log.d("hashkey", "keyhash : $keyHash")
 
         autoLoginManager = AutoLoginManager(this)
 
