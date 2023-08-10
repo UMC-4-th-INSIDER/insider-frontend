@@ -117,7 +117,7 @@ class LogInActivity : AppCompatActivity() {
         val account = GoogleSignIn.getLastSignedInAccount(this)
 
         // kakao - 카카오톡이 있으면 카카오톡 로그인, 없으면 카카오 이메일 로그인
-        KakaoSdk.init(this, getString(R.string.kakao_native_app_key))
+        KakaoSdk.init(this, "kakao6dbbe6829b35061737a96be9a123ce9b")
     }
 
     private fun initView(){
@@ -136,6 +136,7 @@ class LogInActivity : AppCompatActivity() {
                 }
 
                 val id = idEdit.text.toString()
+
                 val pwd = pwdEdit.text.toString()
                 val loginPostReq = LoginPostReq(id,pwd)
 

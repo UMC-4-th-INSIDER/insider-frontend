@@ -20,7 +20,7 @@
       <LinearLayout
           android:id="@+id/toolbarLayout"
           android:layout_width="0dp"
-          android:layout_height="wrap_content"
+          android:layout_height="43dp"
           android:background="@drawable/bottom_round_rectangle"
           android:orientation="horizontal"
           app:layout_constraintEnd_toEndOf="parent"
@@ -28,19 +28,23 @@
           app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="20dp"
+            android:id="@+id/logo"
+            android:layout_width="31dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="18dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             app:srcCompat="@drawable/loading_logo" />
 
         <ImageView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
+            android:layout_width="74.8dp"
+            android:layout_height="18dp"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="10dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
             android:src="@drawable/app_name_english_yellow" />
+
       </LinearLayout>
 
 

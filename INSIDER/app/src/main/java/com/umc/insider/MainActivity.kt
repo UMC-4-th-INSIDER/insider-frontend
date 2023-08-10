@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.umc.insider.databinding.ActivityMainBinding
+import com.umc.insider.fragments.ExchangeMainFragment
 import com.umc.insider.fragments.FavoriteFragment
 import com.umc.insider.fragments.HomeFragment
 import com.umc.insider.fragments.MyPageFragment
@@ -17,6 +18,7 @@ class MainActivity : AppCompatActivity(){
     private val homeFragment = HomeFragment()
     private val myPageFragment = MyPageFragment()
     private val favoriteFragment = FavoriteFragment()
+    private val exchangeMainFragment = ExchangeMainFragment()
 
     override fun onBackPressed() {
         // 바텀 네비게이션의 선택된 아이템이 홈(또는 첫번째)이 아니라면 홈으로 이동
@@ -52,7 +54,7 @@ class MainActivity : AppCompatActivity(){
                         return@setOnItemSelectedListener true
                     }
                     R.id.trade -> {
-                        //replaceFragment(homeFragment)
+                        replaceFragment(exchangeMainFragment)
                         return@setOnItemSelectedListener true
                     }
                     R.id.mypage -> {
