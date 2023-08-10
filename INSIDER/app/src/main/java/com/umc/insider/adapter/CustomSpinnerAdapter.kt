@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import com.umc.insider.R
 
 class CustomSpinnerAdapter(private val context: Context, private val list: List<String>) : BaseAdapter() {
@@ -54,6 +55,10 @@ class CustomSpinnerAdapter(private val context: Context, private val list: List<
 
         val arrowUpImageView = convertView.findViewById<ImageView>(R.id.arrowUpImageView)
         arrowUpImageView.visibility = if (position == 0 && showArrowForSelectedItem) View.VISIBLE else View.GONE
+
+
+        // 모서리를 둥글게 설정
+
 
         return convertView
     }
