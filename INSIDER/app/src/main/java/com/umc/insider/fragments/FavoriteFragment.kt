@@ -9,17 +9,21 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.umc.insider.OnNoteListener
 import com.umc.insider.R
+import com.umc.insider.adapter.ExchangeAdapter
 import com.umc.insider.adapter.SearchResultAdapter
 import com.umc.insider.databinding.FragmentFavoriteBinding
+import com.umc.insider.model.ExchangeItem
 import com.umc.insider.model.SearchItem
 
 class FavoriteFragment : Fragment(), OnNoteListener {
     private var _binding: FragmentFavoriteBinding? = null
     private val binding get() = _binding!!
 
-    private val adapter = SearchResultAdapter(this)
+    private val searchAdapter = SearchResultAdapter(this)
+    private val exchangeAdapter = ExchangeAdapter(this)
 
     private var isGeneralPurchaseSelected = true
+    private var isDecorateCheck = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,11 +39,6 @@ class FavoriteFragment : Fragment(), OnNoteListener {
 
     private fun initview() {
         with(binding) {
-            favoriteRV.adapter = adapter
-            favoriteRV.layoutManager = LinearLayoutManager(context)
-            favoriteRV.addItemDecoration(SearchResultAdapterDecoration())
-            adapter.submitList(DummyDate())
-
             // Click listeners for the buttons
             selectPurchase.setOnClickListener {
                 isGeneralPurchaseSelected = true
@@ -53,6 +52,7 @@ class FavoriteFragment : Fragment(), OnNoteListener {
 
             // Update the button UI initially
             updateButtonUI()
+            isDecorateCheck = false
         }
     }
 
@@ -65,13 +65,32 @@ class FavoriteFragment : Fragment(), OnNoteListener {
                 generalPurchase.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
                 Exchange.background = ContextCompat.getDrawable(requireContext(), R.drawable.white_right_round)
                 Exchange.setTextColor(ContextCompat.getColor(requireContext(), R.color.main))
+
+                favoriteRV.adapter = searchAdapter
+                favoriteRV.layoutManager = LinearLayoutManager(context)
+                if(isDecorateCheck){
+                    favoriteRV.addItemDecoration(SearchResultAdapterDecoration())
+                }
+                searchAdapter.submitList(GeneralDummyDate())
             } else {
                 generalPurchase.background = ContextCompat.getDrawable(requireContext(), R.drawable.white_left_round)
                 generalPurchase.setTextColor(ContextCompat.getColor(requireContext(), R.color.main))
                 Exchange.background = ContextCompat.getDrawable(requireContext(), R.drawable.green_right_round)
                 Exchange.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+
+                favoriteRV.adapter = exchangeAdapter
+                favoriteRV.layoutManager = LinearLayoutManager(context)
+                if(isDecorateCheck){
+                    favoriteRV.addItemDecoration(ExchangeMainFragment.ExchangeAdapterDecoration())
+                }
+                exchangeAdapter.submitList(ExchangeDummyDate())
             }
         }
+    }
+
+    override fun onPause(){
+        super.onPause()
+        isDecorateCheck = true
     }
 
     override fun onDestroyView() {
@@ -79,7 +98,7 @@ class FavoriteFragment : Fragment(), OnNoteListener {
         _binding = null
     }
 
-    private fun DummyDate(): ArrayList<SearchItem> {
+    private fun GeneralDummyDate(): ArrayList<SearchItem> {
         val dummy1 = SearchItem(1, "양파1", "100g", "1000원", null, null)
         val dummy2 = SearchItem(2, "양파2", "200g", "2000원", null, null)
         val dummy3 = SearchItem(3, "양파3", "300g", "2800원", null, null)
@@ -87,6 +106,23 @@ class FavoriteFragment : Fragment(), OnNoteListener {
         val dummy5 = SearchItem(5, "양파5", "500g", "4500원", null, null)
 
         val arr = ArrayList<SearchItem>()
+        arr.add(dummy1)
+        arr.add(dummy2)
+        arr.add(dummy3)
+        arr.add(dummy4)
+        arr.add(dummy5)
+
+        return arr
+    }
+
+    private fun ExchangeDummyDate(): ArrayList<ExchangeItem> {
+        val dummy1 = ExchangeItem(1, "군양파", "1개", "당근")
+        val dummy2 = ExchangeItem(2, "시양파", "2개", "씨앗")
+        val dummy3 = ExchangeItem(3, "도양파", "3개", "코코넛")
+        val dummy4 = ExchangeItem(4, "섬양파", "4개", "해삼")
+        val dummy5 = ExchangeItem(5, "바다양파", "5개", "말미잘")
+
+        val arr = ArrayList<ExchangeItem>()
         arr.add(dummy1)
         arr.add(dummy2)
         arr.add(dummy3)
