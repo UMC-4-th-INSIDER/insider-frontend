@@ -1,6 +1,7 @@
 package com.umc.insider.saleregistraion
 
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -16,6 +17,7 @@ import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -33,6 +35,8 @@ class SalesRegistrationActivity : AppCompatActivity() {
 
     private lateinit var categorySpinner: Spinner
     private lateinit var adapter: CustomSpinnerAdapter
+
+    private var isGeneralSaleSelected = true    // true면 일반 판매
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,6 +89,33 @@ class SalesRegistrationActivity : AppCompatActivity() {
                 getSearchResult.launch(intent)
             }
 
+            // 일반 구매, 교환하기 설정
+            generalSale.setOnClickListener {
+                isGeneralSaleSelected = true    // 일반 구매
+                updateButtonUI()
+                productAmountTv.text = "판매 갯수"
+                productAmountInsert.hint = "판매 갯수를 입력하세요."
+                val params = priceExchangeTv.layoutParams
+                params.width = dpToPx(90)
+                priceExchangeTv.layoutParams = params
+                priceExchangeTv.text = "개당 가격"
+                priceExchangeInsert.hint = "개당 판매 가격을 입력하세요."
+            }
+
+            Exchange.setOnClickListener {
+                isGeneralSaleSelected = false   // 교환하기
+                updateButtonUI()
+                productAmountTv.text = "교환 갯수"
+                productAmountInsert.hint = "교환 갯수를 입력하세요."
+                val params = priceExchangeTv.layoutParams
+                params.width = dpToPx(150)
+                priceExchangeTv.layoutParams = params
+                priceExchangeTv.text = "원하는 교환 품목"
+                priceExchangeInsert.hint = "ex. 당근"
+            }
+
+            updateButtonUI()
+
         }
 
         // 카테고리
@@ -114,6 +145,30 @@ class SalesRegistrationActivity : AppCompatActivity() {
                 .load(uri) // 이미지
                 .into(binding.sellImageView) // 보여줄 위치
         }
+    }
+
+    // 일반 판매, 교환하기 선택
+    private fun updateButtonUI() {
+        with(binding) {
+
+            // 서버 넘겨받으면 찜한 목록 중에서 어떤 건지 판단해서 recyclerview 띄우게 하기
+            if (isGeneralSaleSelected) {
+                generalSale.background = ContextCompat.getDrawable(this@SalesRegistrationActivity, R.drawable.green_left_round)
+                generalSale.setTextColor(ContextCompat.getColor(this@SalesRegistrationActivity, R.color.white))
+                Exchange.background = ContextCompat.getDrawable(this@SalesRegistrationActivity, R.drawable.white_right_round)
+                Exchange.setTextColor(ContextCompat.getColor(this@SalesRegistrationActivity, R.color.main))
+            } else {
+                generalSale.background = ContextCompat.getDrawable(this@SalesRegistrationActivity, R.drawable.white_left_round)
+                generalSale.setTextColor(ContextCompat.getColor(this@SalesRegistrationActivity, R.color.main))
+                Exchange.background = ContextCompat.getDrawable(this@SalesRegistrationActivity, R.drawable.green_right_round)
+                Exchange.setTextColor(ContextCompat.getColor(this@SalesRegistrationActivity, R.color.white))
+            }
+        }
+    }
+
+    fun Context.dpToPx(dp: Int): Int {
+        val scale = resources.displayMetrics.density
+        return (dp * scale + 0.5f).toInt()
     }
 
 }

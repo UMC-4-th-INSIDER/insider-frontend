@@ -61,6 +61,7 @@
                     android:textSize="24sp"
                     android:textStyle="bold"/>
 
+                <!--일반, 교환 선택-->
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/selectPurchase"
                     android:layout_width="0dp"
