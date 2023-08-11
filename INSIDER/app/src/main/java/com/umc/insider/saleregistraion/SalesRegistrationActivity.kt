@@ -4,6 +4,7 @@ import android.content.ContentValues.TAG
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -55,6 +56,8 @@ class SalesRegistrationActivity : AppCompatActivity() {
         categorySpinner = findViewById(R.id.categorySpinner)
         adapter = CustomSpinnerAdapter(this, categories)
         categorySpinner.adapter = adapter
+
+        window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         initview()
 

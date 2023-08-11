@@ -6,24 +6,25 @@ import android.graphics.RectF
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatSpinner
 
-class RoundedBackgroundSpinner @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = android.R.attr.spinnerStyle
-) : AppCompatSpinner(context, attrs, defStyleAttr) {
-
+class RoundedBackgroundSpinner(context: Context, attrs: AttributeSet) : AppCompatSpinner(context, attrs) {
     private val path = Path()
-    private val rectF = RectF()
+    private val rect = RectF()
 
-    override fun onDraw(canvas: Canvas) {
-        val borderWidth = 0f
-        val width = this.width
-        val height = this.height
-        val radius = 30f
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+        val roundRadius = 15f
+        rect.set(paddingLeft.toFloat(), paddingTop.toFloat(), (w - paddingRight).toFloat(), (h - paddingBottom).toFloat())
         path.reset()
-        rectF.set(borderWidth, borderWidth, width - borderWidth, height - borderWidth)
-        path.addRoundRect(rectF, radius, radius, Path.Direction.CW)
+        path.addRoundRect(rect, roundRadius, roundRadius, Path.Direction.CW)
+    }
+
+    override fun dispatchDraw(canvas: Canvas) {
         canvas.clipPath(path)
-        super.onDraw(canvas)
+        super.dispatchDraw(canvas)
+    }
+
+    // Set proper elevation for the rounded spinner
+    init {
+        elevation = 8f
     }
 }

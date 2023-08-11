@@ -14,8 +14,8 @@
         <item name = "android:dropDownListViewStyle">@style/SpinnerDivideStyle</item>
     </style>
 
-    <style name="DropDownSpinnerTheme">
-        <item name="android:popupBackground">@color/white</item>
+    <style name="SpinnerTransparent" parent="Widget.AppCompat.Spinner">
+        <item name="android:popupBackground">@drawable/spinner_transparent_background</item>
     </style>
 
     <!--font style-->

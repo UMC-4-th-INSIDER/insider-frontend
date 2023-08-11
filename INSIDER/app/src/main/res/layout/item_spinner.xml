@@ -18,7 +18,7 @@
         android:textStyle="bold"
         android:gravity="center"
         android:textAlignment="viewStart"
-        android:background="@color/white"
+        android:background="@android:color/transparent"
         tools:ignore="RtlCompat"/>
     <ImageView
         android:id="@+id/arrowUpImageView"
