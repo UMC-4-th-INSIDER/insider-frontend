@@ -4,23 +4,30 @@ import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.umc.insider.OnNoteListener
 import com.umc.insider.R
 import com.umc.insider.adapter.SearchResultAdapter
 import com.umc.insider.databinding.FragmentSearchResultBinding
-import com.umc.insider.model.RankingItem
 import com.umc.insider.model.SearchItem
 import com.umc.insider.purchase.PurchaseDetailActivity
+import com.umc.insider.retrofit.RetrofitInstance
+import com.umc.insider.retrofit.api.GoodsInterface
 import com.umc.insider.utils.changeStatusBarColor
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SearchResultFragment : Fragment(), OnNoteListener {
 
@@ -44,6 +51,30 @@ class SearchResultFragment : Fragment(), OnNoteListener {
         initView()
         val searchQuery = arguments?.getString("search_query")
         binding.searchText.text = "\"$searchQuery\" 검색 결과"
+
+        val goodsAPI = RetrofitInstance.getInstance().create(GoodsInterface::class.java)
+
+        lifecycleScope.launch {
+            Log.d("goods","시작")
+
+            try {
+                val response = withContext(Dispatchers.IO) {
+                    goodsAPI.getGoods(searchQuery)
+                }
+                if(response.isSuccess){
+
+                    Log.d("goods",response.result.toString())
+                }else{
+
+                    // 에러
+                }
+            }catch ( e : Exception){ //
+                //네트워크나 기타 오류
+
+            }
+
+        }
+
         return binding.root
     }
 
