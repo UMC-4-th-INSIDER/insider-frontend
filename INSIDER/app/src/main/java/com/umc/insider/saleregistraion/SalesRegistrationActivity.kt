@@ -21,10 +21,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.umc.insider.R
 import com.umc.insider.adapter.CustomSpinnerAdapter
+import com.umc.insider.auth.TokenManager
+import com.umc.insider.auth.UserManager
 import com.umc.insider.auth.signUp.AddressActivity
 import com.umc.insider.databinding.ActivitySalesRegistrationBinding
 import com.umc.insider.retrofit.RetrofitInstance
@@ -62,7 +65,7 @@ class SalesRegistrationActivity : AppCompatActivity() {
         }
     }
 
-    val GoodsApi = RetrofitInstance.getInstance().create(GoodsInterface::class.java)
+    private val GoodsApi = RetrofitInstance.getInstance().create(GoodsInterface::class.java)
 
     private var isGeneralSaleSelected = true    // true면 일반 판매
 
@@ -106,7 +109,6 @@ class SalesRegistrationActivity : AppCompatActivity() {
 
             // 판매 등록하기 버튼
             sellRegistorBtn.setOnClickListener {
-
                 if(sellTitle.text.isNullOrBlank() || productNameInsert.text.isNullOrBlank() ||
                     productAmountInsert.text.isNullOrBlank() || productWeightInsert.text.isNullOrBlank()
                     || ExpirationDateInsert.text.isNullOrBlank() || priceExchangeInsert.text.isNullOrBlank()
@@ -122,6 +124,7 @@ class SalesRegistrationActivity : AppCompatActivity() {
                 val expirationDate = binding.ExpirationDateInsert.text.toString()
                 val priceExchange = binding.priceExchangeInsert.text.toString()
                 val location = binding.sellLocationInsert.text.toString()
+                val userIdx = UserManager.getUserIdx(applicationContext)!!.toLong()
 
                 val gson = Gson()
                 val postGoodsReq = GoodsPostReq(
@@ -129,38 +132,35 @@ class SalesRegistrationActivity : AppCompatActivity() {
                     price = priceExchange,
                     rest = productAmount,
                     shelf_life = expirationDate,
-                    userIdx = null
+                    userIdx = userIdx
                 )
 
                 val newGoodsJson = gson.toJson(postGoodsReq)
                 val newGoodsRequestBody = newGoodsJson.toRequestBody("application/json".toMediaTypeOrNull())
 
-                CoroutineScope(Dispatchers.Main).launch {
-                    try {
-                        // 이미지 파일 초기화
-                        val imageFile = convertImageUriToPngFile(applicationContext, "name")
-                        if(imageFile!=null){
-                            val imageRequestBody = RequestBody.create("image/*".toMediaTypeOrNull(), imageFile)
-                            val imagePart = MultipartBody.Part.createFormData("image", imageFile.name, imageRequestBody)
-                            val response = GoodsApi.createGoods(newGoodsRequestBody, imagePart)
-                            if (response.isSuccessful) {
-                                val responseData = response.body()
-                                if(responseData?.isSuccess == true) {
-                                    Toast.makeText(applicationContext, "상품을 등록하였습니다!", Toast.LENGTH_SHORT).show()
-                                    finish()
-                                }
-                            } else {
-                                Toast.makeText(applicationContext, "에러 발생", Toast.LENGTH_SHORT).show()
-                            }
-                        }
+                CoroutineScope(Dispatchers.IO).launch {
 
-                    } catch (e: Exception) {
-                        //Toast.makeText(applicationContext, "네트워크 에러", Toast.LENGTH_SHORT).show()
-                        Log.e("Errorssss", "Exception occurred: ", e)
-                        Toast.makeText(applicationContext, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                    val imageFile = convertImageUriToPngFile(applicationContext, "name")
+                    if(imageFile!=null){
+                        val imageRequestBody = RequestBody.create("image/*".toMediaTypeOrNull(), imageFile)
+                        val imagePart = MultipartBody.Part.createFormData("image", imageFile.name, imageRequestBody)
+                        val token = TokenManager.getToken(applicationContext)
+                        try {
+                            val response = GoodsApi.createGoods(token!!, newGoodsRequestBody, imagePart)
+                            if (response.isSuccessful){
+                                withContext(Dispatchers.Main){
+                                    Toast.makeText(applicationContext, "상품 등록되었습니다.", Toast.LENGTH_SHORT).show()
+                                }
+
+                            }else{
+                            }
+
+                        }catch (e : Exception){
+                        }
+                    }else{
                     }
                 }
-
+                finish()
             }
 
             // 우편번호 인증

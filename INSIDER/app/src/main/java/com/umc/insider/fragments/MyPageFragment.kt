@@ -17,6 +17,8 @@ import com.umc.insider.EditProfileActivity
 import com.umc.insider.R
 import com.umc.insider.adapter.ShoppingSaleAdapter
 import com.umc.insider.auth.AutoLoginManager
+import com.umc.insider.auth.TokenManager
+import com.umc.insider.auth.UserManager
 import com.umc.insider.auth.login.LogInActivity
 import com.umc.insider.databinding.FragmentMyPageBinding
 import com.umc.insider.model.SearchItem
@@ -68,7 +70,8 @@ class MyPageFragment : Fragment() {
                     }
                 }
                 val autoLoginManager = AutoLoginManager(requireContext())
-                autoLoginManager.setAutoLogin(false)
+                TokenManager.clearToken(requireContext())
+                UserManager.clearUserIdx(requireContext())
                 startActivity(Intent(activity, LogInActivity::class.java))
                 activity?.finish()
             }

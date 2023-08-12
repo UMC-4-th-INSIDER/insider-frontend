@@ -34,6 +34,7 @@ import com.umc.insider.MainActivity
 import com.umc.insider.R
 import com.umc.insider.auth.AutoLoginManager
 import com.umc.insider.auth.TokenManager
+import com.umc.insider.auth.UserManager
 import com.umc.insider.auth.signUp.SignUpActivity
 import com.umc.insider.databinding.ActivityLogInBinding
 import com.umc.insider.retrofit.RetrofitInstance
@@ -90,7 +91,7 @@ class LogInActivity : AppCompatActivity() {
             }
         }
 
-        if(autoLoginManager.isAutoLogin()){
+        if(!TokenManager.getToken(applicationContext).isNullOrBlank() && !UserManager.getUserIdx(applicationContext).isNullOrBlank()){
             goMainActivity()
         }
 
@@ -103,6 +104,8 @@ class LogInActivity : AppCompatActivity() {
         //Log.d("login", "keyhash : ${Utility.getKeyHash(this)}")
 
         autoLoginManager = AutoLoginManager(this)
+
+        binding.autoLoginSwitch.isChecked = autoLoginManager.isAutoLogin()
 
         initView()
         setResultSignUp()
@@ -151,7 +154,7 @@ class LogInActivity : AppCompatActivity() {
 
                             val loginPostRes = baseResponse.result
                             TokenManager.saveToken(this@LogInActivity, loginPostRes?.jwt)
-
+                            UserManager.saveUserIdx(this@LogInActivity, loginPostRes?.id)
                             if (autoLoginSwitch.isChecked){
                                 autoLoginManager.setAutoLogin(true)
                             }else{

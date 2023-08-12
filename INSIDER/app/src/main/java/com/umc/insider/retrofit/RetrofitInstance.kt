@@ -10,7 +10,7 @@ class RetrofitInstance {
         // 에뮬레이터
         //private const val BASE_URL = "http://10.0.2.2:8080/"
         // 해당 ip
-        private const val BASE_URL = "http://192.168.0.8:8080/"
+        private const val BASE_URL = "http://172.30.1.42:8080/"
         // aws 탄력 ip
         //private const val BASE_URL = "http://15.164.46.63:8080/"
 
