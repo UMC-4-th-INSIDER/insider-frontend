@@ -53,7 +53,13 @@
         <activity
             android:name=".auth.signUp.AddressActivity"
             android:exported="true"
+<<<<<<< HEAD
+            android:screenOrientation="portrait" />
+
+        <!-- kakao -->
+=======
             android:screenOrientation="portrait" /> <!-- kakao -->
+>>>>>>> 10f90bbb754890b120e20be2579e83fc4b5d705c
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true">
@@ -68,7 +74,8 @@
                     android:host="oauth"
                     android:scheme="kakao6dbbe6829b35061737a96be9a123ce9b" />
             </intent-filter>
-        </activity> <!-- kakao -->
+        </activity>
+        <!-- kakao -->
         <activity
             android:name=".auth.signUp.SignUpActivity"
             android:exported="false"

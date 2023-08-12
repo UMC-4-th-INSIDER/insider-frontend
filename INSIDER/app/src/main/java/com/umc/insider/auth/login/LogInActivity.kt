@@ -39,7 +39,9 @@ import com.umc.insider.databinding.ActivityLogInBinding
 import com.umc.insider.retrofit.RetrofitInstance
 import com.umc.insider.retrofit.api.UserInterface
 import com.umc.insider.retrofit.model.LoginPostReq
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class LogInActivity : AppCompatActivity() {
@@ -138,8 +140,9 @@ class LogInActivity : AppCompatActivity() {
                 val loginPostReq = LoginPostReq(id,pwd)
 
                 lifecycleScope.launch {
-                    val response = userAPI.logIn(loginPostReq)
-
+                    val response = withContext(Dispatchers.IO) {
+                        userAPI.logIn(loginPostReq)
+                    }
                     if(response.isSuccessful){
 
                         val baseResponse = response.body()
