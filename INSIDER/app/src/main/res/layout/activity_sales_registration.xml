@@ -14,34 +14,97 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!--맨위 Insier 로고-->
-        <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/topConstraintLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bottom_round_rectangle"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@color/white"
+            android:elevation="8dp"
+            android:paddingBottom="16dp"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintEnd_toEndOf="parent">
 
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                app:srcCompat="@drawable/loading_logo" />
-
-            <ImageView
-                android:layout_width="100dp"
+            <!--맨위 Insier 로고-->
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="10dp"
-                android:src="@drawable/app_name_english_yellow" />
+                android:background="@drawable/bottom_round_rectangle"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    app:srcCompat="@drawable/loading_logo" />
 
-        </LinearLayout>
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="10dp"
+                    android:src="@drawable/app_name_english_yellow" />
+
+            </LinearLayout>
+
+            <!--일반, 교환 선택-->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/selectSale"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/white_eight_round_rectangle"
+                android:layout_marginHorizontal="15dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/linearLayout">
+
+                <TextView
+                    android:id="@+id/generalSale"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:paddingVertical="10dp"
+                    android:text="일반 판매 등록"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:fontFamily="@font/roboto"
+                    android:textColor="@color/white"
+                    android:background="@drawable/green_left_round"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.5"/>
+
+                <TextView
+                    android:id="@+id/Exchange"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:paddingVertical="10dp"
+                    android:text="교환하기 등록"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:fontFamily="@font/roboto"
+                    android:textColor="@color/main"
+                    android:background="@drawable/white_right_round"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/generalSale"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.5"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        
+
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="0dp"
@@ -49,7 +112,7 @@
             app:layout_constraintBottom_toTopOf="@id/divisionLine"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/linearLayout"
+            app:layout_constraintTop_toBottomOf="@id/topConstraintLayout"
             android:layout_marginBottom="10dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -104,16 +167,19 @@
                     app:srcCompat="@drawable/image_registration" />
 
                 <!--카테고리-->
-                <Spinner
+
+                <com.umc.insider.RoundedBackgroundSpinner
                     android:id="@+id/categorySpinner"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
+                    android:spinnerMode="dropdown"
+                    android:theme="@style/SpinnerTheme"
+                    android:elevation="8dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginStart="15dp"
                     android:layout_marginEnd="15dp"
+                    style="@style/SpinnerTransparent"
                     android:background="@drawable/category_round_rectangle"
-                    android:theme="@style/SpinnerTheme"
-                    android:elevation="8dp"
                     app:layout_constraintTop_toBottomOf="@id/sell_image_view"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"/>
@@ -187,6 +253,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/product_name_layout">
 
                     <TextView
+                        android:id="@+id/product_amount_tv"
                         android:layout_width="90dp"
                         android:layout_height="match_parent"
                         android:gravity="center"
@@ -212,10 +279,10 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="15dp"
                         android:background="@null"
-                        android:hint="총량을 입력하세요."
+                        android:hint="판매 갯수를 입력하세요."
                         android:maxLines="1"
                         android:inputType="numberDecimal"
-                        android:nextFocusDown="@id/product_sell_price_insert"
+                        android:nextFocusDown="@id/price_exchange_insert"
                         android:textColorHint="@color/gray30"
                         android:textColor="@color/black"
                         android:textSize="15dp"
@@ -224,7 +291,7 @@
 
                 <!--개당 가격-->
                 <LinearLayout
-                    android:id="@+id/product_sell_price_layout"
+                    android:id="@+id/price_exchange_layout"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_marginTop="12dp"
@@ -236,9 +303,10 @@
                     android:paddingRight="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/product_amount_layout">
+                    app:layout_constraintTop_toBottomOf="@+id/product_weight_layout">
 
                     <TextView
+                        android:id="@+id/price_exchange_tv"
                         android:layout_width="90dp"
                         android:layout_height="match_parent"
                         android:gravity="center"
@@ -258,7 +326,7 @@
 
 
                     <EditText
-                        android:id="@+id/product_sell_price_insert"
+                        android:id="@+id/price_exchange_insert"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
@@ -286,9 +354,10 @@
                     android:paddingRight="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/product_sell_price_layout">
+                    app:layout_constraintTop_toBottomOf="@+id/product_amount_layout">
 
                     <TextView
+                        android:id="@+id/product_weight_tv"
                         android:layout_width="90dp"
                         android:layout_height="match_parent"
                         android:gravity="center"
@@ -330,7 +399,7 @@
                     android:layout_marginEnd="15dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/product_weight_layout">
+                    app:layout_constraintTop_toBottomOf="@id/price_exchange_layout">
 
                     <TextView
                         android:id="@+id/detail_info_tv"

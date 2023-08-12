@@ -2,10 +2,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.umc.insider.databinding.ChatDeleteItemBinding
-import com.umc.insider.databinding.ChatRoomItemBinding
 import com.umc.insider.model.DeleteChatItem
 
-class DeleteChatListAdapter(private val DeleteChatList: List<DeleteChatItem>) : RecyclerView.Adapter<DeleteChatListAdapter.DeleteChatListViewHolder>() {
+class DeleteChatListAdapter(private val DeleteChatList: List<DeleteChatItem>) :
+    RecyclerView.Adapter<DeleteChatListAdapter.DeleteChatListViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DeleteChatListViewHolder {
         val binding = ChatDeleteItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -21,7 +21,8 @@ class DeleteChatListAdapter(private val DeleteChatList: List<DeleteChatItem>) : 
         return DeleteChatList.size
     }
 
-    inner class DeleteChatListViewHolder(private val binding: ChatDeleteItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class DeleteChatListViewHolder(private val binding: ChatDeleteItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bindData(DeleteChatItem: DeleteChatItem) {
             binding.interlocutor.text = DeleteChatItem.chatId

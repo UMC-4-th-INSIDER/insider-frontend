@@ -28,6 +28,7 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.KakaoSdk
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
+import com.kakao.sdk.common.util.Utility
 import com.kakao.sdk.user.UserApiClient
 import com.umc.insider.MainActivity
 import com.umc.insider.R
@@ -115,7 +116,7 @@ class LogInActivity : AppCompatActivity() {
         val account = GoogleSignIn.getLastSignedInAccount(this)
 
         // kakao - 카카오톡이 있으면 카카오톡 로그인, 없으면 카카오 이메일 로그인
-        KakaoSdk.init(this, getString(R.string.kakao_native_app_key))
+        KakaoSdk.init(this, "kakao6dbbe6829b35061737a96be9a123ce9b")
     }
 
     private fun initView(){
@@ -134,6 +135,7 @@ class LogInActivity : AppCompatActivity() {
                 }
 
                 val id = idEdit.text.toString()
+
                 val pwd = pwdEdit.text.toString()
                 val loginPostReq = LoginPostReq(id,pwd)
 

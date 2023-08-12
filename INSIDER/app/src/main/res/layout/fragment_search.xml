@@ -27,9 +27,9 @@
 
                 <ImageView
                     android:id="@+id/appName"
-                    android:layout_width="140dp"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_width="124dp"
+                    android:layout_height="29dp"
+                    android:layout_marginTop="12dp"
                     android:fontFamily="@font/roboto"
                     android:gravity="bottom"
                     android:src="@drawable/app_name_english"
@@ -37,16 +37,11 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    app:srcCompat="@drawable/notifications"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toBottomOf="@id/appName"/>
+
                 <androidx.appcompat.widget.SearchView
                     android:id="@+id/searchView"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="45dp"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/search_background"
                     app:defaultQueryHint="@string/searchHint"

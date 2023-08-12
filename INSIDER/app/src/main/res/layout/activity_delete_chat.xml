@@ -75,14 +75,56 @@
                 android:layout_marginTop="15dp"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginHorizontal="15dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/chatListTextView"
                 tools:listitem="@layout/chat_delete_item"/>
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/inputTextLayout"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:background="@color/white"
+                android:elevation="15dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+
+                <Button
+                    android:id="@+id/deleteAllBtn"
+                    android:layout_width="150dp"
+                    android:layout_height="45dp"
+                    android:backgroundTint="@color/main"
+                    android:fontFamily="@font/roboto"
+                    android:paddingHorizontal="20dp"
+                    android:text="전체삭제"
+                    android:textSize="16sp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="15dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+                <Button
+                    android:id="@+id/deleteBtn"
+                    android:layout_width="150dp"
+                    android:layout_height="45dp"
+                    android:layout_marginVertical="10dp"
+                    android:layout_marginEnd="15dp"
+                    android:backgroundTint="@color/main"
+                    android:fontFamily="@font/roboto"
+                    android:text="삭제"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
     </FrameLayout>
 </layout>

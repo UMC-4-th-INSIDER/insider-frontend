@@ -46,7 +46,7 @@ android {
 }
 
 dependencies {
-
+    implementation 'com.kakao.sdk:v2-user:2.6.0'
     implementation 'com.naver.maps:map-sdk:3.17.0'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
 
@@ -72,6 +72,9 @@ dependencies {
     implementation 'com.facebook.android:facebook-login:11.3.0'
 
     implementation 'com.google.code.gson:gson:2.9.0'
+
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
     // Kakao Login
     implementation 'com.kakao.sdk:v2-user:2.10.0'

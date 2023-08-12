@@ -6,11 +6,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.umc.insider.ChatRoomActivity
+import com.umc.insider.DeleteChatActivity
+import com.umc.insider.EditProfileActivity
 import com.umc.insider.R
 import com.umc.insider.databinding.FragmentChatListBinding
 import com.umc.insider.model.ChatListItem
@@ -40,6 +43,9 @@ class ChatListFragment : Fragment(), ChatListClickListener {
 
         chatListAdapter = ChatListAdapter(chatListData, this)
 
+        binding.deleteTextView.setOnClickListener{
+            startActivity(Intent(activity, DeleteChatActivity::class.java))
+        }
 
         // Set LayoutManager and Adapter for RecyclerView
         binding.chatList.layoutManager = LinearLayoutManager(requireContext())

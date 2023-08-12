@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import com.umc.insider.R
 
 class CustomSpinnerAdapter(private val context: Context, private val list: List<String>) : BaseAdapter() {
@@ -29,13 +30,13 @@ class CustomSpinnerAdapter(private val context: Context, private val list: List<
 
     // Set the TextView when the Spinner is displayed
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        var convertView = convertView
-        if (convertView == null) {
-            convertView = inflater.inflate(R.layout.spinner_outer_view, parent, false)
+        var view = convertView
+        if (view == null) {
+            view = inflater.inflate(R.layout.spinner_outer_view, parent, false)
         }
         text = list[position]
-        convertView!!.findViewById<TextView>(R.id.spinner_inner_text).text = text
-        return convertView
+        view?.findViewById<TextView>(R.id.spinner_inner_text)?.text = text
+        return view!!
     }
 
     fun setSelectedItemVisibility(show: Boolean) {
@@ -54,6 +55,22 @@ class CustomSpinnerAdapter(private val context: Context, private val list: List<
 
         val arrowUpImageView = convertView.findViewById<ImageView>(R.id.arrowUpImageView)
         arrowUpImageView.visibility = if (position == 0 && showArrowForSelectedItem) View.VISIBLE else View.GONE
+
+        val backgroundColor = ContextCompat.getColor(context, R.color.white) // 여기에서 R.color.spinner_background 를 원하는 색상으로 변경해 주세요
+        convertView.setBackgroundColor(backgroundColor)
+
+        val drawable = ContextCompat.getDrawable(context, R.drawable.spinner_item_background)
+        convertView.background = drawable
+
+        // 모서리를 둥글게 설정
+        when (position) {
+            0 -> {
+                convertView.background = ContextCompat.getDrawable(context, R.drawable.top_round)
+
+            }
+            6 -> convertView.background = ContextCompat.getDrawable(context, R.drawable.bottom_round)
+            else -> convertView.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
+        }
 
         return convertView
     }
