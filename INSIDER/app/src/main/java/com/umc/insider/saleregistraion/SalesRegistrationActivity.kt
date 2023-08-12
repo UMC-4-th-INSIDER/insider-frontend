@@ -1,31 +1,46 @@
 package com.umc.insider.saleregistraion
 
-import android.content.ContentValues.TAG
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.res.ColorStateList
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
-import android.view.MotionEvent
 import android.view.View
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.google.gson.Gson
 import com.umc.insider.R
 import com.umc.insider.adapter.CustomSpinnerAdapter
 import com.umc.insider.auth.signUp.AddressActivity
 import com.umc.insider.databinding.ActivitySalesRegistrationBinding
+import com.umc.insider.retrofit.RetrofitInstance
+import com.umc.insider.retrofit.api.GoodsInterface
+import com.umc.insider.retrofit.model.GoodsPostReq
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONObject
+import java.io.File
+import java.io.FileOutputStream
 
 class SalesRegistrationActivity : AppCompatActivity() {
 
@@ -35,6 +50,19 @@ class SalesRegistrationActivity : AppCompatActivity() {
 
     private lateinit var categorySpinner: Spinner
     private lateinit var adapter: CustomSpinnerAdapter
+
+    private var imgUri : Uri? = null
+
+    private val selectImageResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            imgUri = result.data?.data
+            Glide.with(this)
+                .load(imgUri)
+                .into(binding.sellImageView)
+        }
+    }
+
+    val GoodsApi = RetrofitInstance.getInstance().create(GoodsInterface::class.java)
 
     private var isGeneralSaleSelected = true    // true면 일반 판매
 
@@ -72,15 +100,67 @@ class SalesRegistrationActivity : AppCompatActivity() {
 
             // 갤러리 호출
             sellImageView.setOnClickListener{
-                val intent = Intent(Intent.ACTION_PICK)
-                intent.type = "image/*"
-                activityResult.launch(intent)
+                val intent = Intent(MediaStore.ACTION_PICK_IMAGES)
+                selectImageResultLauncher.launch(intent)
             }
 
             // 판매 등록하기 버튼
             sellRegistorBtn.setOnClickListener {
 
-                // 판매 등록한 다음에 어떤걸 원하시는지?
+                if(sellTitle.text.isNullOrBlank() || productNameInsert.text.isNullOrBlank() ||
+                    productAmountInsert.text.isNullOrBlank() || productWeightInsert.text.isNullOrBlank()
+                    || ExpirationDateInsert.text.isNullOrBlank() || priceExchangeInsert.text.isNullOrBlank()
+                    || sellLocationInsert.text.isNullOrBlank()){
+                    Toast.makeText(applicationContext, "빈 항복을 채워주세요.", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                val title = binding.sellTitle.text.toString()
+                val productName = binding.productNameInsert.text.toString()
+                val productAmount = binding.productAmountInsert.text.toString().toIntOrNull()
+                val productWeight = binding.productWeightInsert.text.toString().toFloatOrNull()
+                val expirationDate = binding.ExpirationDateInsert.text.toString()
+                val priceExchange = binding.priceExchangeInsert.text.toString()
+                val location = binding.sellLocationInsert.text.toString()
+
+                val gson = Gson()
+                val postGoodsReq = GoodsPostReq(
+                    title = title,
+                    price = priceExchange,
+                    rest = productAmount,
+                    shelf_life = expirationDate,
+                    userIdx = null
+                )
+
+                val newGoodsJson = gson.toJson(postGoodsReq)
+                val newGoodsRequestBody = newGoodsJson.toRequestBody("application/json".toMediaTypeOrNull())
+
+                CoroutineScope(Dispatchers.Main).launch {
+                    try {
+                        // 이미지 파일 초기화
+                        val imageFile = convertImageUriToPngFile(applicationContext, "name")
+                        if(imageFile!=null){
+                            val imageRequestBody = RequestBody.create("image/*".toMediaTypeOrNull(), imageFile)
+                            val imagePart = MultipartBody.Part.createFormData("image", imageFile.name, imageRequestBody)
+                            val response = GoodsApi.createGoods(newGoodsRequestBody, imagePart)
+                            if (response.isSuccessful) {
+                                val responseData = response.body()
+                                if(responseData?.isSuccess == true) {
+                                    Toast.makeText(applicationContext, "상품을 등록하였습니다!", Toast.LENGTH_SHORT).show()
+                                    finish()
+                                }
+                            } else {
+                                Toast.makeText(applicationContext, "에러 발생", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+
+                    } catch (e: Exception) {
+                        //Toast.makeText(applicationContext, "네트워크 에러", Toast.LENGTH_SHORT).show()
+                        Log.e("Errorssss", "Exception occurred: ", e)
+                        Toast.makeText(applicationContext, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
             }
 
             // 우편번호 인증
@@ -129,6 +209,24 @@ class SalesRegistrationActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    suspend fun convertImageUriToPngFile(context: Context, fileName: String): File? {
+        return withContext(Dispatchers.IO) {
+            try {
+                val inputStream = context.contentResolver.openInputStream(imgUri!!)
+                val bitmap = BitmapFactory.decodeStream(inputStream)
+                val file = File(context.cacheDir, fileName)
+                val outputStream = FileOutputStream(file)
+                bitmap?.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+                outputStream.flush()
+                outputStream.close()
+                file
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
+        }
     }
 
     // 결과 가져오기
