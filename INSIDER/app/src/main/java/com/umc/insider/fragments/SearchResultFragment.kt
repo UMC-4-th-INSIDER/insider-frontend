@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.umc.insider.OnNoteListener
 import com.umc.insider.R
+import com.umc.insider.adapter.GoodsLongAdapter
 import com.umc.insider.adapter.SearchResultAdapter
 import com.umc.insider.databinding.FragmentSearchResultBinding
 import com.umc.insider.model.SearchItem
@@ -36,6 +37,7 @@ class SearchResultFragment : Fragment(), OnNoteListener {
 
     private lateinit var getResultText: ActivityResultLauncher<Intent>
     private val adapter = SearchResultAdapter(this)
+    private val goodsAdapter = GoodsLongAdapter()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -55,7 +57,6 @@ class SearchResultFragment : Fragment(), OnNoteListener {
         val goodsAPI = RetrofitInstance.getInstance().create(GoodsInterface::class.java)
 
         lifecycleScope.launch {
-            Log.d("goods","시작")
 
             try {
                 val response = withContext(Dispatchers.IO) {
@@ -63,7 +64,16 @@ class SearchResultFragment : Fragment(), OnNoteListener {
                 }
                 if(response.isSuccess){
 
-                    Log.d("goods",response.result.toString())
+                    //Log.d("goods",response.result.toString())
+                    val goodsList = response.result
+                    if (goodsList.isNullOrEmpty()) {
+                        Toast.makeText(context, "찾으시는 상품이 없습니다.", Toast.LENGTH_SHORT).show()
+                    } else {
+                        binding.searchRV.adapter = goodsAdapter
+                        binding.searchRV.layoutManager = LinearLayoutManager(context)
+                        goodsAdapter.submitList(goodsList)
+                    }
+
                 }else{
 
                     // 에러
@@ -80,10 +90,10 @@ class SearchResultFragment : Fragment(), OnNoteListener {
 
     private fun initView() {
         with(binding) {
-            searchRV.adapter = adapter
-            searchRV.layoutManager = LinearLayoutManager(context)
-            searchRV.addItemDecoration(SearchResultAdapterDecoration())
-            adapter.submitList(DummyDate())
+//            searchRV.adapter = adapter
+//            searchRV.layoutManager = LinearLayoutManager(context)
+//            searchRV.addItemDecoration(SearchResultAdapterDecoration())
+//            adapter.submitList(DummyDate())
         }
 
         getResultText =
