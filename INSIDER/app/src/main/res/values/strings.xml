@@ -64,6 +64,7 @@
     <string name="chatListTextView">교환하실래요?</string>
     <string name="delete"><u>삭제하기</u></string>
     <string name="cancel"><u>모두 취소</u></string>
+    <string name="goodsOnSale">판매중인 상품</string>
 
 
 </resources>

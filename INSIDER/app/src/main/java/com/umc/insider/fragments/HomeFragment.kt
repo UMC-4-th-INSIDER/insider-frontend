@@ -46,7 +46,7 @@ class HomeFragment : Fragment(), CategoryClickListener {
 
         initView()
 
-        return _binding!!.root
+        return binding!!.root
     }
 
     private fun initView(){
@@ -119,15 +119,14 @@ class HomeFragment : Fragment(), CategoryClickListener {
     }
 
     override fun onImageTouch(position: Int) {
-        //Toast.makeText(requireContext(), categoryTextArray[position], Toast.LENGTH_SHORT).show()
-        val searchResultFragment = SearchResultFragment().apply {
+        val categoryResultFragment = CategoryResultFragment().apply {
             arguments = Bundle().apply {
-                putString("search_query", categoryTextArray[position])
+                putString("select_category", position.toString())
             }
         }
         val transaction = parentFragmentManager.beginTransaction()
 
-        transaction.replace(R.id.frame_layout, searchResultFragment)
+        transaction.replace(R.id.frame_layout, categoryResultFragment)
         transaction.addToBackStack(null)
 
         transaction.commit()

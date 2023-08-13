@@ -69,8 +69,6 @@ class SearchResultFragment : Fragment(), OnNoteListener {
                     if (goodsList.isNullOrEmpty()) {
                         Toast.makeText(context, "찾으시는 상품이 없습니다.", Toast.LENGTH_SHORT).show()
                     } else {
-                        binding.searchRV.adapter = goodsAdapter
-                        binding.searchRV.layoutManager = LinearLayoutManager(context)
                         goodsAdapter.submitList(goodsList)
                     }
 
@@ -90,10 +88,9 @@ class SearchResultFragment : Fragment(), OnNoteListener {
 
     private fun initView() {
         with(binding) {
-//            searchRV.adapter = adapter
-//            searchRV.layoutManager = LinearLayoutManager(context)
-//            searchRV.addItemDecoration(SearchResultAdapterDecoration())
-//            adapter.submitList(DummyDate())
+            searchRV.adapter = goodsAdapter
+            searchRV.layoutManager = LinearLayoutManager(context)
+            searchRV.addItemDecoration(SearchResultAdapterDecoration())
         }
 
         getResultText =
@@ -104,22 +101,6 @@ class SearchResultFragment : Fragment(), OnNoteListener {
             }
     }
 
-    private fun DummyDate(): ArrayList<SearchItem> {
-        val dummy1 = SearchItem(1, "양파1", "100g", "1000원", null, null)
-        val dummy2 = SearchItem(2, "양파2", "200g", "2000원", null, null)
-        val dummy3 = SearchItem(3, "양파3", "300g", "2800원", null, null)
-        val dummy4 = SearchItem(4, "양파4", "400g", "3800원", null, null)
-        val dummy5 = SearchItem(5, "양파5", "500g", "4500원", null, null)
-
-        val arr = ArrayList<SearchItem>()
-        arr.add(dummy1)
-        arr.add(dummy2)
-        arr.add(dummy3)
-        arr.add(dummy4)
-        arr.add(dummy5)
-
-        return arr
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()
