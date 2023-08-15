@@ -7,10 +7,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.facebook.login.LoginManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.kakao.sdk.user.UserApiClient
@@ -103,6 +101,39 @@ class MyPageFragment : Fragment() {
             // 내 정보 수정하기 화면으로 넘어가기
             editTV.setOnClickListener {
                 startActivity(Intent(activity, EditProfileActivity::class.java))
+            }
+
+            // 구매 목록 화면으로 이동
+            shoppingListShow.setOnClickListener{
+                val purchaseCatalogFragment = PurchaseCatalogFragment()
+                val transaction = parentFragmentManager.beginTransaction()
+
+                transaction.replace(R.id.frame_layout, purchaseCatalogFragment)
+                transaction.addToBackStack(null)
+
+                transaction.commit()
+            }
+
+            // 판매 목록 화면으로 이동
+            saleListShow.setOnClickListener {
+                val sellCatalgFragment = SellCatalogFragment()
+                val transaction = parentFragmentManager.beginTransaction()
+
+                transaction.replace(R.id.frame_layout, sellCatalgFragment)
+                transaction.addToBackStack(null)
+
+                transaction.commit()
+            }
+
+            // 교환 목록 화면으로 이동
+            exchangeListShow.setOnClickListener {
+                val exchangeCatalgFragment = ExchangeCatalogFragment()
+                val transaction = parentFragmentManager.beginTransaction()
+
+                transaction.replace(R.id.frame_layout, exchangeCatalgFragment)
+                transaction.addToBackStack(null)
+
+                transaction.commit()
             }
 
             detailReview.setOnClickListener {
