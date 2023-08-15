@@ -116,11 +116,11 @@ class FavoriteFragment : Fragment(), OnNoteListener {
     }
 
     private fun ExchangeDummyDate(): ArrayList<ExchangeItem> {
-        val dummy1 = ExchangeItem(1, "군양파", "1개", "당근")
-        val dummy2 = ExchangeItem(2, "시양파", "2개", "씨앗")
-        val dummy3 = ExchangeItem(3, "도양파", "3개", "코코넛")
-        val dummy4 = ExchangeItem(4, "섬양파", "4개", "해삼")
-        val dummy5 = ExchangeItem(5, "바다양파", "5개", "말미잘")
+        val dummy1 = ExchangeItem(1, "군양파", "1개", "당근", "")
+        val dummy2 = ExchangeItem(2, "시양파", "2개", "씨앗", "")
+        val dummy3 = ExchangeItem(3, "도양파", "3개", "코코넛", "")
+        val dummy4 = ExchangeItem(4, "섬양파", "4개", "해삼", "")
+        val dummy5 = ExchangeItem(5, "바다양파", "5개", "말미잘", "")
 
         val arr = ArrayList<ExchangeItem>()
         arr.add(dummy1)

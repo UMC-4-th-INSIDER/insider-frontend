@@ -10,5 +10,6 @@ data class ExchangeItem (
     //val imgUrl : String,
     val itemName : String,
     val itemAmount : String,
-    val itemExchange :String
+    val itemExchange :String,
+    val itemExchangeAmount : String
 )

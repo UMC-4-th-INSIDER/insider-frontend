@@ -293,14 +293,56 @@
                                 app:layout_constraintBottom_toBottomOf="@id/saleListText"
                                 app:layout_constraintEnd_toEndOf="parent" />
 
+                            <TextView
+                                android:id="@+id/saleing"
+                                android:layout_width="wrap_content"
+                                android:layout_height="150dp"
+                                android:text="판\n매\n중"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/roboto"
+                                android:background="@drawable/green_20_round_rectangle"
+                                android:gravity="center"
+                                android:paddingHorizontal="10dp"
+                                app:layout_constraintTop_toTopOf="@id/saleListRV"
+                                app:layout_constraintStart_toStartOf="parent" />
+
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/saleListRV"
                                 android:layout_width="0dp"
                                 android:layout_height="150dp"
-                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintStart_toEndOf="@id/saleing"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 android:layout_marginTop="10dp"
-                                app:layout_constraintTop_toBottomOf="@id/saleListText"/>
+                                android:layout_marginStart="8dp"
+                                app:layout_constraintTop_toBottomOf="@id/saleListText"
+                                tools:listitem="@layout/shopping_sale_list_item"
+                                tools:itemCount="5"/>
+
+                            <TextView
+                                android:id="@+id/saleEnd"
+                                android:layout_width="wrap_content"
+                                android:layout_height="150dp"
+                                android:text="판\n매\n완\n료"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/roboto"
+                                android:background="@drawable/green_20_round_rectangle"
+                                android:gravity="center"
+                                android:paddingHorizontal="10dp"
+                                android:layout_marginTop="10dp"
+                                app:layout_constraintTop_toBottomOf="@id/saleing"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"/>
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/saleEndListRV"
+                                android:layout_width="0dp"
+                                android:layout_height="150dp"
+                                app:layout_constraintStart_toEndOf="@id/saleEnd"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:layout_marginStart="8dp"
+                                app:layout_constraintTop_toTopOf="@id/saleEnd"
+                                tools:listitem="@layout/shopping_sale_list_item"
+                                tools:itemCount="5"/>
 
                             <View
                                 android:layout_width="0dp"
@@ -309,7 +351,98 @@
                                 android:background="@color/editTextTint"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@id/saleListRV" />
+                                app:layout_constraintTop_toBottomOf="@id/saleEnd" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/exchangeListLayout"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/saleListLayout">
+
+                            <TextView
+                                android:id="@+id/exchangeListText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:fontFamily="@font/roboto"
+                                android:text="@string/exchangeList"
+                                android:textSize="15sp"
+                                android:textStyle="bold"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/exchangeListShow"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/roboto"
+                                android:text="@string/detailShow"
+                                app:layout_constraintBottom_toBottomOf="@id/exchangeListText"
+                                app:layout_constraintEnd_toEndOf="parent" />
+
+                            <TextView
+                                android:id="@+id/exchanging"
+                                android:layout_width="wrap_content"
+                                android:layout_height="150dp"
+                                android:text="교\n환\n중"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/roboto"
+                                android:background="@drawable/green_20_round_rectangle"
+                                android:gravity="center"
+                                android:paddingHorizontal="10dp"
+                                app:layout_constraintTop_toTopOf="@id/exchangeListRV"
+                                app:layout_constraintStart_toStartOf="parent" />
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/exchangeListRV"
+                                android:layout_width="0dp"
+                                android:layout_height="150dp"
+                                app:layout_constraintStart_toEndOf="@id/exchanging"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginStart="8dp"
+                                app:layout_constraintTop_toBottomOf="@id/exchangeListText"
+                                tools:listitem="@layout/exchanging_list_item"
+                                tools:itemCount="5"/>
+
+                            <TextView
+                                android:id="@+id/exchangeEnd"
+                                android:layout_width="wrap_content"
+                                android:layout_height="150dp"
+                                android:text="교\n환\n완\n료"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/roboto"
+                                android:background="@drawable/green_20_round_rectangle"
+                                android:gravity="center"
+                                android:paddingHorizontal="10dp"
+                                android:layout_marginTop="10dp"
+                                app:layout_constraintTop_toBottomOf="@id/exchanging"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"/>
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/exchangeEndListRV"
+                                android:layout_width="0dp"
+                                android:layout_height="150dp"
+                                app:layout_constraintStart_toEndOf="@id/exchangeEnd"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:layout_marginStart="8dp"
+                                app:layout_constraintTop_toTopOf="@id/exchangeEnd"
+                                tools:listitem="@layout/exchange_end_list_item"
+                                tools:itemCount="5"/>
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="1dp"
+                                android:layout_marginTop="10dp"
+                                android:background="@color/editTextTint"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/exchangeEnd" />
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -317,7 +450,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:paddingVertical="20dp"
-                            app:layout_constraintTop_toBottomOf="@id/saleListLayout"
+                            app:layout_constraintTop_toBottomOf="@id/exchangeListLayout"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent">
 
