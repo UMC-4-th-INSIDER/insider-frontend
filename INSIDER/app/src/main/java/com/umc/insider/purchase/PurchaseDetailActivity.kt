@@ -41,7 +41,7 @@ class PurchaseDetailActivity : AppCompatActivity() {
                 }
                 withContext(Dispatchers.Main){
                     binding.productNameTitle.text = response.title
-                    binding.productName.text = response.title
+                    binding.productName.text = response.name
                     binding.PurchaseUnitamountTv.text = null
                     if(response.weight.isNullOrBlank()){
                         binding.PurchaseTotalamountTv.text = "${response.rest}개"

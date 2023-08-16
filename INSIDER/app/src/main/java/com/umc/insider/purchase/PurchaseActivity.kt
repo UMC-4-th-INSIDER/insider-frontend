@@ -84,7 +84,7 @@ class PurchaseActivity : AppCompatActivity(), OnMapReadyCallback{
                 sellerIdx = response.users_id.id
                 withContext(Dispatchers.Main){
                     // 나중에 name
-                    binding.productName.text = response.title
+                    binding.productName.text = response.name
                     if(response.weight.isNullOrBlank()){
                         binding.productWeight.text = "${response.rest}개"
                         binding.productUnit.text = "(개당)"

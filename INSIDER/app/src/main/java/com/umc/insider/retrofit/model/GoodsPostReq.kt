@@ -19,5 +19,8 @@ data class GoodsPostReq(
     val userIdx: Long,
 
     @SerializedName("name")
-    val name : String
+    val name : String,
+
+    @SerializedName("categoryId")
+    val categoryId : Long
 )

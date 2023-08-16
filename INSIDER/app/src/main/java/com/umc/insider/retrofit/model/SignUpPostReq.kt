@@ -14,6 +14,12 @@ data class SignUpPostReq(
     val pw : String,
 
     @SerializedName("email")
-    val email : String
+    val email : String,
+    
+    @SerializedName("zipCode")
+    val zipCode : Int,
+
+    @SerializedName("detailAddress")
+    val detailAddress : String
 
 )

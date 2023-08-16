@@ -30,4 +30,7 @@ interface GoodsInterface {
 
     @GET("/goods/{id}")
     suspend fun getGoodsById(@Path("id") id: Long): GoodsGetRes
+
+    @GET("/goods/category/{category_id}")
+    suspend fun getGoodsByCategoryId(@Path("category_id") category_id : Long) : Response<List<GoodsGetRes>>
 }

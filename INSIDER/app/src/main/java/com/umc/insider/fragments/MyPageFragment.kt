@@ -93,10 +93,8 @@ class MyPageFragment : Fragment() {
                         //Toast.makeText(this, "로그아웃 성공", Toast.LENGTH_SHORT).show()
                     }
                 }
-                if (!AutoLoginManager(requireContext()).isAutoLogin()){
-                    TokenManager.clearToken(requireContext())
-                    UserManager.clearUserIdx(requireContext())
-                }
+                TokenManager.clearToken(requireContext())
+                UserManager.clearUserIdx(requireContext())
                 startActivity(Intent(activity, LogInActivity::class.java))
                 activity?.finish()
             }
