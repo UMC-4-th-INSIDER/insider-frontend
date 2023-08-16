@@ -79,7 +79,7 @@
                         android:textSize="12sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/itemWeight"
+                        app:layout_constraintEnd_toStartOf="@+id/itemWeightOrRest"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintHorizontal_chainStyle="packed"
                         app:layout_constraintStart_toEndOf="@+id/discountRate"
@@ -87,7 +87,7 @@
                         tools:layout_editor_absoluteY="14dp" />
 
                     <TextView
-                        android:id="@+id/itemWeight"
+                        android:id="@+id/itemWeightOrRest"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="5dp"
@@ -115,7 +115,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintHorizontal_chainStyle="packed"
-                        app:layout_constraintStart_toEndOf="@+id/itemWeight"
+                        app:layout_constraintStart_toEndOf="@+id/itemWeightOrRest"
                         app:layout_constraintTop_toTopOf="@id/gradientLayout"
                         tools:layout_editor_absoluteY="16dp" />
 
@@ -127,7 +127,7 @@
                         android:layout_marginBottom="3dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/dummy"
-                        app:layout_constraintStart_toEndOf="@id/itemWeight"
+                        app:layout_constraintStart_toEndOf="@id/itemWeightOrRest"
                         app:srcCompat="@drawable/cancellationline" />
 
                     <View

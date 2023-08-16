@@ -3,6 +3,7 @@ package com.umc.insider.purchase
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Location
@@ -14,9 +15,12 @@ import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.location.LocationManagerCompat.requestLocationUpdates
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.Marker
+import com.google.gson.Gson
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraAnimation
 import com.naver.maps.map.CameraPosition
@@ -25,12 +29,25 @@ import com.naver.maps.map.MapFragment
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.util.MarkerIcons
+import com.umc.insider.ChatRoomActivity
 import com.umc.insider.R
+import com.umc.insider.auth.UserManager
 import com.umc.insider.databinding.ActivityPurchaseBinding
+import com.umc.insider.retrofit.RetrofitInstance
+import com.umc.insider.retrofit.api.ChattingInterface
+import com.umc.insider.retrofit.api.GoodsInterface
+import com.umc.insider.retrofit.model.ChatRoomsPostReq
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.toRequestBody
 
 class PurchaseActivity : AppCompatActivity(), OnMapReadyCallback{
 
     private lateinit var binding : ActivityPurchaseBinding
+    private var sellerIdx : Long? = null
 
     companion object{
         private const val REQUEST_LOCATION_PERMISSION = 1
@@ -54,13 +71,41 @@ class PurchaseActivity : AppCompatActivity(), OnMapReadyCallback{
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_purchase)
 
-        val productName = intent.getStringExtra("productName")
-        val productWeight = intent.getStringExtra("productWeight")
-        val productPrice = intent.getStringExtra("productPrice")
+        val goods_id = intent.getStringExtra("goods_id")!!.toLong()
 
-        binding.productName.text = productName
-        binding.productWeight.text = productWeight
-        binding.productPrice.text = productPrice
+        val goodsAPI = RetrofitInstance.getInstance().create(GoodsInterface::class.java)
+
+        lifecycleScope.launch {
+
+            try {
+                val response = withContext(Dispatchers.IO){
+                    goodsAPI.getGoodsById(goods_id)
+                }
+                sellerIdx = response.users_id.id
+                withContext(Dispatchers.Main){
+                    // 나중에 name
+                    binding.productName.text = response.title
+                    if(response.weight.isNullOrBlank()){
+                        binding.productWeight.text = "${response.rest}개"
+                        binding.productUnit.text = "(개당)"
+                    }else{
+                        binding.productWeight.text = "${response.weight}g"
+                        binding.productUnit.text = "(100g당)"
+                    }
+                    binding.PurchaseExpirationDate.text= response.shelf_life
+                    binding.productPrice.text = "${response.price}원"
+
+                    Glide.with(binding.PurchaseImage.context)
+                        .load(response.img_url)
+                        .placeholder(null)
+                        .into(binding.PurchaseImage)
+                }
+            }catch (e : Exception){
+
+            }
+
+        }
+
 
         // 지도 사용하기
         val fm = supportFragmentManager
@@ -109,6 +154,35 @@ class PurchaseActivity : AppCompatActivity(), OnMapReadyCallback{
                             naverMap.moveCamera(CameraUpdate.scrollTo(currentLatLng).animate(CameraAnimation.Easing))
                         }
                     }
+            }
+
+            chattingBtn.setOnClickListener {
+
+                val chattingAPI = RetrofitInstance.getInstance().create(ChattingInterface::class.java)
+
+                val sellerIdx = sellerIdx!!
+                val buyerIdx = UserManager.getUserIdx(this@PurchaseActivity)!!.toLong()
+                val chatRoomsPostReq = ChatRoomsPostReq(sellerIdx,buyerIdx)
+
+                CoroutineScope(Dispatchers.IO).launch{
+                    try {
+                        val response = chattingAPI.createChatRoom(chatRoomsPostReq)
+                        if (response.isSuccessful){
+                            Log.d("chat", "api 호출 성공")
+                            withContext(Dispatchers.Main){
+                                val intent = Intent(this@PurchaseActivity, ChatRoomActivity::class.java)
+                                intent.putExtra("chatRoom_id",response.body()!!.result!!.id.toString())
+                                startActivity(intent)
+                            }
+                        }else{
+                            Log.d("chat", "api 호출 실패")
+                        }
+                    }catch (e : Exception){
+                        Log.d("chat", "네트워크 에러")
+
+                    }
+                }
+
             }
         }
     }

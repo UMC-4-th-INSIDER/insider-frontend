@@ -1,5 +1,6 @@
 package com.umc.insider.retrofit.api
 
+import com.umc.insider.model.Users
 import com.umc.insider.retrofit.model.ChatRoomsListRes
 import com.umc.insider.retrofit.model.ChatRoomsPostReq
 import com.umc.insider.retrofit.model.ChatRoomsPostRes
@@ -19,7 +20,7 @@ interface ChattingInterface {
 
     // 채팅방 참여 유저들 조회
     @GET("/chatRooms/{chatRoomId}/users")
-    suspend fun getUsersInChatRoom(@Path("chatRoomId") chatRoomId: Long): Response<List<ChatRoomsUsersGetRes>>
+    suspend fun getUsersInChatRoom(@Path("chatRoomId") chatRoomId: Long): Response<List<Users>>
 
     // 유저의 채팅방 목록 출력
     @GET("/chatRooms/{id}")

@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -15,9 +16,17 @@ import com.umc.insider.ChatRoomActivity
 import com.umc.insider.DeleteChatActivity
 import com.umc.insider.EditProfileActivity
 import com.umc.insider.R
+import com.umc.insider.auth.UserManager
 import com.umc.insider.databinding.FragmentChatListBinding
 import com.umc.insider.model.ChatListItem
+import com.umc.insider.retrofit.RetrofitInstance
+import com.umc.insider.retrofit.api.ChattingInterface
+import com.umc.insider.retrofit.api.GoodsInterface
 import com.umc.insider.utils.ChatListClickListener
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class ChatListFragment : Fragment(), ChatListClickListener {
@@ -25,23 +34,18 @@ class ChatListFragment : Fragment(), ChatListClickListener {
 
     private var _binding : FragmentChatListBinding? = null
     private val binding get() = _binding!!
-    private lateinit var chatListAdapter: ChatListAdapter
+    private lateinit var chatListAdapter : ChatListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-        // Inflate the layout for this fragment
 
         _binding = FragmentChatListBinding.inflate(inflater, container, false)
 
-        // Sample data for ChatList (Replace with your actual data)
-        val chatListData = createSampleChatList()
 
-        // Initialize RecyclerView and ChatListAdapter
-
-        chatListAdapter = ChatListAdapter(chatListData, this)
+        chatListAdapter = ChatListAdapter(this)
 
         binding.deleteTextView.setOnClickListener{
             startActivity(Intent(activity, DeleteChatActivity::class.java))
@@ -51,19 +55,33 @@ class ChatListFragment : Fragment(), ChatListClickListener {
         binding.chatList.layoutManager = LinearLayoutManager(requireContext())
         binding.chatList.adapter = chatListAdapter
 
+        val chattingAPI = RetrofitInstance.getInstance().create(ChattingInterface::class.java)
+
+        lifecycleScope.launch {
+
+            val user_id = UserManager.getUserIdx(requireContext())!!.toLong()
+
+            try {
+                val response = withContext(Dispatchers.IO){
+                    chattingAPI.getChatRoomByUser(user_id)
+                }
+                if (response.isSuccessful){
+                    val chatRoomList = response.body()
+                    withContext(Dispatchers.Main) {
+                        chatListAdapter.submitList(chatRoomList)
+                    }
+                }else{
+                }
+            }catch (e : Exception){
+
+            }
+        }
 
         return binding.root
     }
 
     // Sample data for ChatList (Replace with your actual data)
-    private fun createSampleChatList(): List<ChatListItem> {
-        val chatList = ArrayList<ChatListItem>()
-        chatList.add(ChatListItem("1","User1", "안녕하세요. 교환 가능 하실까요?"))
-        chatList.add(ChatListItem("2","User2", "네, 가능합니다. 어떤 장소에서 교환하면 될까요?"))
-        chatList.add(ChatListItem("3","User3", "오늘은 어떤 시간이 가능하신가요?"))
-        // Add more chat items as needed
-        return chatList
-    }
+
 
 
     override fun onDestroyView() {
@@ -72,8 +90,10 @@ class ChatListFragment : Fragment(), ChatListClickListener {
     }
 
 
-    override fun ChatListItemClick() {
-        startActivity(Intent(requireContext(), ChatRoomActivity::class.java))
+    override fun ChatListItemClick(chatRoomId : Long) {
+        val intent = Intent(requireContext(), ChatRoomActivity::class.java)
+        intent.putExtra("chatRoom_id", chatRoomId.toString())
+        startActivity(intent)
     }
 
 }

@@ -7,7 +7,7 @@ class UserManager private constructor() {
 
     companion object{
         private const val PREF_NAME = "UserPref"
-        private const val USER_KEY = "jwt"
+        private const val USER_KEY = "userIdx"
 
         private fun getPreferences(context : Context) : SharedPreferences {
             return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)

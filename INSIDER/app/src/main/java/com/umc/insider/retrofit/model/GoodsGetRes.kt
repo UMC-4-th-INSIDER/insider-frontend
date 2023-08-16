@@ -6,6 +6,9 @@ import com.umc.insider.model.Users
 
 data class GoodsGetRes (
 
+    @SerializedName("id")
+    val goods_id : Long,
+
     @SerializedName("users_id")
     val users_id : Users,
 
@@ -19,7 +22,7 @@ data class GoodsGetRes (
     val price : String,
 
     @SerializedName("weight")
-    val weight : String,
+    val weight : String?,
 
     @SerializedName("rest")
     val rest : Int,
@@ -28,7 +31,7 @@ data class GoodsGetRes (
     val shelf_life : String,
 
     @SerializedName("sale")
-    val sale : Integer,
+    val sale : Int?,
 
     @SerializedName("img_url")
     val img_url : String

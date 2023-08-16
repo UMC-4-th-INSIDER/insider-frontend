@@ -3,40 +3,81 @@ package com.umc.insider.purchase
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
 import com.umc.insider.MainActivity
 import com.umc.insider.R
 import com.umc.insider.databinding.ActivityPurchaseDetailBinding
+import com.umc.insider.retrofit.RetrofitInstance
+import com.umc.insider.retrofit.api.GoodsInterface
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class PurchaseDetailActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityPurchaseDetailBinding
+
+    // true라면 상품 올린 사람, false라면 다른 사람
+    private var flag = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_purchase_detail)
 
-        // Get the intent extras
-        val productName = intent.getStringExtra("productName")
-        val productWeight = "(" + intent.getStringExtra("productWeight") + ")"
-        val productPrice = intent.getStringExtra("productPrice")
+        val goods_id = intent.getStringExtra("goods_id")!!.toLong()
 
-        // Set the data to the views
-        binding.productName.text = productName
-        binding.productWeight.text = productWeight
-        binding.productPrice.text = productPrice
+        val goodsAPI = RetrofitInstance.getInstance().create(GoodsInterface::class.java)
+
+        lifecycleScope.launch {
+
+            try {
+                val response = withContext(Dispatchers.IO){
+                    goodsAPI.getGoodsById(goods_id)
+                }
+                withContext(Dispatchers.Main){
+                    binding.productNameTitle.text = response.title
+                    binding.productName.text = response.title
+                    binding.PurchaseUnitamountTv.text = null
+                    if(response.weight.isNullOrBlank()){
+                        binding.PurchaseTotalamountTv.text = "${response.rest}개"
+                        binding.productUnit.text = "(개당)"
+                    }else{
+                        binding.PurchaseTotalamountTv.text = "${response.weight}g"
+                        binding.productUnit.text = "(100g당)"
+                    }
+                    binding.PurchaseExpirationDate.text= response.shelf_life
+                    binding.sellerInfo.text = response.users_id.nickname
+                    binding.productPrice.text = "${response.price}원"
+
+                    Glide.with(binding.productImage.context)
+                        .load(response.img_url)
+                        .placeholder(null)
+                        .into(binding.productImage)
+                }
+            }catch (e : Exception){
+
+            }
+
+        }
 
         // 구매하기 버튼 클릭시 mainActivity로 넘어가고 Fragment는 구매하기 PurchaseFragment
         binding.sellRegistorBtn.setOnClickListener {
-            val intent = Intent(this@PurchaseDetailActivity, PurchaseActivity::class.java)
-            intent.putExtra("SELL_REGISTOR_CLICKED", true)
-            intent.putExtra("productName", binding.productName.text)
-            intent.putExtra("productWeight", binding.productWeight.text)
-            intent.putExtra("productPrice", binding.productPrice.text)
-            startActivity(intent)
-            finish()
-        }
 
+            if (flag){
+                // 수정
+            }else{
+                // 구매
+                val intent = Intent(this@PurchaseDetailActivity, PurchaseActivity::class.java)
+                intent.putExtra("goods_id", goods_id.toString())
+                startActivity(intent)
+                finish()
+            }
+        }
     }
 
     interface SellRegistorClickListener{

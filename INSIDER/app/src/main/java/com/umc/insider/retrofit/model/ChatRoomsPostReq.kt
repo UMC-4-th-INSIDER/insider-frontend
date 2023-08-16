@@ -7,6 +7,6 @@ data class ChatRoomsPostReq(
     @SerializedName("sellerIdx")
     val sellerIdx : Long,
 
-    @SerializedName("buyer")
+    @SerializedName("buyerIdx")
     val buyerIdx : Long
 )

@@ -28,7 +28,7 @@ class DiscountGoodsAdapter : ListAdapter<SearchItem, DiscountGoodsAdapter.SaleGo
         fun bind(listItem : SearchItem){
             binding.itemName.text = listItem.itemName
             binding.itemPrice.text = listItem.itemPrice
-            binding.itemWeight.text = listItem.itemWeight
+            binding.itemWeightOrRest.text = listItem.itemWeight
             binding.salePrice.text = listItem.salePrice
             binding.discountRate.text = listItem.discountRate
         }
