@@ -78,6 +78,7 @@
                     android:id="@+id/product_image"
                     android:elevation="8dp"
                     android:layout_width="0dp"
+                    android:scaleType="fitXY"
                     android:layout_height="328dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginStart="15dp"

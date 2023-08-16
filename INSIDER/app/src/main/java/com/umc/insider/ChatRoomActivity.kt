@@ -3,24 +3,46 @@ package com.umc.insider
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.umc.insider.adapter.ChatRoomAdapter
+import com.umc.insider.auth.UserManager
 import com.umc.insider.databinding.ActivityChatRoomBinding
-import com.umc.insider.model.ChatRoomItem
+import com.umc.insider.retrofit.RetrofitInstance
+import com.umc.insider.retrofit.api.MessageInterface
+import com.umc.insider.retrofit.model.MessageGetRes
+import com.umc.insider.retrofit.model.MessagePostReq
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ChatRoomActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityChatRoomBinding
-    private val adapter = ChatRoomAdapter()
-    private var chatRoomItems = arrayListOf<ChatRoomItem>()
-
+    private lateinit var adapter : ChatRoomAdapter
+    private var chatRoom_id : Long? = null
+    private var sender_id : Long? = null
+    private val messageAPI = RetrofitInstance.getInstance().create(MessageInterface::class.java)
+    private var pollingJob: Job? = null
+    private var currentChatList: List<MessageGetRes> = emptyList()
+    override fun onResume() {
+        super.onResume()
+        chatRoom_id = intent.getStringExtra("chatRoom_id")!!.toLong()
+        sender_id = UserManager.getUserIdx(this)!!.toLong()
+        startPolling()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
 
         binding = ActivityChatRoomBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        chatRoomItems = DummyDate()
+
 
         initView()
 
@@ -29,37 +51,85 @@ class ChatRoomActivity : AppCompatActivity() {
     private fun initView(){
 
         with(binding){
+            adapter = ChatRoomAdapter(this@ChatRoomActivity)
             chatRV.adapter = adapter
             chatRV.layoutManager = LinearLayoutManager(this@ChatRoomActivity)
-            adapter.submitList(chatRoomItems)
 
+            binding.root.addOnLayoutChangeListener { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
+                if (bottom < oldBottom) {
+                    // 키보드가 오픈됐을 때
+                    if(currentChatList.isNotEmpty()){
+                        binding.chatRV.post {
+                            binding.chatRV.smoothScrollToPosition(adapter.itemCount - 1)
+                        }
+                    }
+
+                } else if (bottom > oldBottom) {
+                    if(currentChatList.isNotEmpty()){
+                        binding.chatRV.post {
+                            binding.chatRV.smoothScrollToPosition(adapter.itemCount - 1)
+                        }
+                    }
+                }
+            }
             sendBtn.setOnClickListener {
+
                 if(binding.chatEditTextView.text.isNullOrBlank()) return@setOnClickListener
 
-                val idDummy = (chatRoomItems.size + 1).toString()
-                val message = binding.chatEditTextView.text.toString()
-                val myChat = ChatRoomItem(idDummy, "me", message)
+                lifecycleScope.launch {
 
+                    val content = chatEditTextView.text.toString()
+                    val messagePostReq = MessagePostReq(chatRoom_id!!,sender_id!!,content)
 
-                val newChatRoomItems = ArrayList(chatRoomItems)
-                newChatRoomItems.add(myChat)
-                chatRoomItems = newChatRoomItems
-                adapter.submitList(newChatRoomItems)
-                binding.chatEditTextView.text.clear()
-                binding.chatRV.smoothScrollToPosition(chatRoomItems.size - 1)
+                    try {
+                        val response = withContext(Dispatchers.IO){
+                            messageAPI.createMessage(messagePostReq)
+                        }
+                        if (response.isSuccessful){
+                            chatEditTextView.text = null
+                            binding.chatRV.smoothScrollToPosition(adapter.itemCount - 1)
+                        }else{ }
+                    }catch (e : Exception){
+
+                    }
+                }
             }
         }
     }
 
-    private fun DummyDate() : ArrayList<ChatRoomItem>{
-        val dummy1 = ChatRoomItem("1", "me", "안녕하세요. 교환 가능 하실까요?")
-        val dummy2 = ChatRoomItem("2", "you", "네, 가능합니다. 어떤 장소에서 교환하면 될까요?")
+    private fun startPolling() {
+        pollingJob = lifecycleScope.launch {
+            while (isActive) {  // 코루틴이 active한 동안 계속 실행
+                try {
+                    val response = withContext(Dispatchers.IO) {
+                        messageAPI.getMessageesInChatRoom(chatRoom_id!!)
+                    }
+                    if (response.isSuccessful) {
+                        val chatList = response.body()
 
-        val arr = ArrayList<ChatRoomItem>()
-        arr.add(dummy1)
-        arr.add(dummy2)
+                        withContext(Dispatchers.Main) {
+                            adapter.submitList(chatList)
+                            if (currentChatList.isNotEmpty()){
+                                binding.chatRV.smoothScrollToPosition(adapter.itemCount - 1)
+                            }
+                        }
+                        currentChatList = chatList!!
+                    } else { }
+                } catch (e: Exception) {
+                }
+                delay(1000L)
+            }
+        }
+    }
 
-        return arr
+    private fun stopPolling() {
+        pollingJob?.cancel()
+    }
+
+
+    override fun onPause() {
+        super.onPause()
+        stopPolling()
     }
 
 }

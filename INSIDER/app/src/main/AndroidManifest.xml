@@ -33,6 +33,7 @@
         <activity
             android:name=".ChatRoomActivity"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
             android:name=".purchase.PurchaseDetailActivity"
@@ -50,10 +51,7 @@
             android:name=".FavoritesActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".ProductDetailActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
+
         <activity
             android:name=".auth.signUp.AddressActivity"
             android:exported="true"

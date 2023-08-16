@@ -37,13 +37,13 @@ class SearchResultAdapter(private val onNoteListener: OnNoteListener) :
         fun bind(searchItem: SearchItem){
             binding.itemName.text = searchItem.itemName
             binding.itemPrice.text = searchItem.itemPrice
-            binding.itemWeight.text = "("+searchItem.itemWeight+")"
+            binding.itemWeightOrRest.text = "("+searchItem.itemWeight+")"
         }
 
         override fun onClick(v: View?) {
             val position = adapterPosition
             if(position != RecyclerView.NO_POSITION){
-                onNoteListener.onNotePurchaseDetail(position)
+                //onNoteListener.onNotePurchaseDetail(position)
             }
         }
     }

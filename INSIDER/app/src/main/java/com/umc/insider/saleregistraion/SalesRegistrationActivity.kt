@@ -132,7 +132,8 @@ class SalesRegistrationActivity : AppCompatActivity() {
                     price = priceExchange,
                     rest = productAmount,
                     shelf_life = expirationDate,
-                    userIdx = userIdx
+                    userIdx = userIdx,
+                    name = productName
                 )
 
                 val newGoodsJson = gson.toJson(postGoodsReq)

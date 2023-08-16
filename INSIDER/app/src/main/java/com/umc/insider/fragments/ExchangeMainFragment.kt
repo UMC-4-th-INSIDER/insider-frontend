@@ -95,16 +95,7 @@ class ExchangeMainFragment : Fragment(), OnNoteListener {
             }
     }
 
-    override fun onNotePurchaseDetail(position: Int) {
-        val selectedItem = adapter.getItemAtPosition(position)
 
-        val intent = Intent(requireContext(), ExchangeDetailActivity::class.java)
-        intent.putExtra("productName", selectedItem.itemName)
-        intent.putExtra("productAmount", selectedItem.itemAmount)
-        intent.putExtra("productExchange", selectedItem.itemExchange)
-
-        startActivity(intent)
-    }
     class ExchangeAdapterDecoration : RecyclerView.ItemDecoration() {
 
         override fun getItemOffsets(
@@ -116,6 +107,10 @@ class ExchangeMainFragment : Fragment(), OnNoteListener {
             super.getItemOffsets(outRect, view, parent, state)
             outRect.bottom = 20
         }
+    }
+
+    override fun onNotePurchaseDetail(goods_id: Long) {
+        TODO("Not yet implemented")
     }
 
 }

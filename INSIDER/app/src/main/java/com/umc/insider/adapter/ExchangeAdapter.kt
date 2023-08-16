@@ -44,7 +44,7 @@ class ExchangeAdapter(private val onNoteListener: OnNoteListener) :
             override fun onClick(v: View?) {
                 val position = adapterPosition
                 if(position != RecyclerView.NO_POSITION){
-                    onNoteListener.onNotePurchaseDetail(position)
+                    //onNoteListener.onNotePurchaseDetail(position)
                 }
             }
 

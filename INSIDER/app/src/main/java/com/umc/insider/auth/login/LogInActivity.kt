@@ -91,7 +91,9 @@ class LogInActivity : AppCompatActivity() {
             }
         }
 
-        if(!TokenManager.getToken(applicationContext).isNullOrBlank() && !UserManager.getUserIdx(applicationContext).isNullOrBlank()){
+        if(!TokenManager.getToken(applicationContext).isNullOrBlank() &&
+            !UserManager.getUserIdx(applicationContext).isNullOrBlank() &&
+                AutoLoginManager(applicationContext).isAutoLogin()){
             goMainActivity()
         }
 
