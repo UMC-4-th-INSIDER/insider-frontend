@@ -29,6 +29,7 @@ class ChatRoomActivity : AppCompatActivity() {
     private val messageAPI = RetrofitInstance.getInstance().create(MessageInterface::class.java)
     private var pollingJob: Job? = null
     private var currentChatList: List<MessageGetRes> = emptyList()
+    private var first = true
     override fun onResume() {
         super.onResume()
         chatRoom_id = intent.getStringExtra("chatRoom_id")!!.toLong()
@@ -56,16 +57,17 @@ class ChatRoomActivity : AppCompatActivity() {
             chatRV.layoutManager = LinearLayoutManager(this@ChatRoomActivity)
 
             binding.root.addOnLayoutChangeListener { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
+                val layoutManager = binding.chatRV.layoutManager as LinearLayoutManager
+                val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
                 if (bottom < oldBottom) {
                     // 키보드가 오픈됐을 때
-                    if(currentChatList.isNotEmpty()){
+                    if (currentChatList.isNotEmpty() && lastVisibleItemPosition == adapter.itemCount - 1) {
                         binding.chatRV.post {
                             binding.chatRV.smoothScrollToPosition(adapter.itemCount - 1)
                         }
                     }
-
                 } else if (bottom > oldBottom) {
-                    if(currentChatList.isNotEmpty()){
+                    if (currentChatList.isNotEmpty() && lastVisibleItemPosition == adapter.itemCount - 1) {
                         binding.chatRV.post {
                             binding.chatRV.smoothScrollToPosition(adapter.itemCount - 1)
                         }
@@ -109,8 +111,12 @@ class ChatRoomActivity : AppCompatActivity() {
 
                         withContext(Dispatchers.Main) {
                             adapter.submitList(chatList)
-                            if (currentChatList.isNotEmpty()){
+//                            if (currentChatList.isNotEmpty()){
+//                                binding.chatRV.smoothScrollToPosition(adapter.itemCount - 1)
+//                            }
+                            if (first){
                                 binding.chatRV.smoothScrollToPosition(adapter.itemCount - 1)
+                                first = false
                             }
                         }
                         currentChatList = chatList!!
