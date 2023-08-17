@@ -12,18 +12,27 @@ import android.widget.LinearLayout
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.umc.insider.OnNoteListener
 import com.umc.insider.R
+import com.umc.insider.adapter.CategoryAdapter
+import com.umc.insider.adapter.CategoryImgAdapter
 import com.umc.insider.adapter.ExchangeAdapter
+import com.umc.insider.adapter.GoodsLongAdapter
 import com.umc.insider.databinding.FragmentExchangeMainBinding
 import com.umc.insider.exchange.ExchangeDetailActivity
 import com.umc.insider.model.ExchangeItem
 import com.umc.insider.model.SearchItem
 import com.umc.insider.purchase.PurchaseDetailActivity
+import com.umc.insider.retrofit.RetrofitInstance
+import com.umc.insider.retrofit.api.GoodsInterface
+import com.umc.insider.utils.CategoryClickListener
+import kotlinx.coroutines.launch
 
-class ExchangeMainFragment : Fragment(), OnNoteListener {
+class ExchangeMainFragment : Fragment(), CategoryClickListener, OnNoteListener {
 
     private var _binding : FragmentExchangeMainBinding? = null
     private val binding get() = _binding!!
@@ -31,10 +40,10 @@ class ExchangeMainFragment : Fragment(), OnNoteListener {
     private lateinit var getResultText: ActivityResultLauncher<Intent>
     private val adapter = ExchangeAdapter(this)
 
+    private val imageArray = intArrayOf(R.drawable.category_fruit,R.drawable.category_meat_egg,R.drawable.category_vegetable,R.drawable.category_dairy_product,R.drawable.category_seafood_driedfish,R.drawable.category_etc)
+    private val clickImageArray = intArrayOf(R.drawable.category_fruit_click,R.drawable.category_meat_egg_click,R.drawable.category_vegetable_click,R.drawable.category_dairy_product_click,R.drawable.category_seafood_driedfish_click,R.drawable.category_etc_click)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
+    private val categoryAdapter = CategoryAdapter(imageArray, clickImageArray, this)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,6 +62,11 @@ class ExchangeMainFragment : Fragment(), OnNoteListener {
             searchRV.layoutManager = LinearLayoutManager(context)
             searchRV.addItemDecoration(ExchangeAdapterDecoration())
             adapter.submitList(DummyDate())
+
+            categoryRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            categoryRecyclerView.addItemDecoration(CategoryAdapterDecoration())
+            categoryRecyclerView.adapter = categoryAdapter
+
         }
 
         getResultText =
@@ -61,6 +75,11 @@ class ExchangeMainFragment : Fragment(), OnNoteListener {
                     // Handle any result if needed
                 }
             }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun DummyDate(): ArrayList<ExchangeItem> {
@@ -80,22 +99,6 @@ class ExchangeMainFragment : Fragment(), OnNoteListener {
         return arr
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ExchangeMainFragment().apply {
-                arguments = Bundle().apply {
-
-                }
-            }
-    }
-
-
     class ExchangeAdapterDecoration : RecyclerView.ItemDecoration() {
 
         override fun getItemOffsets(
@@ -110,6 +113,10 @@ class ExchangeMainFragment : Fragment(), OnNoteListener {
     }
 
     override fun onNotePurchaseDetail(goods_id: Long) {
+
+    }
+
+    override fun onImageTouch(position: Int) {
         TODO("Not yet implemented")
     }
 
