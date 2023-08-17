@@ -11,6 +11,8 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
@@ -18,7 +20,9 @@ import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -172,6 +176,28 @@ class SalesRegistrationActivity : AppCompatActivity() {
                 val intent = Intent(this@SalesRegistrationActivity, AddressActivity::class.java)
                 getSearchResult.launch(intent)
             }
+
+            sellLocationInsert.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+                    // 아무것도 하지 않음
+                }
+
+                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                    if (!sellLocationInsert.text.isNullOrBlank()) {
+                        addressFindBtn.text = "주소인증 완료"
+                        val tint = ContextCompat.getColor(this@SalesRegistrationActivity, R.color.lightMain)
+                        DrawableCompat.setTint(addressFindBtn.background, tint)
+                    } else {
+                        addressFindBtn.text = "우편번호 인증"
+                        val tint = ContextCompat.getColor(this@SalesRegistrationActivity, R.color.gray30)
+                        DrawableCompat.setTint(addressFindBtn.background, tint)
+                    }
+                }
+
+                override fun afterTextChanged(s: Editable) {
+                    // 아무것도 하지 않음
+                }
+            })
 
             // 일반 구매, 교환하기 설정
             generalSale.setOnClickListener {

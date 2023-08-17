@@ -471,7 +471,7 @@
                         android:layout_height="40dp"
                         android:layout_marginTop="11dp"
                         android:backgroundTint="@color/gray30"
-                        android:text="@string/addressCerify"
+                        android:text="우편번호 인증"
                         android:textColor="@color/black"
                         android:textSize="13dp"
                         app:layout_constraintBottom_toBottomOf="@id/sell_location"
