@@ -125,6 +125,8 @@ class SalesRegistrationActivity : AppCompatActivity() {
                 val priceExchange = binding.priceExchangeInsert.text.toString()
                 val location = binding.sellLocationInsert.text.toString()
                 val userIdx = UserManager.getUserIdx(applicationContext)!!.toLong()
+                val categoryIdx = (binding.categorySpinner.selectedItemPosition).toLong()
+                Log.d("category", categoryIdx.toString())
 
                 val gson = Gson()
                 val postGoodsReq = GoodsPostReq(
@@ -132,7 +134,9 @@ class SalesRegistrationActivity : AppCompatActivity() {
                     price = priceExchange,
                     rest = productAmount,
                     shelf_life = expirationDate,
-                    userIdx = userIdx
+                    userIdx = userIdx,
+                    name = productName,
+                    categoryId = categoryIdx
                 )
 
                 val newGoodsJson = gson.toJson(postGoodsReq)

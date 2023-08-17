@@ -28,7 +28,7 @@ class ShoppingSaleAdapter : ListAdapter<SearchItem, ShoppingSaleAdapter.Shopping
         fun bind(listItem : SearchItem){
             binding.itemName.text = listItem.itemName
             binding.itemPrice.text = listItem.itemPrice
-            binding.itemWeight.text = "("+listItem.itemWeight+")"
+            binding.itemWeightOrRest.text = "("+listItem.itemWeight+")"
         }
     }
 

@@ -16,5 +16,11 @@ data class GoodsPostReq(
     val shelf_life: String,
 
     @SerializedName("userIdx")
-    val userIdx: Long?
+    val userIdx: Long,
+
+    @SerializedName("name")
+    val name : String,
+
+    @SerializedName("categoryId")
+    val categoryId : Long
 )

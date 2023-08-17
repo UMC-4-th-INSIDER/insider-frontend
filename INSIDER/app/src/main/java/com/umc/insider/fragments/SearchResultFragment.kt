@@ -36,8 +36,7 @@ class SearchResultFragment : Fragment(), OnNoteListener {
     private val binding get() = _binding!!
 
     private lateinit var getResultText: ActivityResultLauncher<Intent>
-    private val adapter = SearchResultAdapter(this)
-    private val goodsAdapter = GoodsLongAdapter()
+    private val goodsAdapter = GoodsLongAdapter(this)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -63,8 +62,6 @@ class SearchResultFragment : Fragment(), OnNoteListener {
                     goodsAPI.getGoods(searchQuery)
                 }
                 if(response.isSuccess){
-
-                    //Log.d("goods",response.result.toString())
                     val goodsList = response.result
                     if (goodsList.isNullOrEmpty()) {
                         Toast.makeText(context, "찾으시는 상품이 없습니다.", Toast.LENGTH_SHORT).show()
@@ -107,14 +104,11 @@ class SearchResultFragment : Fragment(), OnNoteListener {
         _binding = null
     }
 
-    override fun onNotePurchaseDetail(position: Int) {
-        val selectedItem = adapter.getItemAtPosition(position)
+    override fun onNotePurchaseDetail(goods_id: Long) {
 
+        //Toast.makeText(requireContext(), goods_id.toString(), Toast.LENGTH_SHORT).show()
         val intent = Intent(requireContext(), PurchaseDetailActivity::class.java)
-        intent.putExtra("productName", selectedItem.itemName)
-        intent.putExtra("productWeight", selectedItem.itemWeight)
-        intent.putExtra("productPrice", selectedItem.itemPrice)
-
+        intent.putExtra("goods_id", goods_id.toString())
         startActivity(intent)
     }
 

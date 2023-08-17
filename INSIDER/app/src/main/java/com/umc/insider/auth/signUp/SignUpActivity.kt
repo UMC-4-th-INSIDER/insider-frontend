@@ -18,7 +18,9 @@ import com.umc.insider.databinding.ActivitySignUpBinding
 import com.umc.insider.retrofit.RetrofitInstance
 import com.umc.insider.retrofit.api.UserInterface
 import com.umc.insider.retrofit.model.SignUpPostReq
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SignUpActivity : AppCompatActivity() {
 
@@ -71,10 +73,14 @@ class SignUpActivity : AppCompatActivity() {
                     val nickname = nicknameEdit.text.toString()
                     val pwd = pwdEdit.text.toString()
                     val email = emailEdit.text.toString()
+                    val zipCode = addressNum.text.toString().toInt()
+                    val detailAddress = addressText.text.toString()
 
-                    val signUpPostReq = SignUpPostReq(userId,nickname,pwd,email)
+                    val signUpPostReq = SignUpPostReq(userId,nickname,pwd,email, zipCode, detailAddress)
 
-                    val response = userAPI.createUser(signUpPostReq)
+                    val response = withContext(Dispatchers.IO){
+                        userAPI.createUser(signUpPostReq)
+                    }
 
                     if (response.isSuccessful){
                         val baseResponse = response.body()

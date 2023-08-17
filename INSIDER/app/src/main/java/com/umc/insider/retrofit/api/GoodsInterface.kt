@@ -11,6 +11,7 @@ import retrofit2.http.Header
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
+import retrofit2.http.Path
 import retrofit2.http.Query
 import java.io.File
 
@@ -26,4 +27,10 @@ interface GoodsInterface {
         @Part("postgoodsReq") postgoodsReq: RequestBody,
         @Part image: MultipartBody.Part
     ): Response<BaseResponse<GoodsPostRes>>
+
+    @GET("/goods/{id}")
+    suspend fun getGoodsById(@Path("id") id: Long): GoodsGetRes
+
+    @GET("/goods/category/{category_id}")
+    suspend fun getGoodsByCategoryId(@Path("category_id") category_id : Long) : Response<List<GoodsGetRes>>
 }

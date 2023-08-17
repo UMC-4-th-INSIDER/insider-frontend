@@ -91,7 +91,6 @@ class MyPageFragment : Fragment() {
                         //Toast.makeText(this, "로그아웃 성공", Toast.LENGTH_SHORT).show()
                     }
                 }
-                val autoLoginManager = AutoLoginManager(requireContext())
                 TokenManager.clearToken(requireContext())
                 UserManager.clearUserIdx(requireContext())
                 startActivity(Intent(activity, LogInActivity::class.java))

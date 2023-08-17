@@ -1,5 +1,6 @@
 package com.umc.insider.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -7,16 +8,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.umc.insider.OnNoteListener
 import com.umc.insider.R
 import com.umc.insider.adapter.CategoryImgAdapter
 import com.umc.insider.adapter.GoodsLongAdapter
 import com.umc.insider.databinding.FragmentCategoryResultBinding
 import com.umc.insider.databinding.FragmentHomeBinding
+import com.umc.insider.purchase.PurchaseDetailActivity
+import com.umc.insider.retrofit.RetrofitInstance
+import com.umc.insider.retrofit.api.GoodsInterface
 import com.umc.insider.utils.CategoryClickListener
+import kotlinx.coroutines.launch
 
-class CategoryResultFragment : Fragment(), CategoryClickListener {
+class CategoryResultFragment : Fragment(), CategoryClickListener, OnNoteListener{
 
     private var _binding : FragmentCategoryResultBinding? = null
     private val binding get() = _binding!!
@@ -26,7 +33,7 @@ class CategoryResultFragment : Fragment(), CategoryClickListener {
     private val categoryTextArray = mutableListOf<String>("과일", "정육/계란", "채소", "유제품", "수산/건어물", "기타")
 
     private lateinit var categoryImgAdapter : CategoryImgAdapter
-    private val goodsAdapter = GoodsLongAdapter()
+    private lateinit var goodsAdapter : GoodsLongAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,6 +43,7 @@ class CategoryResultFragment : Fragment(), CategoryClickListener {
         _binding = FragmentCategoryResultBinding.inflate(inflater, container, false)
 
         val selectPosition = arguments?.getString("select_category")!!.toInt()
+        goodsAdapter = GoodsLongAdapter(this)
         categoryImgAdapter = CategoryImgAdapter(imageArray,clickImageArray, selectPosition, this)
 
         initView()
@@ -63,6 +71,35 @@ class CategoryResultFragment : Fragment(), CategoryClickListener {
 
     override fun onImageTouch(position: Int) {
         // 여기서 api 호출 - category
-        Toast.makeText(context, categoryTextArray[position], Toast.LENGTH_SHORT).show()
+        //Toast.makeText(context, categoryTextArray[position], Toast.LENGTH_SHORT).show()
+
+        val goodsAPI = RetrofitInstance.getInstance().create(GoodsInterface::class.java)
+
+        val categoryIdx = (position + 1).toLong()
+
+        lifecycleScope.launch {
+
+            try {
+
+                val response = goodsAPI.getGoodsByCategoryId(categoryIdx)
+
+                if (response.isSuccessful){
+                    val categoryGoodsList = response.body()
+                    goodsAdapter.submitList(categoryGoodsList)
+                }else{
+
+                }
+
+            }catch (e : Exception){
+
+            }
+        }
+
+    }
+
+    override fun onNotePurchaseDetail(goods_id: Long) {
+        val intent = Intent(requireContext(), PurchaseDetailActivity::class.java)
+        intent.putExtra("goods_id", goods_id.toString())
+        startActivity(intent)
     }
 }
