@@ -38,6 +38,10 @@ class SearchResultFragment : Fragment(), OnNoteListener {
     private lateinit var getResultText: ActivityResultLauncher<Intent>
     private val goodsAdapter = GoodsLongAdapter(this)
 
+    // 일반구매 교환하기 select에서 사용
+    private var isGeneralPurchaseSelected = true
+    private var isDecorateCheck = true
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val statusBarColor = ContextCompat.getColor(requireContext(), R.color.statusBarGreenColor)
@@ -88,6 +92,25 @@ class SearchResultFragment : Fragment(), OnNoteListener {
             searchRV.adapter = goodsAdapter
             searchRV.layoutManager = LinearLayoutManager(context)
             searchRV.addItemDecoration(SearchResultAdapterDecoration())
+
+            searchBtn.setOnClickListener {
+                val transaction = activity?.supportFragmentManager?.beginTransaction()
+                transaction?.replace(R.id.frame_layout, SearchFragment())
+                transaction?.addToBackStack(null)
+                transaction?.commit()
+            }
+
+            // 일반, 교환 select
+            selectPurchase.setOnClickListener {
+                isGeneralPurchaseSelected = true
+                updateButtonUI()
+            }
+            Exchange.setOnClickListener {
+                isGeneralPurchaseSelected = false
+                updateButtonUI()
+            }
+            updateButtonUI()
+            isDecorateCheck = false
         }
 
         getResultText =
@@ -110,6 +133,26 @@ class SearchResultFragment : Fragment(), OnNoteListener {
         val intent = Intent(requireContext(), PurchaseDetailActivity::class.java)
         intent.putExtra("goods_id", goods_id.toString())
         startActivity(intent)
+    }
+
+    private fun updateButtonUI() {
+        with(binding) {
+
+            // 서버 넘겨받으면 찜한 목록 중에서 어떤 건지 판단해서 recyclerview 띄우게 하기
+            if (isGeneralPurchaseSelected) {
+                generalPurchase.background = ContextCompat.getDrawable(requireContext(), R.drawable.green_left_round)
+                generalPurchase.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+                Exchange.background = ContextCompat.getDrawable(requireContext(), R.drawable.white_right_round)
+                Exchange.setTextColor(ContextCompat.getColor(requireContext(), R.color.main))
+
+            } else {
+                generalPurchase.background = ContextCompat.getDrawable(requireContext(), R.drawable.white_left_round)
+                generalPurchase.setTextColor(ContextCompat.getColor(requireContext(), R.color.main))
+                Exchange.background = ContextCompat.getDrawable(requireContext(), R.drawable.green_right_round)
+                Exchange.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+
+            }
+        }
     }
 
 }
