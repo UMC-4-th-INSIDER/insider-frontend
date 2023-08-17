@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.umc.insider.ChatRoomActivity
+import com.umc.insider.R
 import com.umc.insider.adapter.ReviewListAdapter
 import com.umc.insider.databinding.FragmentReviewListBinding
 import com.umc.insider.model.reviewListItem
@@ -28,26 +29,14 @@ class ReviewListFragment : Fragment(), ReviewListClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-
-
         _binding = FragmentReviewListBinding.inflate(inflater, container, false)
 
-        // Sample data for ChatList (Replace with your actual data)
         val reviewListData = createSampleReviewList()
-
-        // Initialize RecyclerView and ChatListAdapter
 
         ReviewListAdapter = ReviewListAdapter(reviewListData, this)
 
-
-
-        // Set LayoutManager and Adapter for RecyclerView
         binding.myReviewListRV.layoutManager = LinearLayoutManager(requireContext())
         binding.myReviewListRV.adapter = ReviewListAdapter
-
-
-
 
         return binding.root
     }
@@ -78,8 +67,16 @@ class ReviewListFragment : Fragment(), ReviewListClickListener {
     }
 
     override fun ReviewListItemClick() {
-        //
-    }
+        // 아이템 클릭 시 ReviewDetailFragment로 이동하는 코드
+        val reviewDetailFragment = ReviewDetailFragment() // ReviewDetailFragment 인스턴스 생성
+        val fragmentManager = requireActivity().supportFragmentManager
+        val transaction = fragmentManager.beginTransaction()
 
+        // ReviewDetailFragment로 이동하는 트랜잭션 추가
+        transaction.replace(R.id.frame_layout, reviewDetailFragment)
+        transaction.addToBackStack(null)
+
+        transaction.commit()
+    }
 
 }
