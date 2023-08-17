@@ -61,7 +61,7 @@ class PurchaseCatalogFragment : Fragment(), OnNoteListener {
         return arr
     }
 
-    override fun onNotePurchaseDetail(position: Int) {
+    override fun onNotePurchaseDetail(goods_id: Long) {
         TODO("Not yet implemented")
     }
 

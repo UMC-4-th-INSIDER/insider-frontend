@@ -1,5 +1,6 @@
 package com.umc.insider.fragments
 
+import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
@@ -34,6 +35,8 @@ class MyPageFragment : Fragment() {
     private val saleendListAdapter = ShoppingSaleAdapter()
     private val exchangingListAdapter = ExchangingListAdapter()
     private val exchangeEndAdapter = ExchangeEndAdapter()
+
+    private val REQUEST_CODE_EDIT_PROFILE = 100
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -99,7 +102,10 @@ class MyPageFragment : Fragment() {
 
             // 내 정보 수정하기 화면으로 넘어가기
             editTV.setOnClickListener {
-                startActivity(Intent(activity, EditProfileActivity::class.java))
+                val intent = Intent(requireActivity(), EditProfileActivity::class.java)
+                intent.putExtra("current_nickname", nicknameTextView.text.toString())
+                intent.putExtra("current_address", liveAddress.text.toString())
+                startActivityForResult(intent, REQUEST_CODE_EDIT_PROFILE)
             }
 
             // 구매 목록 화면으로 이동
@@ -184,6 +190,18 @@ class MyPageFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == REQUEST_CODE_EDIT_PROFILE && resultCode == RESULT_OK) {
+            val editedNickname = data?.getStringExtra("edited_nickname")
+            val editedAddress = data?.getStringExtra("edited_address")
+
+            editedNickname?.let { binding.nicknameTextView.text = it }
+            editedAddress?.let { binding.liveAddress.text = it }
+        }
     }
 
 }

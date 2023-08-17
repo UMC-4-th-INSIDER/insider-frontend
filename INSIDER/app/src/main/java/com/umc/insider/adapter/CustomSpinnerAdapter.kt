@@ -56,7 +56,7 @@ class CustomSpinnerAdapter(private val context: Context, private val list: List<
         val arrowUpImageView = convertView.findViewById<ImageView>(R.id.arrowUpImageView)
         arrowUpImageView.visibility = if (position == 0 && showArrowForSelectedItem) View.VISIBLE else View.GONE
 
-        val backgroundColor = ContextCompat.getColor(context, R.color.white) // 여기에서 R.color.spinner_background 를 원하는 색상으로 변경해 주세요
+        val backgroundColor = ContextCompat.getColor(context, R.color.white)
         convertView.setBackgroundColor(backgroundColor)
 
         val drawable = ContextCompat.getDrawable(context, R.drawable.spinner_item_background)
