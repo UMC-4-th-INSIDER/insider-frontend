@@ -146,9 +146,8 @@ class MyPageFragment : Fragment() {
                 val transaction = parentFragmentManager.beginTransaction()
 
                 transaction.replace(R.id.frame_layout, searchFragment)
-                transaction.addToBackStack(null)
-
-                transaction.commit()
+                    .addToBackStack(null)
+                    .commit()
             }
         }
     }
