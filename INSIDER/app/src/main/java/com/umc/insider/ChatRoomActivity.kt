@@ -44,7 +44,7 @@ class ChatRoomActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val goods_id = intent.getStringExtra("goods_id")!!.toLong()
-        Toast.makeText(this, goods_id.toString(), Toast.LENGTH_SHORT).show()
+        //Toast.makeText(this, goods_id.toString(), Toast.LENGTH_SHORT).show()
 
 
         initView()

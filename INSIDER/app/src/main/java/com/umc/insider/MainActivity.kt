@@ -21,15 +21,19 @@ class MainActivity : AppCompatActivity(){
     private val exchangeMainFragment = ExchangeMainFragment()
 
     override fun onBackPressed() {
-        // 바텀 네비게이션의 선택된 아이템이 홈(또는 첫번째)이 아니라면 홈으로 이동
+        // 바텀 네비게이션의 선택된 아이템이 홈(또는 첫번째)이 아니라면 백스택의 이전 프래그먼트로 이동
         if (binding.bottomNav.selectedItemId != R.id.home) {
-            binding.bottomNav.selectedItemId = R.id.home
+            if (supportFragmentManager.backStackEntryCount > 0) {
+                // 백스택에 프래그먼트가 있을 경우, 그 프래그먼트로 이동
+                supportFragmentManager.popBackStack()
+            } else {
+                // 백스택에 프래그먼트가 없는 경우 -> 홈에서 다른 탭으로 이동 후 뒤로가기
+                binding.bottomNav.selectedItemId = R.id.home
+            }
         } else {
-            super.onBackPressed()  // 홈에 있을 경우 기본 뒤로 가기 동작 실행
+            super.onBackPressed()  // 홈에 있을 경우 기본 뒤로 가기 동작 실행 (앱 백그라운드로 이동)
         }
     }
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
