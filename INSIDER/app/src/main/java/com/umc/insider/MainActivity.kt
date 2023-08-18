@@ -16,6 +16,7 @@ class MainActivity : AppCompatActivity(){
     private lateinit var binding: ActivityMainBinding
 
     private var isFragmentMain = true
+    private var isHomeFragment = true
 
     private val homeFragment = HomeFragment()
     private val myPageFragment = MyPageFragment()
@@ -28,7 +29,11 @@ class MainActivity : AppCompatActivity(){
         if (binding.bottomNav.selectedItemId != R.id.home && isFragmentMain) {
             binding.bottomNav.selectedItemId = R.id.home
         } else {
-            super.onBackPressed()  // 홈에 있을 경우 기본 뒤로 가기 동작 실행
+            if(isHomeFragment) {
+                finish()
+            } else {
+                super.onBackPressed()  // 홈에 있을 경우 기본 뒤로 가기 동작 실행
+            }
         }
     }
 
@@ -82,12 +87,25 @@ class MainActivity : AppCompatActivity(){
         val currentFragment = supportFragmentManager.findFragmentById(R.id.frame_layout)
 
         when (currentFragment) {
-            is HomeFragment -> isFragmentMain = true
-            is FavoriteFragment -> isFragmentMain = true
-            is ExchangeMainFragment -> isFragmentMain = true
-            is MyPageFragment -> isFragmentMain = true
+            is HomeFragment -> {
+                isFragmentMain = true
+                isHomeFragment = true
+            }
+            is FavoriteFragment -> {
+                isFragmentMain = true
+                isHomeFragment = false
+            }
+            is ExchangeMainFragment -> {
+                isFragmentMain = true
+                isHomeFragment = false
+            }
+            is MyPageFragment -> {
+                isFragmentMain = true
+                isHomeFragment = false
+            }
             else -> {
                 isFragmentMain = false
+                isHomeFragment = false
             }
         }
     }
