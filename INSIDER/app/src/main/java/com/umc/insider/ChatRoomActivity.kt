@@ -55,25 +55,7 @@ class ChatRoomActivity : AppCompatActivity() {
             adapter = ChatRoomAdapter(this@ChatRoomActivity)
             chatRV.adapter = adapter
             chatRV.layoutManager = LinearLayoutManager(this@ChatRoomActivity)
-
-            binding.root.addOnLayoutChangeListener { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
-                val layoutManager = binding.chatRV.layoutManager as LinearLayoutManager
-                val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
-                if (bottom < oldBottom) {
-                    // 키보드가 오픈됐을 때
-//                    if (currentChatList.isNotEmpty() && lastVisibleItemPosition == adapter.itemCount - 1) {
-//                        binding.chatRV.post {
-//                            binding.chatRV.smoothScrollToPosition(adapter.itemCount - 1)
-//                        }
-//                    }
-                } else if (bottom > oldBottom) {
-//                    if (currentChatList.isNotEmpty() && lastVisibleItemPosition == adapter.itemCount - 1) {
-//                        binding.chatRV.post {
-//                            binding.chatRV.smoothScrollToPosition(adapter.itemCount - 1)
-//                        }
-//                    }
-                }
-            }
+            
             sendBtn.setOnClickListener {
 
                 if(binding.chatEditTextView.text.isNullOrBlank()) return@setOnClickListener
