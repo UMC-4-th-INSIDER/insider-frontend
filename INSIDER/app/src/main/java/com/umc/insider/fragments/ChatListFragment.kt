@@ -53,8 +53,9 @@ class ChatListFragment : Fragment(), ChatListClickListener {
                     }
                     if (response.isSuccessful) {
                         val chatRoomList = response.body()
+                        val sortedChatRoomsList = chatRoomList!!.sortedByDescending { it.createdAt }
                         withContext(Dispatchers.Main) {
-                            chatListAdapter.submitList(chatRoomList)
+                            chatListAdapter.submitList(sortedChatRoomsList)
                         }
                     }
                 } catch (e: Exception) {

@@ -4,9 +4,12 @@ import com.google.gson.annotations.SerializedName
 
 data class ChatRoomsPostReq(
 
-    @SerializedName("sellerIdx")
-    val sellerIdx : Long,
+    @SerializedName("sellerId")
+    val sellerId : Long,
 
-    @SerializedName("buyerIdx")
-    val buyerIdx : Long
+    @SerializedName("buyerId")
+    val buyerId : Long,
+
+    @SerializedName("goodsId")
+    val goodsId : Long
 )
