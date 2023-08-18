@@ -32,7 +32,7 @@ class ChatListAdapter(private val listener : ChatListClickListener)
             binding.recentMessageTextView.text = chatRoomslistRes.lastMessage
 
             binding.root.setOnClickListener {
-                listener.ChatListItemClick(chatRoomslistRes.chatRoomId)
+                listener.ChatListItemClick(chatRoomslistRes.chatRoomId, chatRoomslistRes.goodsId)
             }
         }
     }

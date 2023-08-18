@@ -53,8 +53,9 @@ class ChatListFragment : Fragment(), ChatListClickListener {
                     }
                     if (response.isSuccessful) {
                         val chatRoomList = response.body()
+                        val sortedChatRoomsList = chatRoomList!!.sortedByDescending { it.createdAt }
                         withContext(Dispatchers.Main) {
-                            chatListAdapter.submitList(chatRoomList)
+                            chatListAdapter.submitList(sortedChatRoomsList)
                         }
                     }
                 } catch (e: Exception) {
@@ -104,9 +105,10 @@ class ChatListFragment : Fragment(), ChatListClickListener {
         startPolling()
     }
 
-    override fun ChatListItemClick(chatRoomId : Long) {
+    override fun ChatListItemClick(chatRoomId : Long, goodsId : Long) {
         val intent = Intent(requireContext(), ChatRoomActivity::class.java)
         intent.putExtra("chatRoom_id", chatRoomId.toString())
+        intent.putExtra("goods_id",goodsId.toString())
         startActivity(intent)
     }
 

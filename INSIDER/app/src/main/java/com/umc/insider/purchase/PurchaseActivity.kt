@@ -47,7 +47,8 @@ import okhttp3.RequestBody.Companion.toRequestBody
 class PurchaseActivity : AppCompatActivity(), OnMapReadyCallback{
 
     private lateinit var binding : ActivityPurchaseBinding
-    private var sellerIdx : Long? = null
+    private var sellerId : Long? = null
+    private var goods_id : Long? = null
 
     companion object{
         private const val REQUEST_LOCATION_PERMISSION = 1
@@ -71,7 +72,7 @@ class PurchaseActivity : AppCompatActivity(), OnMapReadyCallback{
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_purchase)
 
-        val goods_id = intent.getStringExtra("goods_id")!!.toLong()
+        goods_id = intent.getStringExtra("goods_id")!!.toLong()
 
         val goodsAPI = RetrofitInstance.getInstance().create(GoodsInterface::class.java)
 
@@ -79,9 +80,9 @@ class PurchaseActivity : AppCompatActivity(), OnMapReadyCallback{
 
             try {
                 val response = withContext(Dispatchers.IO){
-                    goodsAPI.getGoodsById(goods_id)
+                    goodsAPI.getGoodsById(goods_id!!)
                 }
-                sellerIdx = response.users_id.id
+                sellerId = response.users_id.id
                 withContext(Dispatchers.Main){
                     // 나중에 name
                     binding.productName.text = response.name
@@ -160,9 +161,9 @@ class PurchaseActivity : AppCompatActivity(), OnMapReadyCallback{
 
                 val chattingAPI = RetrofitInstance.getInstance().create(ChattingInterface::class.java)
 
-                val sellerIdx = sellerIdx!!
-                val buyerIdx = UserManager.getUserIdx(this@PurchaseActivity)!!.toLong()
-                val chatRoomsPostReq = ChatRoomsPostReq(sellerIdx,buyerIdx)
+                val sellerId = sellerId!!
+                val buyerId = UserManager.getUserIdx(this@PurchaseActivity)!!.toLong()
+                val chatRoomsPostReq = ChatRoomsPostReq(sellerId,buyerId,goods_id!!)
 
                 CoroutineScope(Dispatchers.IO).launch{
                     try {
@@ -172,6 +173,7 @@ class PurchaseActivity : AppCompatActivity(), OnMapReadyCallback{
                             withContext(Dispatchers.Main){
                                 val intent = Intent(this@PurchaseActivity, ChatRoomActivity::class.java)
                                 intent.putExtra("chatRoom_id",response.body()!!.result!!.id.toString())
+                                intent.putExtra("goods_id",goods_id.toString())
                                 startActivity(intent)
                             }
                         }else{

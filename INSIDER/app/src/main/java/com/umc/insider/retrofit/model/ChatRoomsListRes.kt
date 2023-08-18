@@ -1,6 +1,7 @@
 package com.umc.insider.retrofit.model
 
 import com.google.gson.annotations.SerializedName
+import java.util.Date
 
 data class ChatRoomsListRes (
 
@@ -11,6 +12,11 @@ data class ChatRoomsListRes (
     val otherNickName : String,
 
     @SerializedName("lastMessage")
-    val lastMessage : String
+    val lastMessage : String,
 
+    @SerializedName("createdAt")
+    val createdAt : Date,
+
+    @SerializedName("goodsId")
+    val goodsId : Long
 )
