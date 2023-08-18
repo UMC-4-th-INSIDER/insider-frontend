@@ -61,17 +61,17 @@ class ChatRoomActivity : AppCompatActivity() {
                 val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
                 if (bottom < oldBottom) {
                     // 키보드가 오픈됐을 때
-                    if (currentChatList.isNotEmpty() && lastVisibleItemPosition == adapter.itemCount - 1) {
-                        binding.chatRV.post {
-                            binding.chatRV.smoothScrollToPosition(adapter.itemCount - 1)
-                        }
-                    }
+//                    if (currentChatList.isNotEmpty() && lastVisibleItemPosition == adapter.itemCount - 1) {
+//                        binding.chatRV.post {
+//                            binding.chatRV.smoothScrollToPosition(adapter.itemCount - 1)
+//                        }
+//                    }
                 } else if (bottom > oldBottom) {
-                    if (currentChatList.isNotEmpty() && lastVisibleItemPosition == adapter.itemCount - 1) {
-                        binding.chatRV.post {
-                            binding.chatRV.smoothScrollToPosition(adapter.itemCount - 1)
-                        }
-                    }
+//                    if (currentChatList.isNotEmpty() && lastVisibleItemPosition == adapter.itemCount - 1) {
+//                        binding.chatRV.post {
+//                            binding.chatRV.smoothScrollToPosition(adapter.itemCount - 1)
+//                        }
+//                    }
                 }
             }
             sendBtn.setOnClickListener {
@@ -89,7 +89,25 @@ class ChatRoomActivity : AppCompatActivity() {
                         }
                         if (response.isSuccessful){
                             chatEditTextView.text = null
-                            binding.chatRV.smoothScrollToPosition(adapter.itemCount - 1)
+
+                            try {
+                                val response = withContext(Dispatchers.IO) {
+                                    messageAPI.getMessageesInChatRoom(chatRoom_id!!)
+                                }
+                                if (response.isSuccessful) {
+                                    val chatList = response.body()
+
+                                    withContext(Dispatchers.Main) {
+                                        adapter.submitList(chatList) {
+                                            binding.chatRV.smoothScrollToPosition(adapter.itemCount - 1)
+                                        }
+                                    }
+                                    currentChatList = chatList!!
+                                } else { }
+                            } catch (e: Exception) {
+                            }
+
+
                         }else{ }
                     }catch (e : Exception){
 
@@ -111,9 +129,6 @@ class ChatRoomActivity : AppCompatActivity() {
 
                         withContext(Dispatchers.Main) {
                             adapter.submitList(chatList)
-//                            if (currentChatList.isNotEmpty()){
-//                                binding.chatRV.smoothScrollToPosition(adapter.itemCount - 1)
-//                            }
                             if (first){
                                 binding.chatRV.smoothScrollToPosition(adapter.itemCount - 1)
                                 first = false
