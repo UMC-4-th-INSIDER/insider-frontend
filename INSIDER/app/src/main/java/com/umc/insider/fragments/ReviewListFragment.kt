@@ -1,11 +1,16 @@
 package com.umc.insider.fragments
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
+import androidx.activity.OnBackPressedCallback
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.umc.insider.ChatRoomActivity
 import com.umc.insider.R
@@ -14,16 +19,18 @@ import com.umc.insider.databinding.FragmentReviewListBinding
 import com.umc.insider.model.reviewListItem
 import com.umc.insider.utils.ChatListClickListener
 import com.umc.insider.utils.ReviewListClickListener
+import com.umc.insider.utils.changeStatusBarColor
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 
 class ReviewListFragment : Fragment(), ReviewListClickListener {
 
-
     private var _binding : FragmentReviewListBinding? = null
     private val binding get() = _binding!!
     private lateinit var ReviewListAdapter: ReviewListAdapter
+
+    private val reviewDetailFragment = ReviewDetailFragment() // ReviewDetailFragment 인스턴스 생성
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,13 +39,18 @@ class ReviewListFragment : Fragment(), ReviewListClickListener {
         _binding = FragmentReviewListBinding.inflate(inflater, container, false)
 
         val reviewListData = createSampleReviewList()
-
         ReviewListAdapter = ReviewListAdapter(reviewListData, this)
 
-        binding.myReviewListRV.layoutManager = LinearLayoutManager(requireContext())
-        binding.myReviewListRV.adapter = ReviewListAdapter
+        initview()
 
         return binding.root
+    }
+
+    private fun initview(){
+        with(binding){
+            myReviewListRV.layoutManager = LinearLayoutManager(requireContext())
+            myReviewListRV.adapter = ReviewListAdapter
+        }
     }
 
     // Sample data for ChatList (Replace with your actual data)
@@ -60,6 +72,15 @@ class ReviewListFragment : Fragment(), ReviewListClickListener {
         return reviewList
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.root.post {
+
+        }
+    }
+    override fun onPause() {
+        super.onPause()
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -68,11 +89,8 @@ class ReviewListFragment : Fragment(), ReviewListClickListener {
 
     override fun ReviewListItemClick() {
         // 아이템 클릭 시 ReviewDetailFragment로 이동하는 코드
-        val reviewDetailFragment = ReviewDetailFragment() // ReviewDetailFragment 인스턴스 생성
-        val fragmentManager = requireActivity().supportFragmentManager
-        val transaction = fragmentManager.beginTransaction()
+        val transaction = parentFragmentManager.beginTransaction()
 
-        // ReviewDetailFragment로 이동하는 트랜잭션 추가
         transaction.replace(R.id.frame_layout, reviewDetailFragment)
         transaction.addToBackStack(null)
 

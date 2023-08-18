@@ -15,14 +15,17 @@ class MainActivity : AppCompatActivity(){
 
     private lateinit var binding: ActivityMainBinding
 
+    private var isFragmentMain = true
+
     private val homeFragment = HomeFragment()
     private val myPageFragment = MyPageFragment()
     private val favoriteFragment = FavoriteFragment()
     private val exchangeMainFragment = ExchangeMainFragment()
 
     override fun onBackPressed() {
+        currentFragmentisMainFragment()
         // 바텀 네비게이션의 선택된 아이템이 홈(또는 첫번째)이 아니라면 홈으로 이동
-        if (binding.bottomNav.selectedItemId != R.id.home) {
+        if (binding.bottomNav.selectedItemId != R.id.home && isFragmentMain) {
             binding.bottomNav.selectedItemId = R.id.home
         } else {
             super.onBackPressed()  // 홈에 있을 경우 기본 뒤로 가기 동작 실행
@@ -36,6 +39,7 @@ class MainActivity : AppCompatActivity(){
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         replaceFragment(homeFragment)
 
+        currentFragmentisMainFragment()
         initView()
 
     }
@@ -63,17 +67,28 @@ class MainActivity : AppCompatActivity(){
                     }
                     else -> return@setOnItemSelectedListener false
                 }
-
             }
-
-
-
         }
     }
     private fun replaceFragment(fragment : Fragment){
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.frame_layout, fragment)
+            addToBackStack(null)
             commit()
+        }
+    }
+
+    private fun currentFragmentisMainFragment(){
+        val currentFragment = supportFragmentManager.findFragmentById(R.id.frame_layout)
+
+        when (currentFragment) {
+            is HomeFragment -> isFragmentMain = true
+            is FavoriteFragment -> isFragmentMain = true
+            is ExchangeMainFragment -> isFragmentMain = true
+            is MyPageFragment -> isFragmentMain = true
+            else -> {
+                isFragmentMain = false
+            }
         }
     }
 
