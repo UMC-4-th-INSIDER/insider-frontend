@@ -173,6 +173,7 @@ class PurchaseActivity : AppCompatActivity(), OnMapReadyCallback{
                             withContext(Dispatchers.Main){
                                 val intent = Intent(this@PurchaseActivity, ChatRoomActivity::class.java)
                                 intent.putExtra("chatRoom_id",response.body()!!.result!!.id.toString())
+                                intent.putExtra("goods_id",goods_id.toString())
                                 startActivity(intent)
                             }
                         }else{
