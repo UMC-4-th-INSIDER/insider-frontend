@@ -1,8 +1,14 @@
 package com.umc.insider
 
+import android.graphics.Rect
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.view.ViewTreeObserver
 import android.widget.Toast
+import androidx.core.widget.NestedScrollView
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.umc.insider.adapter.ChatRoomAdapter
@@ -12,6 +18,7 @@ import com.umc.insider.retrofit.RetrofitInstance
 import com.umc.insider.retrofit.api.MessageInterface
 import com.umc.insider.retrofit.model.MessageGetRes
 import com.umc.insider.retrofit.model.MessagePostReq
+import com.umc.insider.viewmodel.ChatRoomViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -30,6 +37,8 @@ class ChatRoomActivity : AppCompatActivity() {
     private var pollingJob: Job? = null
     private var currentChatList: List<MessageGetRes> = emptyList()
     private var first = true
+    private lateinit var viewModel : ChatRoomViewModel
+    private var originalScrollY = 0
     override fun onResume() {
         super.onResume()
         chatRoom_id = intent.getStringExtra("chatRoom_id")!!.toLong()
@@ -48,7 +57,7 @@ class ChatRoomActivity : AppCompatActivity() {
 
 
         initView()
-
+        observeKeyboardChanges()
     }
 
     private fun initView(){
@@ -57,7 +66,7 @@ class ChatRoomActivity : AppCompatActivity() {
             adapter = ChatRoomAdapter(this@ChatRoomActivity)
             chatRV.adapter = adapter
             chatRV.layoutManager = LinearLayoutManager(this@ChatRoomActivity)
-            
+
             sendBtn.setOnClickListener {
 
                 if(binding.chatEditTextView.text.isNullOrBlank()) return@setOnClickListener
@@ -73,7 +82,6 @@ class ChatRoomActivity : AppCompatActivity() {
                         }
                         if (response.isSuccessful){
                             chatEditTextView.text = null
-
                             try {
                                 val response = withContext(Dispatchers.IO) {
                                     messageAPI.getMessageesInChatRoom(chatRoom_id!!)
@@ -83,22 +91,54 @@ class ChatRoomActivity : AppCompatActivity() {
 
                                     withContext(Dispatchers.Main) {
                                         adapter.submitList(chatList) {
-                                            binding.chatRV.smoothScrollToPosition(adapter.itemCount - 1)
+                                            binding.scrollView.post {
+                                                val bottomPosition = binding.chatRV.bottom // RecyclerView의 아래쪽 위치를 가져옵니다.
+                                                originalScrollY = bottomPosition
+                                                binding.scrollView.smoothScrollTo(0, bottomPosition)
+                                            }
                                         }
                                     }
                                     currentChatList = chatList!!
                                 } else { }
-                            } catch (e: Exception) {
-                            }
-
+                            } catch (e: Exception) { }
 
                         }else{ }
                     }catch (e : Exception){
 
                     }
                 }
+                chatEditTextView.requestFocus()
             }
         }
+    }
+
+    private fun getKeyboardHeight(rootView: View): Int {
+        val r = Rect()
+        rootView.getWindowVisibleDisplayFrame(r)
+        val screenHeight = rootView.height
+        return screenHeight - r.bottom
+    }
+    private fun observeKeyboardChanges() {
+        val rootView = window.decorView.rootView
+        var isKeyboardUp = false
+
+        rootView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                val keyboardHeight = getKeyboardHeight(rootView)
+
+                if (keyboardHeight > rootView.height * 0.15) {  // 키보드가 올라왔을 때
+                    if (!isKeyboardUp) {
+                        originalScrollY = binding.scrollView.scrollY  // 현재 스크롤 위치 저장
+                        val adjustScroll = originalScrollY + keyboardHeight - 100
+                        binding.scrollView.scrollTo(0, adjustScroll)
+                        isKeyboardUp = true
+                    }
+                } else if (isKeyboardUp) {  // 키보드가 내려갔을 때
+                    binding.scrollView.scrollTo(0, originalScrollY)  // 원래 스크롤 위치로 복원
+                    isKeyboardUp = false
+                }
+            }
+        })
     }
 
     private fun startPolling() {
@@ -112,9 +152,11 @@ class ChatRoomActivity : AppCompatActivity() {
                         val chatList = response.body()
 
                         withContext(Dispatchers.Main) {
-                            adapter.submitList(chatList)
+                            adapter.submitList(chatList){}
                             if (first){
-                                binding.chatRV.smoothScrollToPosition(adapter.itemCount - 1)
+                                binding.root.post{
+                                    binding.scrollView.fullScroll(View.FOCUS_DOWN)
+                                }
                                 first = false
                             }
                         }

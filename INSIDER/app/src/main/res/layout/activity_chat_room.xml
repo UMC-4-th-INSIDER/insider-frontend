@@ -119,7 +119,7 @@
                 app:layout_constraintBottom_toBottomOf="@id/interlocutorGrade"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
+z
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/chatLayout"
             android:layout_width="0dp"
@@ -131,15 +131,44 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/interlocutorLayout">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/chatRV"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:paddingHorizontal="15dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/scrollView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/lightGray">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layoutInScroll"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/goods"
+                        android:layout_width="0dp"
+                        android:layout_height="200dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:src="@drawable/onion"/>
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/chatRV"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:nestedScrollingEnabled="false"
+                        android:paddingHorizontal="15dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/goods"
+                        tools:itemCount="10"
+                        tools:listitem="@layout/chat_room_item" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </androidx.core.widget.NestedScrollView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
