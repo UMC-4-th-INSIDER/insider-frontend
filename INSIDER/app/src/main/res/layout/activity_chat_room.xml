@@ -119,7 +119,7 @@
                 app:layout_constraintBottom_toBottomOf="@id/interlocutorGrade"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-z
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/chatLayout"
             android:layout_width="0dp"
@@ -142,14 +142,49 @@ z
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <ImageView
-                        android:id="@+id/goods"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/goodsLayout"
                         android:layout_width="0dp"
-                        android:layout_height="200dp"
+                        android:layout_height="0dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:src="@drawable/onion"/>
+                        app:layout_constraintDimensionRatio="1:1">
+z
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/goodsImg"
+                            android:layout_width="wrap_content"
+                            android:layout_height="200dp"
+                            android:src="@drawable/onion"
+                            android:scaleType="centerCrop"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"/>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/goodsImg"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/goodsNameAndPrice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="상품의 이름 - 가격"
+                                android:fontFamily="@font/roboto"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
                     <androidx.recyclerview.widget.RecyclerView
@@ -161,7 +196,7 @@ z
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/goods"
+                        app:layout_constraintTop_toBottomOf="@id/goodsLayout"
                         tools:itemCount="10"
                         tools:listitem="@layout/chat_room_item" />
 
