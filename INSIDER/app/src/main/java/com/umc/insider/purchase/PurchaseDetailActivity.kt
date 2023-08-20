@@ -65,23 +65,12 @@ class PurchaseDetailActivity : AppCompatActivity() {
 
         }
 
-        // 구매하기 버튼 클릭시 mainActivity로 넘어가고 Fragment는 구매하기 PurchaseFragment
         binding.sellRegistorBtn.setOnClickListener {
-
-            if (flag){
-                // 수정
-            }else{
-                // 구매
-                val intent = Intent(this@PurchaseDetailActivity, PurchaseActivity::class.java)
-                intent.putExtra("goods_id", goods_id.toString())
-                startActivity(intent)
-                finish()
-            }
+            val intent = Intent(this@PurchaseDetailActivity, PurchaseActivity::class.java)
+            intent.putExtra("goods_id", goods_id.toString())
+            startActivity(intent)
+            finish()
         }
-    }
-
-    interface SellRegistorClickListener{
-        fun onSellRegistorClicked()
     }
 
 }

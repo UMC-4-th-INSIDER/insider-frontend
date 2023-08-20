@@ -67,5 +67,7 @@
     <string name="cancel"><u>모두 취소</u></string>
     <string name="goodsOnSale">판매중인 상품</string>
 
+    <!-- 수정 화면 -->
+    <string name="shawdowView">가격을 낮추면 <b>할인상품에 등록</b>돼요!</string>
 
 </resources>

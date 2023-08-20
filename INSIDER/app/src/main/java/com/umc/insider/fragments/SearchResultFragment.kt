@@ -138,7 +138,6 @@ class SearchResultFragment : Fragment(), OnNoteListener {
     private fun updateButtonUI() {
         with(binding) {
 
-            // 서버 넘겨받으면 찜한 목록 중에서 어떤 건지 판단해서 recyclerview 띄우게 하기
             if (isGeneralPurchaseSelected) {
                 generalPurchase.background = ContextCompat.getDrawable(requireContext(), R.drawable.green_left_round)
                 generalPurchase.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
