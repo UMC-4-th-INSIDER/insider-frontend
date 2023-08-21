@@ -16,15 +16,18 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.umc.insider.OnNoteListener
 import com.umc.insider.R
 import com.umc.insider.adapter.GoodsLongAdapter
 import com.umc.insider.adapter.SearchResultAdapter
+import com.umc.insider.auth.UserManager
 import com.umc.insider.databinding.FragmentSearchResultBinding
 import com.umc.insider.model.SearchItem
 import com.umc.insider.purchase.PurchaseDetailActivity
 import com.umc.insider.retrofit.RetrofitInstance
 import com.umc.insider.retrofit.api.GoodsInterface
+import com.umc.insider.revise.SaleReviseDetailActivity
 import com.umc.insider.utils.changeStatusBarColor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -42,6 +45,8 @@ class SearchResultFragment : Fragment(), OnNoteListener {
     private var isGeneralPurchaseSelected = true
     private var isDecorateCheck = true
 
+    private val goodsAPI = RetrofitInstance.getInstance().create(GoodsInterface::class.java)
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val statusBarColor = ContextCompat.getColor(requireContext(), R.color.statusBarGreenColor)
@@ -53,11 +58,10 @@ class SearchResultFragment : Fragment(), OnNoteListener {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentSearchResultBinding.inflate(inflater, container, false)
+
         initView()
         val searchQuery = arguments?.getString("search_query")
         binding.searchText.text = "\"$searchQuery\" 검색 결과"
-
-        val goodsAPI = RetrofitInstance.getInstance().create(GoodsInterface::class.java)
 
         lifecycleScope.launch {
 
@@ -129,10 +133,33 @@ class SearchResultFragment : Fragment(), OnNoteListener {
 
     override fun onNotePurchaseDetail(goods_id: Long) {
 
-        //Toast.makeText(requireContext(), goods_id.toString(), Toast.LENGTH_SHORT).show()
-        val intent = Intent(requireContext(), PurchaseDetailActivity::class.java)
-        intent.putExtra("goods_id", goods_id.toString())
-        startActivity(intent)
+        val userIdx = UserManager.getUserIdx(requireActivity().applicationContext)!!.toLong()
+        Log.d("REVISEEE", "userIdx : {$userIdx}")
+        lifecycleScope.launch {
+            try {
+                val response = withContext(Dispatchers.IO){
+                    goodsAPI.getGoodsById(goods_id)
+                }
+                withContext(Dispatchers.Main){
+                    val sellerID = response.users_id.id
+
+                    if(userIdx != sellerID){
+                        //Toast.makeText(requireContext(), goods_id.toString(), Toast.LENGTH_SHORT).show()
+                        val intent = Intent(requireContext(), PurchaseDetailActivity::class.java)
+                        intent.putExtra("goods_id", goods_id.toString())
+                        startActivity(intent)
+                    } else {
+                        val intent = Intent(requireContext(), SaleReviseDetailActivity::class.java)
+                        intent.putExtra("goods_id", goods_id.toString())
+                        startActivity(intent)
+                    }
+                }
+            }catch (e : Exception){
+
+            }
+
+        }
+
     }
 
     private fun updateButtonUI() {

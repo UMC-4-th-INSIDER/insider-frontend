@@ -46,7 +46,6 @@ class MainActivity : AppCompatActivity() {
         if (binding.bottomNav.selectedItemId != R.id.home && isFragmentMain) {
             binding.bottomNav.selectedItemId = R.id.home
         } else {
-            super.onBackPressed()  // 홈에 있을 경우 기본 뒤로 가기 동작 실행
             if (isHomeFragment) {
                 finish()
             } else {

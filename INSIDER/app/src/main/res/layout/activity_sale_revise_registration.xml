@@ -5,9 +5,7 @@
     android:background="@color/white">
 
     <data>
-        <variable
-            name="sellvm"
-            type="com.umc.insider.saleregistraion.SaleRegistrationViewModel" />
+
     </data>
 
     <FrameLayout
@@ -114,7 +112,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
-                        <EditText
+                        <TextView
                             android:id="@+id/sellTitle"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -145,7 +143,6 @@
                         app:srcCompat="@drawable/image_registration" />
 
                     <!--카테고리-->
-
                     <com.umc.insider.RoundedBackgroundSpinner
                         android:id="@+id/categorySpinner"
                         android:layout_width="0dp"
@@ -422,11 +419,9 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_marginEnd="16dp"
+                                android:layout_gravity="center"
                                 android:background="@null"
-                                android:hint="20XX.XX.XX"
-                                android:inputType="numberSigned|date"
-                                android:textAlignment="textStart"
-                                android:textColorHint="#BBBBBB"
+                                android:inputType="text"
                                 android:textColor="@color/black"
                                 android:textSize="13dp"
                                 android:textStyle="bold" />
