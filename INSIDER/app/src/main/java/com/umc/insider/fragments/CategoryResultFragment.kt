@@ -15,13 +15,17 @@ import com.umc.insider.OnNoteListener
 import com.umc.insider.R
 import com.umc.insider.adapter.CategoryImgAdapter
 import com.umc.insider.adapter.GoodsLongAdapter
+import com.umc.insider.auth.UserManager
 import com.umc.insider.databinding.FragmentCategoryResultBinding
 import com.umc.insider.databinding.FragmentHomeBinding
 import com.umc.insider.purchase.PurchaseDetailActivity
 import com.umc.insider.retrofit.RetrofitInstance
 import com.umc.insider.retrofit.api.GoodsInterface
+import com.umc.insider.revise.SaleReviseDetailActivity
 import com.umc.insider.utils.CategoryClickListener
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class CategoryResultFragment : Fragment(), CategoryClickListener, OnNoteListener{
 
@@ -98,8 +102,31 @@ class CategoryResultFragment : Fragment(), CategoryClickListener, OnNoteListener
     }
 
     override fun onNotePurchaseDetail(goods_id: Long) {
-        val intent = Intent(requireContext(), PurchaseDetailActivity::class.java)
-        intent.putExtra("goods_id", goods_id.toString())
-        startActivity(intent)
+        val userIdx = UserManager.getUserIdx(requireActivity().applicationContext)!!.toLong()
+        val goodsAPI = RetrofitInstance.getInstance().create(GoodsInterface::class.java)
+        Log.d("REVISEEE", "userIdx : {$userIdx}")
+        lifecycleScope.launch {
+            try {
+                val response = withContext(Dispatchers.IO){
+                    goodsAPI.getGoodsById(goods_id)
+                }
+                withContext(Dispatchers.Main){
+                    val sellerID = response.users_id.id
+
+                    if(userIdx != sellerID){
+                        val intent = Intent(requireContext(), PurchaseDetailActivity::class.java)
+                        intent.putExtra("goods_id", goods_id.toString())
+                        startActivity(intent)
+                    } else {
+                        val intent = Intent(requireContext(), SaleReviseDetailActivity::class.java)
+                        intent.putExtra("goods_id", goods_id.toString())
+                        startActivity(intent)
+                    }
+                }
+            }catch (e : Exception){
+
+            }
+
+        }
     }
 }

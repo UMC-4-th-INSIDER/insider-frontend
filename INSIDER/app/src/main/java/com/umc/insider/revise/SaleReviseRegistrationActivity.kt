@@ -102,7 +102,13 @@ class SaleReviseRegistrationActivity : AppCompatActivity() {
                     goodsAPI.getGoodsById(goods_id)
                 }
                 withContext(Dispatchers.Main){
-                    Log.d("productININ", "${response.title}")
+
+                    Glide.with(binding.sellImageView.context)
+                        .load(response.img_url)
+                        .placeholder(null)
+                        .into(binding.sellImageView)
+
+                    Log.d("productININ", "$response")
                     Log.d("productININ", "name : ${response.name}")
                     Log.d("productININ", "rest : ${response.rest}")
                     Log.d("productININ", "price : ${response.price}")
@@ -110,17 +116,14 @@ class SaleReviseRegistrationActivity : AppCompatActivity() {
                     Log.d("productININ", "shelf_life : ${response.shelf_life}")
                     Log.d("productININ", "img_url : ${response.img_url}")
 
+                    binding.ExpirationDateInsert.setText(response.shelf_life)
                     binding.sellTitle.setText(response.title)
                     binding.productNameInsert.setText(response.name)
                     binding.productAmountInsert.setText(response.rest.toString())
                     binding.priceExchangeInsert.setText(response.price)
                     binding.productWeightInsert.setText(response.weight!!)
-                    binding.ExpirationDateInsert.setText(response.shelf_life)
 
-                    Glide.with(binding.sellImageView.context)
-                        .load(response.img_url)
-                        .placeholder(null)
-                        .into(binding.sellImageView)
+
                 }
             }catch (e : Exception){
 
