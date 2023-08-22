@@ -50,162 +50,83 @@
             app:layout_constraintBottom_toTopOf="@id/chatLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbarLayout">
+            app:layout_constraintTop_toBottomOf="@id/toolbarLayout"
+            android:paddingHorizontal="15dp">
 
-            <FrameLayout
-                android:id="@+id/profileImgLayout"
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/gray30_round_18_rectangle"
-                android:elevation="5dp"
-                android:gravity="center"
-                android:padding="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+            <ImageView
+                android:id="@+id/goodsImg"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginVertical="15dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <ImageView
-                    android:id="@+id/profileImg"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:scaleType="centerInside"
-                    app:srcCompat="@drawable/mypage" />
-
-            </FrameLayout>
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:src="@drawable/onion"
+                android:scaleType="fitXY"/>
 
             <TextView
-                android:id="@+id/interlocutorName"
+                android:id="@+id/goodsName"
                 android:layout_width="wrap_content"
+                android:textSize="14sp"
                 android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/goodsImg"
+                app:layout_constraintTop_toTopOf="@id/goodsImg"
+                android:text="상품의 이름"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="15dp"
                 android:fontFamily="@font/roboto"
-                android:text="###"
-                android:textStyle="bold"
-                android:textSize="20sp"
-                app:layout_constraintStart_toEndOf="@id/profileImgLayout"
-                app:layout_constraintTop_toTopOf="@id/profileImgLayout" />
+                android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/interlocutorGrade"
+                android:id="@+id/goodsPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/goodsImg"
+                app:layout_constraintBottom_toBottomOf="@id/goodsImg"
+                android:text="상품의 가격"
+                android:textSize="14sp"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="5dp"
                 android:fontFamily="@font/roboto"
-                android:text="평점 70점"
-                android:textStyle="bold"
-                android:textSize="12sp"
-                app:layout_constraintStart_toEndOf="@id/profileImgLayout"
-                app:layout_constraintTop_toBottomOf="@id/interlocutorName" />
+                android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/interlocutorLocation"
+                android:id="@+id/interlocutor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                app:layout_constraintEnd_toStartOf="@id/interlocutorRating"
+                app:layout_constraintBottom_toBottomOf="@id/goodsPrice"
                 android:fontFamily="@font/roboto"
-                android:text="무슨동"
                 android:textStyle="bold"
-                android:layout_marginEnd="15dp"
-                android:textSize="12sp"
-                android:textColor="@color/gray30"
+                android:textSize="14sp"
+                android:layout_marginEnd="5dp"
+                android:text="유저"/>
+
+            <TextView
+                android:id="@+id/interlocutorRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/interlocutorGrade"
-                app:layout_constraintBottom_toBottomOf="@id/interlocutorGrade"/>
+                app:layout_constraintBottom_toBottomOf="@id/goodsPrice"
+                app:layout_constraintTop_toTopOf="@id/goodsPrice"
+                android:fontFamily="@font/roboto"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:textColor="@color/point"
+                android:text="80점"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/chatLayout"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/chatRV"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@color/lightGray"
             app:layout_constraintBottom_toTopOf="@id/inputTextLayout"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            android:paddingHorizontal="15dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/interlocutorLayout">
-
-            <androidx.core.widget.NestedScrollView
-                android:id="@+id/scrollView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/lightGray">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/layoutInScroll"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/goodsLayout"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintDimensionRatio="1:1">
-z
-                        <de.hdodenhof.circleimageview.CircleImageView
-                            android:id="@+id/goodsImg"
-                            android:layout_width="wrap_content"
-                            android:layout_height="200dp"
-                            android:src="@drawable/onion"
-                            android:scaleType="centerCrop"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"/>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/goodsImg"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            android:gravity="center"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/goodsNameAndPrice"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="상품의 이름 - 가격"
-                                android:fontFamily="@font/roboto"
-                                android:textStyle="bold" />
-
-                        </LinearLayout>
-
-
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/chatRV"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:nestedScrollingEnabled="false"
-                        android:paddingHorizontal="15dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/goodsLayout"
-                        tools:itemCount="10"
-                        tools:listitem="@layout/chat_room_item" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-            </androidx.core.widget.NestedScrollView>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintTop_toBottomOf="@id/interlocutorLayout"
+            tools:itemCount="5"
+            tools:listitem="@layout/chat_room_item" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/inputTextLayout"

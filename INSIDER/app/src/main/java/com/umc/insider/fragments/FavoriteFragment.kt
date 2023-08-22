@@ -6,24 +6,36 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.umc.insider.OnNoteListener
 import com.umc.insider.R
 import com.umc.insider.adapter.ExchangeAdapter
+import com.umc.insider.adapter.GoodsLongAdapter
 import com.umc.insider.adapter.SearchResultAdapter
+import com.umc.insider.auth.UserManager
 import com.umc.insider.databinding.FragmentFavoriteBinding
 import com.umc.insider.model.ExchangeItem
 import com.umc.insider.model.SearchItem
+import com.umc.insider.retrofit.RetrofitInstance
+import com.umc.insider.retrofit.api.WishListInterface
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class FavoriteFragment : Fragment(), OnNoteListener {
     private var _binding: FragmentFavoriteBinding? = null
     private val binding get() = _binding!!
 
-    private val searchAdapter = SearchResultAdapter(this)
+    //private val searchAdapter = SearchResultAdapter(this)
+    private val generalPurchasefavoriteAdapter = GoodsLongAdapter(this)
     private val exchangeAdapter = ExchangeAdapter(this)
+
+    private val wishListAPI = RetrofitInstance.getInstance().create(WishListInterface::class.java)
 
     private var isGeneralPurchaseSelected = true
     private var isDecorateCheck = true
+    private var user_id : Long? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,14 +44,20 @@ class FavoriteFragment : Fragment(), OnNoteListener {
         // Inflate the layout for this fragment
         _binding = FragmentFavoriteBinding.inflate(inflater, container, false)
 
+        user_id = UserManager.getUserIdx(requireContext())!!.toLong()
         initview()
 
         return binding.root
     }
 
     private fun initview() {
+
         with(binding) {
             // Click listeners for the buttons
+
+            favoriteRV.adapter = generalPurchasefavoriteAdapter
+            favoriteRV.layoutManager = LinearLayoutManager(context)
+
             selectPurchase.setOnClickListener {
                 isGeneralPurchaseSelected = true
                 updateButtonUI()
@@ -61,17 +79,29 @@ class FavoriteFragment : Fragment(), OnNoteListener {
 
             // 서버 넘겨받으면 찜한 목록 중에서 어떤 건지 판단해서 recyclerview 띄우게 하기
             if (isGeneralPurchaseSelected) {
-                generalPurchase.background = ContextCompat.getDrawable(requireContext(), R.drawable.green_left_round)
-                generalPurchase.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-                Exchange.background = ContextCompat.getDrawable(requireContext(), R.drawable.white_right_round)
-                Exchange.setTextColor(ContextCompat.getColor(requireContext(), R.color.main))
 
-                favoriteRV.adapter = searchAdapter
-                favoriteRV.layoutManager = LinearLayoutManager(context)
-                if(isDecorateCheck){
-                    favoriteRV.addItemDecoration(SearchResultAdapterDecoration())
+                lifecycleScope.launch {
+
+                    try {
+
+                        val response = withContext(Dispatchers.IO){
+                            wishListAPI.getGoodsInWishList(user_id!!)
+                        }
+
+                        if (response.isSuccessful){
+                            val generalPurchasefavoriteGoodsList = response.body()
+                            withContext(Dispatchers.Main){
+                                generalPurchasefavoriteAdapter.submitList(generalPurchasefavoriteGoodsList)
+                            }
+                        }
+
+                    }catch (e : Exception){
+
+                    }
+
                 }
-                searchAdapter.submitList(GeneralDummyDate())
+
+
             } else {
                 generalPurchase.background = ContextCompat.getDrawable(requireContext(), R.drawable.white_left_round)
                 generalPurchase.setTextColor(ContextCompat.getColor(requireContext(), R.color.main))
