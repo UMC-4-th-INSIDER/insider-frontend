@@ -1,5 +1,6 @@
 package com.umc.insider.retrofit.model
 
+import Category
 import com.google.gson.annotations.SerializedName
 import com.umc.insider.model.Markets
 import com.umc.insider.model.Users
@@ -11,6 +12,9 @@ data class GoodsGetRes (
 
     @SerializedName("users_id")
     val users_id : Users,
+
+    @SerializedName("category_id")
+    val categoryId : Category,
 
     @SerializedName("markets_id")
     val markets_id : Markets,

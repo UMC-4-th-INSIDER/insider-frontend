@@ -22,8 +22,8 @@ data class PartialGoods(
     @SerializedName("shelf_life")
     val shelfLife: String,
 
-    @SerializedName("category_id")
-    val categoryId: Long?,
+    @SerializedName("category")
+    val category: Category,
 
     @SerializedName("imageUrl")
     val imageUrl: String?

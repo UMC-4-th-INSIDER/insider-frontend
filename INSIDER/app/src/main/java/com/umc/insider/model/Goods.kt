@@ -44,6 +44,6 @@ data class Goods(
     @SerializedName("name")
     val name: String?,
 
-    @SerializedName("category_id")
-    val categoryId: Long
+    @SerializedName("category")
+    val category: Long
 )

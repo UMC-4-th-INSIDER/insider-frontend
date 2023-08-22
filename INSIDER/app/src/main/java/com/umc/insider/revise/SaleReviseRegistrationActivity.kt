@@ -1,5 +1,6 @@
 package com.umc.insider.revise
 
+import Category
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -112,6 +113,7 @@ class SaleReviseRegistrationActivity : AppCompatActivity() {
                 val response = withContext(Dispatchers.IO){
                     goodsAPI.getGoodsById(goods_id)
                 }
+                val category = response.categoryId.id
                 withContext(Dispatchers.Main){
 
                     Glide.with(binding.sellImageView.context)
@@ -125,6 +127,7 @@ class SaleReviseRegistrationActivity : AppCompatActivity() {
                     binding.productAmountInsert.setText(response.rest.toString())
                     binding.priceExchangeInsert.setText(response.price)
                     binding.productWeightInsert.setText(response.weight!!)
+                    binding.categorySpinner.setSelection(category.toInt())
 
                 }
             }catch (e : Exception){
@@ -150,7 +153,10 @@ class SaleReviseRegistrationActivity : AppCompatActivity() {
             val location = binding.sellLocationInsert.text.toString()
             val userIdx = UserManager.getUserIdx(applicationContext)!!.toLong()
             val categoryIdx = binding.categorySpinner.selectedItemPosition.toLong()
-            Log.d("modifyyy", "$categoryIdx")
+            val category = Category(
+                id = categoryIdx,
+                name = null
+            )
 
             // val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
             //val imageFileName = "User_${userIdx}_${timeStamp}"
@@ -160,14 +166,14 @@ class SaleReviseRegistrationActivity : AppCompatActivity() {
                 try {
 
                     //val imageFile = convertImageUriToPngFile(applicationContext, imageFileName)
-
+                    Log.d("modifyyy", "$categoryIdx")
                     val partialGoods = PartialGoods(
                         title = title,
                         price = priceExchange,
                         weight = productWeight,
                         rest = productAmount,
                         shelfLife = expirationDate,
-                        categoryId = categoryIdx,
+                        category = category,
                         imageUrl = null
                     )
 
