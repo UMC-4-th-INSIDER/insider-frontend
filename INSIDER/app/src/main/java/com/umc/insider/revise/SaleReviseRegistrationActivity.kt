@@ -27,16 +27,22 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
+import com.google.gson.annotations.SerializedName
 import com.umc.insider.R
 import com.umc.insider.adapter.CustomSpinnerAdapter
 import com.umc.insider.auth.TokenManager
 import com.umc.insider.auth.UserManager
 import com.umc.insider.auth.signUp.AddressActivity
 import com.umc.insider.databinding.ActivitySaleReviseRegistrationBinding
+import com.umc.insider.model.Goods
+import com.umc.insider.model.Markets
+import com.umc.insider.model.Users
 import com.umc.insider.retrofit.RetrofitInstance
 import com.umc.insider.retrofit.api.GoodsInterface
 import com.umc.insider.retrofit.model.GoodsPostModifyPriceReq
 import com.umc.insider.retrofit.model.GoodsPostReq
+import com.umc.insider.retrofit.model.PartialGoods
+import com.umc.insider.retrofit.model.UserPutProfileReq
 import com.umc.insider.retrofit.response.BaseResponse
 import com.umc.insider.saleregistraion.SaleRegistrationViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -50,6 +56,10 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Response
 import java.io.File
 import java.io.FileOutputStream
+import java.sql.Timestamp
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class SaleReviseRegistrationActivity : AppCompatActivity() {
 
@@ -96,6 +106,7 @@ class SaleReviseRegistrationActivity : AppCompatActivity() {
 
         val goods_id = intent.getStringExtra("goods_id")!!.toLong()
 
+        // 가져오기
         lifecycleScope.launch{
             try {
                 val response = withContext(Dispatchers.IO){
@@ -108,14 +119,6 @@ class SaleReviseRegistrationActivity : AppCompatActivity() {
                         .placeholder(null)
                         .into(binding.sellImageView)
 
-                    Log.d("productININ", "$response")
-                    Log.d("productININ", "name : ${response.name}")
-                    Log.d("productININ", "rest : ${response.rest}")
-                    Log.d("productININ", "price : ${response.price}")
-                    Log.d("productININ", "weight : ${response.weight}")
-                    Log.d("productININ", "shelf_life : ${response.shelf_life}")
-                    Log.d("productININ", "img_url : ${response.img_url}")
-
                     binding.ExpirationDateInsert.setText(response.shelf_life)
                     binding.sellTitle.setText(response.title)
                     binding.productNameInsert.setText(response.name)
@@ -123,14 +126,13 @@ class SaleReviseRegistrationActivity : AppCompatActivity() {
                     binding.priceExchangeInsert.setText(response.price)
                     binding.productWeightInsert.setText(response.weight!!)
 
-
                 }
             }catch (e : Exception){
 
             }
         }
 
-        // 수정해야하는지 확인 필요
+        // 수정하기
         binding.sellRegistorBtn.setOnClickListener {
             if(binding.sellTitle.text.isNullOrBlank() || binding.productNameInsert.text.isNullOrBlank() ||
                 binding.productAmountInsert.text.isNullOrBlank() || binding.ExpirationDateInsert.text.isNullOrBlank()
@@ -142,45 +144,55 @@ class SaleReviseRegistrationActivity : AppCompatActivity() {
             val title = binding.sellTitle.text.toString()
             val productName = binding.productNameInsert.text.toString()
             val productAmount = binding.productAmountInsert.text.toString().toIntOrNull()
-            val productWeight = binding.productWeightInsert.text.toString().toFloatOrNull()
+            val productWeight = binding.productWeightInsert.text.toString()
             val expirationDate = binding.ExpirationDateInsert.text.toString()
             val priceExchange = binding.priceExchangeInsert.text.toString()
             val location = binding.sellLocationInsert.text.toString()
             val userIdx = UserManager.getUserIdx(applicationContext)!!.toLong()
-            val categoryIdx = (binding.categorySpinner.selectedItemPosition).toLong()
-            Log.d("category", categoryIdx.toString())
+            val categoryIdx = binding.categorySpinner.selectedItemPosition.toLong()
+            Log.d("modifyyy", "$categoryIdx")
 
-            val postModifyPriceReq = GoodsPostModifyPriceReq(
-                id = goods_id,
-                price = priceExchange
-            )
+            // val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+            //val imageFileName = "User_${userIdx}_${timeStamp}"
+            //Log.d("IMGGG", "$imgUri")
 
             lifecycleScope.launch {
                 try {
-                    val response = withContext(Dispatchers.IO){
-                        goodsAPI.modifyPrice(postModifyPriceReq)
+
+                    //val imageFile = convertImageUriToPngFile(applicationContext, imageFileName)
+
+                    val partialGoods = PartialGoods(
+                        title = title,
+                        price = priceExchange,
+                        weight = productWeight,
+                        rest = productAmount,
+                        shelfLife = expirationDate,
+                        categoryId = categoryIdx,
+                        imageUrl = null
+                    )
+
+                    //Log.d("modifyyy", "$imageFile")
+
+                    val response = withContext(Dispatchers.IO) {
+                        goodsAPI.update(goods_id, partialGoods)
+                    }
+                    Log.d("modifyyy", "${response.isSuccessful}")
+                    // HTTP 상태 코드와 메시지 출력
+                    Log.d("modifyyy", "Status Code: ${response.code()}")
+                    Log.d("modifyyy", "Message: ${response.message()}")
+
+                    if(!response.isSuccessful){
+                        Toast.makeText(applicationContext, "수정에 실패하였습니다.", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(applicationContext, "상품 정보를 수정하였습니다!", Toast.LENGTH_SHORT).show()
+                        finish()
                     }
 
-                    withContext(Dispatchers.Main) {
-                        if (response.isSuccessful) {
-                            val result = response.body()?.result
-                            if (result != null) {
-                                Toast.makeText(applicationContext, "수정을 완료하였습니다!", Toast.LENGTH_SHORT)
-                                Log.d("modifyyy", "요청 성공")
-                            } else {
-                                Log.d("modifyyy", "요청 실패")
-                            }
-                        } else {
-                            Log.d("modifyyy", "네트워크 오류")
-                        }
-                    }
                 } catch (e: Exception) {
-                    Log.d("modifyyy", e.toString())
+                    Log.d("modifyyy", "$e")
                 }
             }
 
-
-            finish()
         }
 
         initview()
@@ -309,6 +321,24 @@ class SaleReviseRegistrationActivity : AppCompatActivity() {
                 Exchange.setTextColor(ContextCompat.getColor(this@SaleReviseRegistrationActivity,
                     R.color.white
                 ))
+            }
+        }
+    }
+
+    suspend fun convertImageUriToPngFile(context: Context, fileName: String): File? {
+        return withContext(Dispatchers.IO) {
+            try {
+                val inputStream = context.contentResolver.openInputStream(imgUri!!)
+                val bitmap = BitmapFactory.decodeStream(inputStream)
+                val file = File(context.cacheDir, fileName)
+                val outputStream = FileOutputStream(file)
+                bitmap?.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+                outputStream.flush()
+                outputStream.close()
+                file
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
             }
         }
     }
