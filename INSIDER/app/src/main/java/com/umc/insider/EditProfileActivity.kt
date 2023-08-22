@@ -1,7 +1,10 @@
 package com.umc.insider
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -27,10 +30,19 @@ import com.umc.insider.auth.signUp.AddressActivity
 import com.umc.insider.databinding.ActivityEditProfileBinding
 import com.umc.insider.retrofit.RetrofitInstance
 import com.umc.insider.retrofit.api.UserInterface
+import com.umc.insider.retrofit.model.UserPutProfileReq
 import com.umc.insider.retrofit.model.UserPutReq
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
+import java.io.FileOutputStream
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class EditProfileActivity : AppCompatActivity() {
 
@@ -132,13 +144,37 @@ class EditProfileActivity : AppCompatActivity() {
                     val response = UserApi.modifyUser(putUserReq)
                     Log.d("EDITTT", "${response.isSuccess}")
                     Toast.makeText(applicationContext, "수정을 완료하였습니다!", Toast.LENGTH_SHORT)
-                    finish()
 
                 }catch(e:Exception){
                     Log.e("EDITTT", "$e")
                 }
             }
 
+            // 이미지 수정
+            lifecycleScope.launch {
+                val putUserProfileReq = UserPutProfileReq(id = userIdx)
+
+                val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+                val imageFileName = "User_${userIdx}_${timeStamp}"
+
+                if (imgUri != null) {
+                    val imageFile = convertImageUriToPngFile(applicationContext, imageFileName)
+                    val imageRequestBody = RequestBody.create("image/*".toMediaTypeOrNull(), imageFile!!)
+                    val imagePart = MultipartBody.Part.createFormData("image", imageFile.name, imageRequestBody)
+                    try {
+                        val response = UserApi.registerProfile(putUserProfileReq, imagePart)
+                        Log.d("EDITTT", "${response.isSuccess}")
+
+                    } catch (e: Exception) {
+                        Log.e("EDITTT", "$e")
+                    }
+                } else {
+                    Log.d("EDITTT", "이미지 파일이 존재하지 않습니다.")
+                }
+
+            }
+
+            finish()
         }
 
         initview()
@@ -186,4 +222,29 @@ class EditProfileActivity : AppCompatActivity() {
             }
         }
     }
+
+
+    suspend fun convertImageUriToPngFile(context: Context, fileName: String): File? {
+        return withContext(Dispatchers.IO) {
+            try {
+                val inputStream = context.contentResolver.openInputStream(imgUri!!)
+                val bitmap = BitmapFactory.decodeStream(inputStream)
+                val file = File(context.cacheDir, fileName)
+                val outputStream = FileOutputStream(file)
+                bitmap?.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+                outputStream.flush()
+                outputStream.close()
+                file
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+    }
+
 }

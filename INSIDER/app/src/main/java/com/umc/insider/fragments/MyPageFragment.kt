@@ -193,6 +193,40 @@ class MyPageFragment : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        val userIdx = UserManager.getUserIdx(requireActivity().applicationContext)!!.toLong()
+        Log.d("MYPAGEEE", "userIdx : {$userIdx}")
+        val UserApi = RetrofitInstance.getInstance().create(UserInterface::class.java)
+
+        lifecycleScope.launch{
+            try {
+                val response = withContext(Dispatchers.IO){
+                    UserApi.getUserById(userIdx)
+                }
+                Log.d("MYPAGEEE", "$response")
+
+                withContext(Dispatchers.Main){
+                    binding.nicknameTextView.text = response.nickname + "님"
+                    binding.idTextView.text = response.userId
+                    binding.liveAddress.text = response.detailAddress
+
+                    if(response.img != null) {
+                        Glide.with(binding.profileImg.context)
+                            .load(response.img)
+                            .placeholder(null)
+                            .into(binding.profileImg)
+                    } else {
+
+                    }
+                }
+
+            }catch( e : Exception){
+                Log.e("MYPAGEEE", "$e")
+            }
+        }
+    }
+
     private fun DummyDate() : ArrayList<SearchItem>{
         val dummy1 = SearchItem(1, "양파1", "100g", "1000원",null, null)
         val dummy2 = SearchItem(2, "양파2", "200g", "2000원",null, null)
