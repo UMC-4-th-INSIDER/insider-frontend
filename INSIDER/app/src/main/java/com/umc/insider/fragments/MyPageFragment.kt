@@ -4,12 +4,16 @@ import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.kakao.sdk.user.UserApiClient
@@ -25,6 +29,12 @@ import com.umc.insider.auth.login.LogInActivity
 import com.umc.insider.databinding.FragmentMyPageBinding
 import com.umc.insider.model.ExchangeItem
 import com.umc.insider.model.SearchItem
+import com.umc.insider.retrofit.RetrofitInstance
+import com.umc.insider.retrofit.api.GoodsInterface
+import com.umc.insider.retrofit.api.UserInterface
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MyPageFragment : Fragment() {
 
@@ -44,6 +54,37 @@ class MyPageFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentMyPageBinding.inflate(inflater, container, false)
+
+        val userIdx = UserManager.getUserIdx(requireActivity().applicationContext)!!.toLong()
+        Log.d("MYPAGEEE", "userIdx : {$userIdx}")
+        val UserApi = RetrofitInstance.getInstance().create(UserInterface::class.java)
+
+        lifecycleScope.launch{
+            try {
+                val response = withContext(Dispatchers.IO){
+                    UserApi.getUserById(userIdx)
+                }
+                Log.d("MYPAGEEE", "$response")
+
+                withContext(Dispatchers.Main){
+                    binding.nicknameTextView.text = response.nickname + "님"
+                    binding.idTextView.text = response.userId
+                    binding.liveAddress.text = response.detailAddress
+
+                    if(response.img != null) {
+                        Glide.with(binding.profileImg.context)
+                            .load(response.img)
+                            .placeholder(null)
+                            .into(binding.profileImg)
+                    } else {
+
+                    }
+                }
+
+            }catch( e : Exception){
+                Log.e("MYPAGEEE", "$e")
+            }
+        }
 
         initView()
 

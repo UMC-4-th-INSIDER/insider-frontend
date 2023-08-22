@@ -64,6 +64,16 @@ class CategoryResultFragment : Fragment(), CategoryClickListener, OnNoteListener
             categorySearchRV.adapter = goodsAdapter
             categorySearchRV.layoutManager = LinearLayoutManager(context)
             categorySearchRV.addItemDecoration(SearchResultAdapterDecoration())
+
+            searchImg.setOnClickListener {
+                val searchFragment = SearchFragment()
+                val transaction = parentFragmentManager.beginTransaction()
+
+                transaction.replace(R.id.frame_layout, searchFragment)
+                transaction.addToBackStack(null)
+
+                transaction.commit()
+            }
         }
 
     }

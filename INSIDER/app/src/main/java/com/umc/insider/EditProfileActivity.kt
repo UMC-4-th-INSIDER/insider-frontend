@@ -6,6 +6,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -13,6 +14,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.facebook.login.LoginManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -23,6 +25,12 @@ import com.umc.insider.auth.UserManager
 import com.umc.insider.auth.login.LogInActivity
 import com.umc.insider.auth.signUp.AddressActivity
 import com.umc.insider.databinding.ActivityEditProfileBinding
+import com.umc.insider.retrofit.RetrofitInstance
+import com.umc.insider.retrofit.api.UserInterface
+import com.umc.insider.retrofit.model.UserPutReq
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class EditProfileActivity : AppCompatActivity() {
 
@@ -31,6 +39,7 @@ class EditProfileActivity : AppCompatActivity() {
     private lateinit var getSearchResult : ActivityResultLauncher<Intent>
 
     private var imgUri : Uri? = null
+    private var password : String = ""
 
     private val selectImageResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
@@ -43,7 +52,6 @@ class EditProfileActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_edit_profile)
 
         binding.lifecycleOwner = this
@@ -57,9 +65,83 @@ class EditProfileActivity : AppCompatActivity() {
             }
         }
 
+        val userIdx = UserManager.getUserIdx(applicationContext)!!.toLong()
+        Log.d("EDITTT", "userIdx : {$userIdx}")
+        val UserApi = RetrofitInstance.getInstance().create(UserInterface::class.java)
+
+
+        lifecycleScope.launch{
+            try {
+                val response = withContext(Dispatchers.IO){
+                    UserApi.getUserById(userIdx)
+                }
+                Log.d("EDITTT", "$response")
+
+                withContext(Dispatchers.Main){
+                    binding.nicknameTV.setText(response.nickname)
+                    binding.idTextView.text = response.userId
+                    binding.emailTextView.setText(response.email)
+                    binding.editaddressText.text = response.detailAddress
+                    binding.editaddressNum.setText(response.zipCode.toString())
+                    password = response.pw
+                    Log.d("EDITTT", "password : $password")
+
+                    if(response.img != null) {
+                        Glide.with(binding.profileImg.context)
+                            .load(response.img)
+                            .placeholder(android.R.color.transparent)
+                            .into(binding.profileImg)
+                    } else {
+
+                    }
+                }
+
+            }catch( e : Exception){
+                Log.e("EDITTT", "$e")
+            }
+        }
+
+
+
+        // 정보 저장
+        binding.infoSaveBtn.setOnClickListener {
+
+            Log.d("EDITTT", "확인 전")
+
+            if(binding.nicknameTV.text.isNullOrBlank() || binding.emailTextView.text.isNullOrBlank()){
+                Toast.makeText(this@EditProfileActivity, "빈 칸을 채워주세요.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            Log.d("EDITTT", "데이터 넣기 전")
+
+            val putUserReq = UserPutReq(
+                id = userIdx,
+                userId = binding.idTextView.text.toString(),
+                nickname = binding.nicknameTV.text.toString(),
+                pw = password,
+                email = binding.emailTextView.text.toString(),
+                zipCode = binding.editaddressNum.text.toString().toInt(),
+                detailAddress = binding.editaddressText.text.toString()
+            )
+
+            Log.d("EDITTT", "성공 직전")
+
+            lifecycleScope.launch{
+                try{
+                    val response = UserApi.modifyUser(putUserReq)
+                    Log.d("EDITTT", "${response.isSuccess}")
+                    Toast.makeText(applicationContext, "수정을 완료하였습니다!", Toast.LENGTH_SHORT)
+                    finish()
+
+                }catch(e:Exception){
+                    Log.e("EDITTT", "$e")
+                }
+            }
+
+        }
 
         initview()
-
 
     }
 
@@ -84,22 +166,6 @@ class EditProfileActivity : AppCompatActivity() {
                 getSearchResult.launch(intent)
             }
 
-            // 정보 저장
-            infoSaveBtn.setOnClickListener {
-
-                if(nicknameTV.text.isNullOrBlank() || emailTextView.text.isNullOrBlank()){
-                    Toast.makeText(this@EditProfileActivity, "빈 칸을 채워주세요.", Toast.LENGTH_SHORT).show()
-                    return@setOnClickListener
-                }
-
-                val resultIntent = Intent()
-                resultIntent.putExtra("edited_nickname", nicknameTV.text.toString() + "님")
-                resultIntent.putExtra("edited_address", editaddressText.text.toString())
-                setResult(RESULT_OK, resultIntent)
-                finish()
-
-            }
-
             // 로그아웃
             logoutTextView.setOnClickListener {
                 val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
@@ -119,7 +185,5 @@ class EditProfileActivity : AppCompatActivity() {
                 finish()
             }
         }
-
     }
-
 }
