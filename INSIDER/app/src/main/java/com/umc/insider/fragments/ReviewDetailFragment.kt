@@ -5,14 +5,22 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import com.umc.insider.R
 import com.umc.insider.databinding.FragmentReviewDetailBinding
+import com.umc.insider.utils.changeStatusBarColor
 
 class ReviewDetailFragment : Fragment() {
 
     private var _binding : FragmentReviewDetailBinding? = null
     private val binding get() = _binding!!
 
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val statusBarColor = ContextCompat.getColor(requireContext(), R.color.statusBarColor)
+        activity?.changeStatusBarColor(statusBarColor)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
