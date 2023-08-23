@@ -12,6 +12,7 @@ import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.location.LocationManagerCompat.requestLocationUpdates
 import androidx.databinding.DataBindingUtil
@@ -38,6 +39,7 @@ import com.umc.insider.retrofit.api.ChattingInterface
 import com.umc.insider.retrofit.api.GoodsInterface
 import com.umc.insider.retrofit.api.WishListInterface
 import com.umc.insider.retrofit.model.ChatRoomsPostReq
+import com.umc.insider.retrofit.model.WishListPostReq
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -78,6 +80,8 @@ class PurchaseActivity : AppCompatActivity(), OnMapReadyCallback{
         val user_id = UserManager.getUserIdx(this)!!.toLong()
         val goodsAPI = RetrofitInstance.getInstance().create(GoodsInterface::class.java)
         val wishListAPI = RetrofitInstance.getInstance().create(WishListInterface::class.java)
+
+        val wishListPostReq = WishListPostReq(user_id ,goods_id!!)
 
         lifecycleScope.launch {
 
@@ -120,6 +124,55 @@ class PurchaseActivity : AppCompatActivity(), OnMapReadyCallback{
 
             }
 
+        }
+
+        binding.favoriteBtn.setOnCheckedChangeListener { _, isChecked ->
+
+            if(isChecked){
+
+                CoroutineScope(Dispatchers.IO).launch {
+
+                    try {
+
+                        val response = wishListAPI.addGoodsToWishList(wishListPostReq)
+
+                        if(response.isSuccessful){
+                            withContext(Dispatchers.Main){
+                                withContext(Dispatchers.Main){
+                                    Toast.makeText(this@PurchaseActivity, "찜목록에 추가했습니다.", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        }
+
+                    }catch (e : Exception){
+
+                    }
+                }
+
+            }
+            if(!isChecked){
+
+                CoroutineScope(Dispatchers.IO).launch {
+
+                    try {
+
+                        val response = wishListAPI.deleteWishList(userId = user_id, goodsId = goods_id!!)
+
+                        if (response.isSuccessful){
+                            withContext(Dispatchers.Main){
+                                Toast.makeText(this@PurchaseActivity, "찜목록에 삭제했습니다.", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+
+
+                    }catch (e : Exception){
+                        withContext(Dispatchers.Main){
+                            Toast.makeText(this@PurchaseActivity, "찜목록에 삭제했습니다.", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+
+            }
         }
 
 

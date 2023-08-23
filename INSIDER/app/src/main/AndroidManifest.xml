@@ -26,9 +26,6 @@
             android:name=".revise.SaleReviseRegistrationActivity"
             android:exported="false" />
         <activity
-            android:name=".SaleReviseRegistration"
-            android:exported="false" />
-        <activity
             android:name=".revise.SaleReviseDetailActivity"
             android:exported="false" />
         <activity

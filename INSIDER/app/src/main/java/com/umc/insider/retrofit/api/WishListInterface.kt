@@ -21,7 +21,7 @@ interface WishListInterface {
     suspend fun getGoodsInWishList (@Path("userId") userId : Long) : Response<List<GoodsGetRes>>
 
     @DELETE("/wishlist/delete/{userId}/{goodsId}")
-    suspend fun deleteWishList(@Path("userId") userId: Long, @Path("goodsId") goodsId: Long): Response<String>
+    suspend fun deleteWishList(@Path("userId") userId: Long, @Path("goodsId") goodsId: Long): Response<BaseResponse<WishListPostRes>>
 
     @GET("/wishlist/check/{userId}/{goodsId}")
     suspend fun checkWishList(@Path("userId") userId : Long, @Path("goodsId") goodsId : Long) : Boolean
