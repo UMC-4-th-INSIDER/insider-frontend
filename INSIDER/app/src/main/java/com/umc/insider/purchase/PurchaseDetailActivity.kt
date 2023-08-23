@@ -45,6 +45,18 @@ class PurchaseDetailActivity : AppCompatActivity() {
 
             try {
                 val response = withContext(Dispatchers.IO){
+                    wishListAPI.checkWishList(user_id,goods_id)
+                }
+                withContext(Dispatchers.Main) { binding.favoriteBtn.isChecked = response }
+            }catch (e : Exception){
+
+            }
+        }
+
+        lifecycleScope.launch {
+
+            try {
+                val response = withContext(Dispatchers.IO){
                     goodsAPI.getGoodsById(goods_id)
                 }
                 withContext(Dispatchers.Main){
@@ -97,7 +109,8 @@ class PurchaseDetailActivity : AppCompatActivity() {
                     }
                 }
 
-            }else{
+            }
+            if(!isChecked){
 
                 CoroutineScope(Dispatchers.IO).launch {
 
@@ -105,16 +118,17 @@ class PurchaseDetailActivity : AppCompatActivity() {
 
                         val response = wishListAPI.deleteWishList(userId = user_id, goodsId = goods_id)
 
-                        if(response.isSuccessful){
+                        if (response.isSuccessful){
                             withContext(Dispatchers.Main){
-                                Toast.makeText(this@PurchaseDetailActivity, "찜목록에서 삭제했습니다.", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this@PurchaseDetailActivity, "찜목록에 삭제했습니다.", Toast.LENGTH_SHORT).show()
                             }
-                        }else{
-
                         }
 
-                    }catch (e : Exception){
 
+                    }catch (e : Exception){
+                        withContext(Dispatchers.Main){
+                            Toast.makeText(this@PurchaseDetailActivity, "찜목록에 삭제했습니다.", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
 
