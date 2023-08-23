@@ -244,15 +244,18 @@ class PurchaseActivity : AppCompatActivity(), OnMapReadyCallback{
                 if (location != null) {
                     val latitude = location.latitude
                     val longitude = location.longitude
+                    Log.d("LOCATIONNN", "lat : ${location.latitude}")
+                    Log.d("LOCATIONNN", "lon : ${location.longitude}")
 
                     // 내 위치에 마커 생성하기
                     val currentLatLng = LatLng(latitude, longitude)
-                    marker.position = currentLatLng
-                    marker.map = PurchaseActivity.naverMap
-                    marker.icon = MarkerIcons.BLACK
-                    marker.iconTintColor = Color.RED
-                    marker.width = 70
-                    marker.height = 90
+                    val currentMarker = com.naver.maps.map.overlay.Marker()
+                    currentMarker.position = currentLatLng
+                    currentMarker.map = PurchaseActivity.naverMap
+                    currentMarker.icon = MarkerIcons.BLACK
+                    currentMarker.iconTintColor = Color.RED
+                    currentMarker.width = 70
+                    currentMarker.height = 90
                 }
             }
     }
