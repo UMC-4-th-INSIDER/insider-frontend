@@ -41,6 +41,12 @@ data class GoodsGetRes (
     val img_url : String,
 
     @SerializedName("name")
-    val name : String
+    val name : String,
+
+    @SerializedName("userZipCode")
+    val userZipCode: Int,
+
+    @SerializedName("detailAddress")
+    val detailAddress: String
 
 )

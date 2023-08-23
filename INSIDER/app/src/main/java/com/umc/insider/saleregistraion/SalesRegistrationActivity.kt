@@ -82,14 +82,7 @@ class SalesRegistrationActivity : AppCompatActivity() {
         binding.sellvm = viewModel
         binding.lifecycleOwner = this
 
-        getSearchResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-            val fulladdress = it.data?.getStringExtra("data")
-            if (!fulladdress.isNullOrBlank()){
-                val addressSplit = fulladdress.split(",")
-                binding.sellLocationInsert.text = addressSplit[0]
-            }
 
-        }
 
         val categories = listOf("카테고리", "과일", "정육/계란", "채소", "유제품", "수산/건어물", "기타")
         categorySpinner = findViewById(R.id.categorySpinner)
@@ -115,8 +108,7 @@ class SalesRegistrationActivity : AppCompatActivity() {
             sellRegistorBtn.setOnClickListener {
                 if(sellTitle.text.isNullOrBlank() || productNameInsert.text.isNullOrBlank() ||
                     productAmountInsert.text.isNullOrBlank() || productWeightInsert.text.isNullOrBlank()
-                    || ExpirationDateInsert.text.isNullOrBlank() || priceExchangeInsert.text.isNullOrBlank()
-                    || sellLocationInsert.text.isNullOrBlank()){
+                    || ExpirationDateInsert.text.isNullOrBlank() || priceExchangeInsert.text.isNullOrBlank()){
                     Toast.makeText(applicationContext, "빈 항복을 채워주세요.", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
@@ -127,7 +119,6 @@ class SalesRegistrationActivity : AppCompatActivity() {
                 val productWeight = binding.productWeightInsert.text.toString().toFloatOrNull()
                 val expirationDate = binding.ExpirationDateInsert.text.toString()
                 val priceExchange = binding.priceExchangeInsert.text.toString()
-                val location = binding.sellLocationInsert.text.toString()
                 val userIdx = UserManager.getUserIdx(applicationContext)!!.toLong()
                 val categoryIdx = (binding.categorySpinner.selectedItemPosition).toLong()
                 Log.d("category", categoryIdx.toString())
@@ -170,34 +161,6 @@ class SalesRegistrationActivity : AppCompatActivity() {
                 }
                 finish()
             }
-
-            // 우편번호 인증
-            addressFindBtn.setOnClickListener {
-                val intent = Intent(this@SalesRegistrationActivity, AddressActivity::class.java)
-                getSearchResult.launch(intent)
-            }
-
-            sellLocationInsert.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-                    // 아무것도 하지 않음
-                }
-
-                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                    if (!sellLocationInsert.text.isNullOrBlank()) {
-                        addressFindBtn.text = "주소인증 완료"
-                        val tint = ContextCompat.getColor(this@SalesRegistrationActivity, R.color.lightMain)
-                        DrawableCompat.setTint(addressFindBtn.background, tint)
-                    } else {
-                        addressFindBtn.text = "우편번호 인증"
-                        val tint = ContextCompat.getColor(this@SalesRegistrationActivity, R.color.gray30)
-                        DrawableCompat.setTint(addressFindBtn.background, tint)
-                    }
-                }
-
-                override fun afterTextChanged(s: Editable) {
-                    // 아무것도 하지 않음
-                }
-            })
 
             // 일반 구매, 교환하기 설정
             generalSale.setOnClickListener {

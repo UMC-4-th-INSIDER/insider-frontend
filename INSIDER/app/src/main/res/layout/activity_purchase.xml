@@ -254,6 +254,17 @@
                     app:layout_constraintTop_toBottomOf="@id/purchase_info_layout" />
 
                 <ImageView
+                    android:id="@+id/purchaseView"
+                    android:layout_width="27dp"
+                    android:layout_height="27dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="20dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/mapView"
+                    app:layout_constraintTop_toBottomOf="@+id/mapView"
+                    app:srcCompat="@drawable/baseline_storefront_24" />
+
+                <ImageView
                     android:id="@+id/mylocationView"
                     android:layout_width="25dp"
                     android:layout_height="25dp"

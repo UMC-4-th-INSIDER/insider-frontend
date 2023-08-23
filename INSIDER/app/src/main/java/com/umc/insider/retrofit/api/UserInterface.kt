@@ -1,5 +1,6 @@
 package com.umc.insider.retrofit.api
 
+import com.umc.insider.retrofit.model.LatLngGetRes
 import com.umc.insider.retrofit.model.LoginPostReq
 import com.umc.insider.retrofit.model.LoginPostRes
 import com.umc.insider.retrofit.model.SignUpPostReq
@@ -37,5 +38,8 @@ interface UserInterface {
     @PUT("/userProfile/register")
     suspend fun registerProfile(@Part("PutUserProfileReq") putUserProfileReq: UserPutProfileReq,
                                 @Part image: MultipartBody.Part): BaseResponse<UserPostRes>
+
+    @GET("/address/{zipCode}")
+    suspend fun getLatLng(@Path("zipCode") zipCode: String): LatLngGetRes
 
 }

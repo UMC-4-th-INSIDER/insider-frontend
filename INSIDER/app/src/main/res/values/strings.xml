@@ -2,6 +2,7 @@
     <string name="app_name">INSIDER</string>
     <string name="app_name_1">Insider</string>
     <string name="app_purpose">나누는 식재료, 줄어드는 부담</string>
+    <string name="kakao_native_app_key">kakao6dbbe6829b35061737a96be9a123ce9b</string>
 
     <!-- Login-->
     <string name="userId">사용자 ID</string>

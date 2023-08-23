@@ -73,6 +73,7 @@ class PurchaseDetailActivity : AppCompatActivity() {
                     binding.PurchaseExpirationDate.text= response.shelf_life
                     binding.sellerInfo.text = response.users_id.nickname
                     binding.productPrice.text = "${response.price}원"
+                    binding.purchaseLocation.text = response.detailAddress
 
                     Glide.with(binding.productImage.context)
                         .load(response.img_url)

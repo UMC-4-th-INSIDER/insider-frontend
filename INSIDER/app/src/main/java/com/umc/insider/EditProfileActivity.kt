@@ -6,20 +6,18 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.provider.MediaStore
 import android.util.Log
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.widget.addTextChangedListener
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import com.facebook.login.LoginManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.kakao.sdk.user.UserApiClient
@@ -33,6 +31,7 @@ import com.umc.insider.retrofit.api.UserInterface
 import com.umc.insider.retrofit.model.UserPutProfileReq
 import com.umc.insider.retrofit.model.UserPutReq
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -52,6 +51,8 @@ class EditProfileActivity : AppCompatActivity() {
 
     private var imgUri : Uri? = null
     private var password : String = ""
+    private var flag = false
+
 
     private val selectImageResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
@@ -143,7 +144,6 @@ class EditProfileActivity : AppCompatActivity() {
                 try{
                     val response = UserApi.modifyUser(putUserReq)
                     Log.d("EDITTT", "${response.isSuccess}")
-                    Toast.makeText(applicationContext, "수정을 완료하였습니다!", Toast.LENGTH_SHORT)
 
                 }catch(e:Exception){
                     Log.e("EDITTT", "$e")
@@ -151,7 +151,7 @@ class EditProfileActivity : AppCompatActivity() {
             }
 
             // 이미지 수정
-            lifecycleScope.launch {
+            val imageUploadJob = lifecycleScope.launch {
                 val putUserProfileReq = UserPutProfileReq(id = userIdx)
 
                 val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
@@ -174,7 +174,16 @@ class EditProfileActivity : AppCompatActivity() {
 
             }
 
-            finish()
+
+            lifecycleScope.launch {
+                imageUploadJob.join()  // Wait for the image upload job to complete
+
+                Toast.makeText(applicationContext, "수정을 완료하였습니다!", Toast.LENGTH_SHORT).show()
+
+                finish()
+            }
+
+
         }
 
         initview()
