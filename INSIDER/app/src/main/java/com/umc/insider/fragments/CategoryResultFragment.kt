@@ -99,7 +99,8 @@ class CategoryResultFragment : Fragment(), CategoryClickListener, OnNoteListener
 
                 if (response.isSuccessful){
                     val categoryGoodsList = response.body()
-                    goodsAdapter.submitList(categoryGoodsList)
+                    val sortedGoodsList = categoryGoodsList?.sortedByDescending { it.goods_id }
+                    goodsAdapter.submitList(sortedGoodsList)
                 }else{
 
                 }

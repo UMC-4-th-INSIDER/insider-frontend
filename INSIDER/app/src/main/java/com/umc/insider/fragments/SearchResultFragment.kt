@@ -74,7 +74,8 @@ class SearchResultFragment : Fragment(), OnNoteListener {
                     if (goodsList.isNullOrEmpty()) {
                         Toast.makeText(context, "찾으시는 상품이 없습니다.", Toast.LENGTH_SHORT).show()
                     } else {
-                        goodsAdapter.submitList(goodsList)
+                        val sortedGoodsList = goodsList.sortedByDescending { it.goods_id }
+                        goodsAdapter.submitList(sortedGoodsList)
                     }
 
                 }else{
