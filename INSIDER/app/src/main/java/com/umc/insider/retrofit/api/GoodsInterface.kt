@@ -49,4 +49,7 @@ interface GoodsInterface {
         @Path("id") id: Long,
         @Body goods: PartialGoods
     ): Response<Goods>
+
+    @GET("/goods/sale")
+    suspend fun getGoodsWithSalePrice() : BaseResponse<List<GoodsGetRes>>
 }

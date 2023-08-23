@@ -137,6 +137,7 @@
                         android:adjustViewBounds="true"
                         android:background="@drawable/product_image_round"
                         android:elevation="8dp"
+                        android:radius="18dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/title_insert_layout"
@@ -204,7 +205,7 @@
                             android:hint="상품명을 입력하세요."
                             android:inputType="text"
                             android:maxLines="1"
-                            android:nextFocusDown="@id/product_weight_insert"
+                            android:nextFocusDown="@id/product_amount_layout"
                             android:textColorHint="@color/gray30"
                             android:textColor="@color/black"
                             android:textSize="15dp"
@@ -257,7 +258,7 @@
                             android:hint="판매 갯수를 입력하세요."
                             android:maxLines="1"
                             android:inputType="numberDecimal"
-                            android:nextFocusDown="@id/price_exchange_insert"
+                            android:nextFocusDown="@id/product_weight_insert"
                             android:textColorHint="@color/gray30"
                             android:textColor="@color/black"
                             android:textSize="15dp"
@@ -308,6 +309,7 @@
                             android:layout_marginStart="15dp"
                             android:background="@null"
                             android:hint="개당 판매가격을 입력하세요."
+                            android:nextFocusDown="@id/Expiration_date_insert"
                             android:inputType="numberDecimal"
                             android:textColorHint="@color/gray30"
                             android:textColor="@color/black"
@@ -359,6 +361,7 @@
                             android:layout_marginStart="15dp"
                             android:background="@null"
                             android:hint="총량을 입력하세요.(선택)"
+                            android:nextFocusDown="@id/price_exchange_insert"
                             android:inputType="numberDecimal"
                             android:textColorHint="@color/gray30"
                             android:textColor="@color/black"
@@ -423,87 +426,7 @@
                                 android:background="@null"
                                 android:inputType="text"
                                 android:textColor="@color/black"
-                                android:textSize="13dp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-
-                        <TextView
-                            android:id="@+id/sell_location"
-                            android:layout_width="wrap_content"
-                            android:layout_height="25dp"
-                            android:layout_marginTop="12dp"
-                            android:text="판매 위치"
-                            android:textColor="@color/black"
-                            android:textSize="15dp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/Expiration_date" />
-
-                        <Button
-                            android:id="@+id/addressFindBtn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:layout_marginTop="11dp"
-                            android:backgroundTint="@color/gray30"
-                            android:text="우편번호 인증"
-                            android:textColor="@color/black"
-                            android:textSize="13dp"
-                            app:layout_constraintBottom_toBottomOf="@id/sell_location"
-                            app:layout_constraintStart_toStartOf="@id/Expiration_date_layout"
-                            app:layout_constraintTop_toBottomOf="@+id/Expiration_date_layout" />
-
-                        <LinearLayout
-                            android:id="@+id/sell_location_layout"
-                            android:layout_width="0dp"
-                            android:layout_height="25dp"
-                            android:layout_marginStart="5dp"
-                            android:background="@drawable/sell_round_rectangle_small"
-                            android:orientation="horizontal"
-                            android:paddingStart="6dp"
-                            android:paddingTop="2dp"
-                            android:paddingEnd="4dp"
-                            android:paddingBottom="2dp"
-                            app:layout_constraintBottom_toBottomOf="@+id/sell_location"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/addressFindBtn">
-
-                            <TextView
-                                android:id="@+id/sell_location_insert"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:background="@null"
-                                android:gravity="center"
-                                android:inputType="text"
-                                android:hint="판매 위치를 입력하세요"
-                                android:textColorHint="@color/gray30"
-                                android:textColor="@color/black"
-                                android:textSize="13dp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/detailLocaion_layout"
-                            android:layout_width="0dp"
-                            android:layout_height="25dp"
-                            android:layout_marginTop="12dp"
-                            android:background="@drawable/sell_round_rectangle_small"
-                            android:orientation="horizontal"
-                            android:paddingTop="2dp"
-                            app:layout_constraintStart_toStartOf="@id/addressFindBtn"
-                            app:layout_constraintTop_toBottomOf="@id/sell_location_layout"
-                            app:layout_constraintEnd_toEndOf="@id/sell_location_layout">
-
-                            <EditText
-                                android:id="@+id/detailLocation"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_marginEnd="16dp"
-                                android:layout_marginStart="4dp"
-                                android:background="@null"
-                                android:hint="판매 상세 위치를 입력하세요.(선택)"
-                                android:inputType="numberSigned|date"
-                                android:textAlignment="textStart"
-                                android:textColorHint="#BBBBBB"
-                                android:textColor="@color/black"
+                                android:imeOptions="actionDone"
                                 android:textSize="13dp"
                                 android:textStyle="bold" />
                         </LinearLayout>
