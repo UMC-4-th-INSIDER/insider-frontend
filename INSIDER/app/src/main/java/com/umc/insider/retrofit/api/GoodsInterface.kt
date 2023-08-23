@@ -10,6 +10,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Multipart
@@ -49,4 +50,7 @@ interface GoodsInterface {
         @Path("id") id: Long,
         @Body goods: PartialGoods
     ): Response<Goods>
+
+    @DELETE("/goods/delete/{id}")
+    suspend fun deleteGoods(@Path("id") id: Long): Long
 }

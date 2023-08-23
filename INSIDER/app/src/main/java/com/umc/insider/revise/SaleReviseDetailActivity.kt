@@ -3,6 +3,7 @@ package com.umc.insider.revise
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
@@ -30,6 +31,7 @@ class SaleReviseDetailActivity : AppCompatActivity() {
 
         val goods_id = intent.getStringExtra("goods_id")!!.toLong()
 
+        // 가져오기
         lifecycleScope.launch {
             try {
                 val response = withContext(Dispatchers.IO){
@@ -49,6 +51,8 @@ class SaleReviseDetailActivity : AppCompatActivity() {
                     binding.PurchaseExpirationDate.text= response.shelf_life
                     binding.sellerInfo.text = response.users_id.nickname
                     binding.productPrice.text = "${response.price}원"
+                    Log.d("detailAddresson", "aaa"+response.users_id.address.detailAddress)
+                    binding.purchaseLocation.text = response.users_id.address.detailAddress
 
                     Glide.with(binding.productImage.context)
                         .load(response.img_url)
@@ -69,6 +73,20 @@ class SaleReviseDetailActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
 
+        }
+
+        // 상품 삭제
+        binding.deleteBtn.setOnClickListener {
+            lifecycleScope.launch {
+                try {
+                    val responseId = goodsAPI.deleteGoods(goods_id)
+                    Log.d("APIII", "Deleted goods with ID: $responseId")
+                    Toast.makeText(applicationContext, "상품이 성공적으로 삭제되었습니다.", Toast.LENGTH_SHORT).show()
+                } catch (e: Exception) {
+                    Log.e("APIII", "Failed to delete goods", e)
+                    Toast.makeText(applicationContext, "상품 삭제에 실패하였습니다.", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         initview()
