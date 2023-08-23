@@ -36,6 +36,7 @@ import com.umc.insider.databinding.ActivityPurchaseBinding
 import com.umc.insider.retrofit.RetrofitInstance
 import com.umc.insider.retrofit.api.ChattingInterface
 import com.umc.insider.retrofit.api.GoodsInterface
+import com.umc.insider.retrofit.api.WishListInterface
 import com.umc.insider.retrofit.model.ChatRoomsPostReq
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -74,7 +75,21 @@ class PurchaseActivity : AppCompatActivity(), OnMapReadyCallback{
 
         goods_id = intent.getStringExtra("goods_id")!!.toLong()
 
+        val user_id = UserManager.getUserIdx(this)!!.toLong()
         val goodsAPI = RetrofitInstance.getInstance().create(GoodsInterface::class.java)
+        val wishListAPI = RetrofitInstance.getInstance().create(WishListInterface::class.java)
+
+        lifecycleScope.launch {
+
+            try {
+                val response = withContext(Dispatchers.IO){
+                    wishListAPI.checkWishList(user_id,goods_id!!)
+                }
+                withContext(Dispatchers.Main) { binding.favoriteBtn.isChecked = response }
+            }catch (e : Exception){
+
+            }
+        }
 
         lifecycleScope.launch {
 

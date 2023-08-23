@@ -57,6 +57,7 @@ class FavoriteFragment : Fragment(), OnNoteListener {
 
             favoriteRV.adapter = generalPurchasefavoriteAdapter
             favoriteRV.layoutManager = LinearLayoutManager(context)
+            favoriteRV.addItemDecoration(ExchangeMainFragment.ExchangeAdapterDecoration())
 
             selectPurchase.setOnClickListener {
                 isGeneralPurchaseSelected = true
@@ -111,7 +112,7 @@ class FavoriteFragment : Fragment(), OnNoteListener {
                 favoriteRV.adapter = exchangeAdapter
                 favoriteRV.layoutManager = LinearLayoutManager(context)
                 if(isDecorateCheck){
-                    favoriteRV.addItemDecoration(ExchangeMainFragment.ExchangeAdapterDecoration())
+                    //favoriteRV.addItemDecoration(ExchangeMainFragment.ExchangeAdapterDecoration())
                 }
                 exchangeAdapter.submitList(ExchangeDummyDate())
             }

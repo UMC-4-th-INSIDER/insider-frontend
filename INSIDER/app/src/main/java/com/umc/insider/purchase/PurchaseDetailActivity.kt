@@ -45,6 +45,18 @@ class PurchaseDetailActivity : AppCompatActivity() {
 
             try {
                 val response = withContext(Dispatchers.IO){
+                    wishListAPI.checkWishList(user_id,goods_id)
+                }
+                withContext(Dispatchers.Main) { binding.favoriteBtn.isChecked = response }
+            }catch (e : Exception){
+
+            }
+        }
+
+        lifecycleScope.launch {
+
+            try {
+                val response = withContext(Dispatchers.IO){
                     goodsAPI.getGoodsById(goods_id)
                 }
                 withContext(Dispatchers.Main){

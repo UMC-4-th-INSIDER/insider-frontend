@@ -22,4 +22,8 @@ interface WishListInterface {
 
     @DELETE("/wishlist/delete/{userId}/{goodsId}")
     suspend fun deleteWishList(@Path("userId") userId: Long, @Path("goodsId") goodsId: Long): Response<String>
+
+    @GET("/wishlist/check/{userId}/{goodsId}")
+    suspend fun checkWishList(@Path("userId") userId : Long, @Path("goodsId") goodsId : Long) : Boolean
+
 }
