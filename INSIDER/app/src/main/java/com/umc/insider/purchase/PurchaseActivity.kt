@@ -37,6 +37,7 @@ import com.umc.insider.databinding.ActivityPurchaseBinding
 import com.umc.insider.retrofit.RetrofitInstance
 import com.umc.insider.retrofit.api.ChattingInterface
 import com.umc.insider.retrofit.api.GoodsInterface
+import com.umc.insider.retrofit.api.UserInterface
 import com.umc.insider.retrofit.api.WishListInterface
 import com.umc.insider.retrofit.model.ChatRoomsPostReq
 import com.umc.insider.retrofit.model.WishListPostReq
@@ -57,7 +58,12 @@ class PurchaseActivity : AppCompatActivity(), OnMapReadyCallback{
         private const val REQUEST_LOCATION_PERMISSION = 1
         lateinit var naverMap : NaverMap
     }
+
     private val marker = com.naver.maps.map.overlay.Marker()
+
+    private var purchaseLat = 37.488540
+    private var purchaseLng = 126.802745
+    private var zip = ""
 
     // 권한 요청을 한다.
     private fun requestLocationPermission() {
@@ -79,6 +85,7 @@ class PurchaseActivity : AppCompatActivity(), OnMapReadyCallback{
 
         val user_id = UserManager.getUserIdx(this)!!.toLong()
         val goodsAPI = RetrofitInstance.getInstance().create(GoodsInterface::class.java)
+        val userAPI = RetrofitInstance.getInstance().create(UserInterface::class.java)
         val wishListAPI = RetrofitInstance.getInstance().create(WishListInterface::class.java)
 
         val wishListPostReq = WishListPostReq(user_id ,goods_id!!)
@@ -95,7 +102,7 @@ class PurchaseActivity : AppCompatActivity(), OnMapReadyCallback{
             }
         }
 
-        lifecycleScope.launch {
+        val goodsGet = lifecycleScope.launch {
 
             try {
                 val response = withContext(Dispatchers.IO){
@@ -114,6 +121,8 @@ class PurchaseActivity : AppCompatActivity(), OnMapReadyCallback{
                     }
                     binding.PurchaseExpirationDate.text= response.shelf_life
                     binding.productPrice.text = "${response.price}원"
+                    binding.purchaseLocation.text = response.detailAddress
+                    zip = response.userZipCode.toString()
 
                     Glide.with(binding.PurchaseImage.context)
                         .load(response.img_url)
@@ -175,7 +184,39 @@ class PurchaseActivity : AppCompatActivity(), OnMapReadyCallback{
             }
         }
 
+        lifecycleScope.launch{
 
+            goodsGet.join()
+
+            try{
+                val zipResponse = withContext(Dispatchers.IO){
+                    userAPI.getLatLng(zip)
+                }
+                purchaseLat = zipResponse.latitude
+                purchaseLng = zipResponse.longitude
+
+                // 지도 사용하기
+                val fm = supportFragmentManager
+                val mapFragment = fm.findFragmentById(R.id.mapView) as MapFragment?
+                    ?: MapFragment.newInstance().also {
+                        fm.beginTransaction().add(R.id.mapView, it).commit()
+                    }
+
+                mapFragment.getMapAsync(this@PurchaseActivity)
+
+                val mapView = mapFragment.view
+                mapView?.setOnTouchListener { v, event ->
+                    v.parent.requestDisallowInterceptTouchEvent(true)
+                    false
+                }
+
+            }catch(e: Exception){
+                Log.e("API", "Failed to get latitude and longitude", e)
+            }
+        }
+
+
+        /*
         // 지도 사용하기
         val fm = supportFragmentManager
         val mapFragment = fm.findFragmentById(R.id.mapView) as MapFragment?
@@ -189,7 +230,7 @@ class PurchaseActivity : AppCompatActivity(), OnMapReadyCallback{
         mapView?.setOnTouchListener { v, event ->
             v.parent.requestDisallowInterceptTouchEvent(true)
             false
-        }
+        }*/
 
         // 권한 요청
         requestLocationPermission()
@@ -242,7 +283,7 @@ class PurchaseActivity : AppCompatActivity(), OnMapReadyCallback{
                 fusedLocationClient.lastLocation
                     .addOnSuccessListener { location: Location? ->
                         if (location != null) {
-                            val userLatLng = LatLng(37.485540, 126.802745)
+                            val userLatLng = LatLng(purchaseLat,purchaseLng)
                             naverMap.moveCamera(CameraUpdate.scrollTo(userLatLng).animate(CameraAnimation.Easing))
                         }
                     }
@@ -307,7 +348,7 @@ class PurchaseActivity : AppCompatActivity(), OnMapReadyCallback{
         naverMap.uiSettings.isLocationButtonEnabled = true
 
         // 사용자가 입력한 위도와 경도에 마커를 표시하고 지도를 이동하기
-        val userLatLng = LatLng(37.485540, 126.802745)
+        val userLatLng = LatLng(purchaseLat, purchaseLng)
         val userMarker = com.naver.maps.map.overlay.Marker()
         userMarker.position = userLatLng
         userMarker.map = naverMap

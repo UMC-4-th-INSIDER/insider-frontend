@@ -51,8 +51,9 @@ class SaleReviseDetailActivity : AppCompatActivity() {
                     binding.PurchaseExpirationDate.text= response.shelf_life
                     binding.sellerInfo.text = response.users_id.nickname
                     binding.productPrice.text = "${response.price}원"
-                    Log.d("detailAddresson", "aaa"+response.users_id.address.detailAddress)
-                    binding.purchaseLocation.text = response.users_id.address.detailAddress
+                    Log.d("detailAddresson", response.userZipCode.toString())
+                    Log.d("detailAddresson", response.detailAddress)
+                    binding.purchaseLocation.text = response.detailAddress
 
                     Glide.with(binding.productImage.context)
                         .load(response.img_url)
@@ -87,6 +88,7 @@ class SaleReviseDetailActivity : AppCompatActivity() {
                     Toast.makeText(applicationContext, "상품 삭제에 실패하였습니다.", Toast.LENGTH_SHORT).show()
                 }
             }
+            finish()
         }
 
         initview()
