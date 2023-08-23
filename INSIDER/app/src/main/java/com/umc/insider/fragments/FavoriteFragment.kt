@@ -1,6 +1,8 @@
 package com.umc.insider.fragments
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,8 +19,11 @@ import com.umc.insider.auth.UserManager
 import com.umc.insider.databinding.FragmentFavoriteBinding
 import com.umc.insider.model.ExchangeItem
 import com.umc.insider.model.SearchItem
+import com.umc.insider.purchase.PurchaseDetailActivity
 import com.umc.insider.retrofit.RetrofitInstance
+import com.umc.insider.retrofit.api.GoodsInterface
 import com.umc.insider.retrofit.api.WishListInterface
+import com.umc.insider.revise.SaleReviseDetailActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -36,6 +41,11 @@ class FavoriteFragment : Fragment(), OnNoteListener {
     private var isGeneralPurchaseSelected = true
     private var isDecorateCheck = true
     private var user_id : Long? = null
+
+    override fun onResume() {
+        super.onResume()
+        refreshData()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,6 +67,7 @@ class FavoriteFragment : Fragment(), OnNoteListener {
 
             favoriteRV.adapter = generalPurchasefavoriteAdapter
             favoriteRV.layoutManager = LinearLayoutManager(context)
+            favoriteRV.addItemDecoration(ExchangeMainFragment.ExchangeAdapterDecoration())
 
             selectPurchase.setOnClickListener {
                 isGeneralPurchaseSelected = true
@@ -111,10 +122,33 @@ class FavoriteFragment : Fragment(), OnNoteListener {
                 favoriteRV.adapter = exchangeAdapter
                 favoriteRV.layoutManager = LinearLayoutManager(context)
                 if(isDecorateCheck){
-                    favoriteRV.addItemDecoration(ExchangeMainFragment.ExchangeAdapterDecoration())
+                    //favoriteRV.addItemDecoration(ExchangeMainFragment.ExchangeAdapterDecoration())
                 }
                 exchangeAdapter.submitList(ExchangeDummyDate())
             }
+        }
+    }
+
+    fun refreshData(){
+        lifecycleScope.launch {
+
+            try {
+
+                val response = withContext(Dispatchers.IO){
+                    wishListAPI.getGoodsInWishList(user_id!!)
+                }
+
+                if (response.isSuccessful){
+                    val generalPurchasefavoriteGoodsList = response.body()
+                    withContext(Dispatchers.Main){
+                        generalPurchasefavoriteAdapter.submitList(generalPurchasefavoriteGoodsList)
+                    }
+                }
+
+            }catch (e : Exception){
+
+            }
+
         }
     }
 
@@ -164,14 +198,32 @@ class FavoriteFragment : Fragment(), OnNoteListener {
 
 
     override fun onNotePurchaseDetail(goods_id: Long) {
-        //        val selectedItem = adapter.getItemAtPosition(position)
-//
-//        val intent = Intent(requireContext(), ExchangeDetailActivity::class.java)
-//        intent.putExtra("productName", selectedItem.itemName)
-//        intent.putExtra("productAmount", selectedItem.itemAmount)
-//        intent.putExtra("productExchange", selectedItem.itemExchange)
-//
-//        startActivity(intent)
+        val userIdx = UserManager.getUserIdx(requireActivity().applicationContext)!!.toLong()
+        val goodsAPI = RetrofitInstance.getInstance().create(GoodsInterface::class.java)
+        Log.d("REVISEEE", "userIdx : {$userIdx}")
+        lifecycleScope.launch {
+            try {
+                val response = withContext(Dispatchers.IO){
+                    goodsAPI.getGoodsById(goods_id)
+                }
+                withContext(Dispatchers.Main){
+                    val sellerID = response.users_id.id
+
+                    if(userIdx != sellerID){
+                        val intent = Intent(requireContext(), PurchaseDetailActivity::class.java)
+                        intent.putExtra("goods_id", goods_id.toString())
+                        startActivity(intent)
+                    } else {
+                        val intent = Intent(requireContext(), SaleReviseDetailActivity::class.java)
+                        intent.putExtra("goods_id", goods_id.toString())
+                        startActivity(intent)
+                    }
+                }
+            }catch (e : Exception){
+
+            }
+
+        }
     }
 }
 
