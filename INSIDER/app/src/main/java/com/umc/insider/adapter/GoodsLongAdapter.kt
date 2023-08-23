@@ -33,7 +33,7 @@ class GoodsLongAdapter(private val listener : OnNoteListener) : ListAdapter<Good
 
                 binding.itemName.text = goods.title
                 binding.itemPrice.text = goods.price
-                if(goods.sale == null){
+                if(goods.sale_price == null){
                     binding.salePrice.visibility = View.INVISIBLE
                     binding.arrowImg.visibility = View.INVISIBLE
                     binding.itemDiscountRate.visibility = View.INVISIBLE
@@ -41,7 +41,8 @@ class GoodsLongAdapter(private val listener : OnNoteListener) : ListAdapter<Good
                     binding.salePrice.visibility = View.VISIBLE
                     binding.arrowImg.visibility = View.VISIBLE
                     binding.itemDiscountRate.visibility = View.VISIBLE
-                    binding.salePrice.text = "${goods.sale}원"
+                    binding.salePrice.text = "${goods.sale_price}원"
+                    binding.itemDiscountRate.text = "${goods.sale_percent}%"
                 }
 
 

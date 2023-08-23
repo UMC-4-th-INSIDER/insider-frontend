@@ -27,6 +27,7 @@ import androidx.core.view.isGone
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.umc.insider.R
@@ -70,6 +71,7 @@ class SaleReviseRegistrationActivity : AppCompatActivity() {
 
     private lateinit var categorySpinner: Spinner
     private lateinit var adapter: CustomSpinnerAdapter
+    private var currentPrice = ""
 
     private var imgUri : Uri? = null
 
@@ -94,7 +96,6 @@ class SaleReviseRegistrationActivity : AppCompatActivity() {
             val fulladdress = it.data?.getStringExtra("data")
             if (!fulladdress.isNullOrBlank()){
                 val addressSplit = fulladdress.split(",")
-                binding.sellLocationInsert.text = addressSplit[0]
             }
         }
 
@@ -114,20 +115,21 @@ class SaleReviseRegistrationActivity : AppCompatActivity() {
                     goodsAPI.getGoodsById(goods_id)
                 }
                 val category = response.categoryId.id
+                currentPrice = response.price
                 withContext(Dispatchers.Main){
 
                     Glide.with(binding.sellImageView.context)
                         .load(response.img_url)
                         .placeholder(null)
+                        .transform(RoundedCorners(18))
                         .into(binding.sellImageView)
-
+                    binding.categorySpinner.setSelection(category.toInt())
                     binding.ExpirationDateInsert.setText(response.shelf_life)
                     binding.sellTitle.setText(response.title)
                     binding.productNameInsert.setText(response.name)
                     binding.productAmountInsert.setText(response.rest.toString())
                     binding.priceExchangeInsert.setText(response.price)
                     binding.productWeightInsert.setText(response.weight!!)
-                    binding.categorySpinner.setSelection(category.toInt())
 
                 }
             }catch (e : Exception){
@@ -139,10 +141,12 @@ class SaleReviseRegistrationActivity : AppCompatActivity() {
         binding.sellRegistorBtn.setOnClickListener {
             if(binding.sellTitle.text.isNullOrBlank() || binding.productNameInsert.text.isNullOrBlank() ||
                 binding.productAmountInsert.text.isNullOrBlank() || binding.ExpirationDateInsert.text.isNullOrBlank()
-                || binding.priceExchangeInsert.text.isNullOrBlank() || binding.sellLocationInsert.text.isNullOrBlank()){
+                || binding.priceExchangeInsert.text.isNullOrBlank()){
                 Toast.makeText(applicationContext, "빈 항복을 채워주세요.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+
+
 
             val title = binding.sellTitle.text.toString()
             val productName = binding.productNameInsert.text.toString()
@@ -150,31 +154,42 @@ class SaleReviseRegistrationActivity : AppCompatActivity() {
             val productWeight = binding.productWeightInsert.text.toString()
             val expirationDate = binding.ExpirationDateInsert.text.toString()
             val priceExchange = binding.priceExchangeInsert.text.toString()
-            val location = binding.sellLocationInsert.text.toString()
             val userIdx = UserManager.getUserIdx(applicationContext)!!.toLong()
             val categoryIdx = binding.categorySpinner.selectedItemPosition.toLong()
-            val category = Category(
+            var salePrice : Int? = null
+            var salePercent : Int? = null
+            var category = Category(
                 id = categoryIdx,
                 name = null
             )
+
+            val currentPriceInt = currentPrice.toInt()
+            val modifyPriceInt = binding.priceExchangeInsert.text.toString().toInt()
+
+            if ( modifyPriceInt < currentPriceInt ){
+                salePrice = modifyPriceInt
+                salePercent = (modifyPriceInt/currentPriceInt) * 100
+
+            }
 
             // val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
             //val imageFileName = "User_${userIdx}_${timeStamp}"
             //Log.d("IMGGG", "$imgUri")
 
-            lifecycleScope.launch {
+            CoroutineScope(Dispatchers.IO).launch {
                 try {
 
                     //val imageFile = convertImageUriToPngFile(applicationContext, imageFileName)
                     Log.d("modifyyy", "$categoryIdx")
                     val partialGoods = PartialGoods(
                         title = title,
-                        price = priceExchange,
+                        price = currentPrice,
                         weight = productWeight,
                         rest = productAmount,
                         shelfLife = expirationDate,
                         category = category,
-                        imageUrl = null
+                        sale_price = salePrice,
+                        sale_percent = salePercent
                     )
 
                     //Log.d("modifyyy", "$imageFile")
@@ -188,14 +203,18 @@ class SaleReviseRegistrationActivity : AppCompatActivity() {
                     Log.d("modifyyy", "Message: ${response.message()}")
 
                     if(!response.isSuccessful){
-                        Toast.makeText(applicationContext, "수정에 실패하였습니다.", Toast.LENGTH_SHORT).show()
+                        withContext(Dispatchers.Main){
+                            Toast.makeText(applicationContext, "수정에 실패하였습니다.", Toast.LENGTH_SHORT).show()
+                        }
                     } else {
-                        Toast.makeText(applicationContext, "상품 정보를 수정하였습니다!", Toast.LENGTH_SHORT).show()
-                        finish()
+
                     }
 
                 } catch (e: Exception) {
-                    Log.d("modifyyy", "$e")
+                    withContext(Dispatchers.Main){
+                        Toast.makeText(applicationContext, "상품 정보를 수정하였습니다!", Toast.LENGTH_SHORT).show()
+                        finish()
+                    }
                 }
             }
 
@@ -219,40 +238,6 @@ class SaleReviseRegistrationActivity : AppCompatActivity() {
                 val intent = Intent(MediaStore.ACTION_PICK_IMAGES)
                 selectImageResultLauncher.launch(intent)
             }
-
-
-
-            // 우편번호 인증
-            addressFindBtn.setOnClickListener {
-                val intent = Intent(this@SaleReviseRegistrationActivity, AddressActivity::class.java)
-                getSearchResult.launch(intent)
-            }
-
-            sellLocationInsert.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-                    // 아무것도 하지 않음
-                }
-
-                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                    if (!sellLocationInsert.text.isNullOrBlank()) {
-                        addressFindBtn.text = "주소인증 완료"
-                        val tint = ContextCompat.getColor(this@SaleReviseRegistrationActivity,
-                            R.color.lightMain
-                        )
-                        DrawableCompat.setTint(addressFindBtn.background, tint)
-                    } else {
-                        addressFindBtn.text = "우편번호 인증"
-                        val tint = ContextCompat.getColor(this@SaleReviseRegistrationActivity,
-                            R.color.gray30
-                        )
-                        DrawableCompat.setTint(addressFindBtn.background, tint)
-                    }
-                }
-
-                override fun afterTextChanged(s: Editable) {
-                    // 아무것도 하지 않음
-                }
-            })
 
             // 일반 구매, 교환하기 설정
             generalSale.setOnClickListener {

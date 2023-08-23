@@ -29,8 +29,11 @@ data class Goods(
     @SerializedName("shelf_life")
     val shelfLife: String,
 
-    @SerializedName("sale")
-    val sale: Int?,
+    @SerializedName("sale_price")
+    val sale_price: Int?,
+
+    @SerializedName("sale_percent")
+    val sale_percent : Int?,
 
     @SerializedName("imageUrl")
     val imageUrl: String?,

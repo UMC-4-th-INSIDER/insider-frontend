@@ -53,4 +53,8 @@ interface GoodsInterface {
 
     @DELETE("/goods/delete/{id}")
     suspend fun deleteGoods(@Path("id") id: Long): Long
+
+    @GET("/goods/sale")
+    suspend fun getGoodsWithSalePrice() : BaseResponse<List<GoodsGetRes>>
+
 }
