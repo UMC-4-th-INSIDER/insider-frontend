@@ -113,10 +113,8 @@ class PurchaseActivity : AppCompatActivity(), OnMapReadyCallback{
                     // 나중에 name
                     binding.productName.text = response.name
                     if(response.weight.isNullOrBlank()){
-                        binding.productWeight.text = "${response.rest}개"
                         binding.productUnit.text = "(개당)"
                     }else{
-                        binding.productWeight.text = "${response.weight}g"
                         binding.productUnit.text = "(100g당)"
                     }
                     binding.PurchaseExpirationDate.text= response.shelf_life

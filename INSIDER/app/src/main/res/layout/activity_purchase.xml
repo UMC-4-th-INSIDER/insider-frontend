@@ -99,28 +99,18 @@
 
                         <TextView
                             android:id="@+id/productName"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:gravity="center"
+                            android:ellipsize="end"
+                            android:gravity="start"
                             android:text="양파"
                             android:textColor="@color/black"
                             android:textSize="18dp"
                             android:textStyle="bold"
+                            android:maxLines="1"
                             app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/productPrice"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/productWeight"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginStart="3dp"
-                            android:text="(200g)"
-                            android:textColor="@color/black"
-                            android:textSize="17dp"
-                            android:textStyle="bold"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toEndOf="@id/productName"
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
@@ -208,7 +198,7 @@
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/purchaseLocation_layout"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="3dp"
                             app:layout_constraintStart_toStartOf="parent"
@@ -226,13 +216,16 @@
 
                             <TextView
                                 android:id="@+id/purchaseLocation"
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="2dp"
                                 android:text="서울시 어디구 어디동"
                                 android:textColor="@color/black"
+                                android:ellipsize="end"
                                 android:textSize="15dp"
+                                android:maxLines="1"
                                 app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toEndOf="@+id/purchaseLocation_tv" />
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
