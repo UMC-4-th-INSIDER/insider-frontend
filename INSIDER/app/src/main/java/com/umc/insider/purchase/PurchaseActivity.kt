@@ -132,6 +132,7 @@ class PurchaseActivity : AppCompatActivity(), OnMapReadyCallback{
     private fun initview() {
         with(binding) {
 
+            // 내위치로 이동
             mylocationView.setOnClickListener {
                 if (ActivityCompat.checkSelfPermission(
                         this@PurchaseActivity,
@@ -153,6 +154,28 @@ class PurchaseActivity : AppCompatActivity(), OnMapReadyCallback{
                             // 내 위치로 지도 이동하기
                             val currentLatLng = LatLng(latitude, longitude)
                             naverMap.moveCamera(CameraUpdate.scrollTo(currentLatLng).animate(CameraAnimation.Easing))
+                        }
+                    }
+            }
+
+            // 구매 위치로 이동
+            purchaseView.setOnClickListener {
+                if (ActivityCompat.checkSelfPermission(
+                        this@PurchaseActivity,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                        this@PurchaseActivity,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    return@setOnClickListener
+                }
+                val fusedLocationClient: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this@PurchaseActivity)
+                fusedLocationClient.lastLocation
+                    .addOnSuccessListener { location: Location? ->
+                        if (location != null) {
+                            val userLatLng = LatLng(37.485540, 126.802745)
+                            naverMap.moveCamera(CameraUpdate.scrollTo(userLatLng).animate(CameraAnimation.Easing))
                         }
                     }
             }
