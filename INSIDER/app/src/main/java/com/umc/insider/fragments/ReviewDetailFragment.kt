@@ -15,13 +15,6 @@ class ReviewDetailFragment : Fragment() {
     private var _binding : FragmentReviewDetailBinding? = null
     private val binding get() = _binding!!
 
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val statusBarColor = ContextCompat.getColor(requireContext(), R.color.statusBarColor)
-        activity?.changeStatusBarColor(statusBarColor)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
