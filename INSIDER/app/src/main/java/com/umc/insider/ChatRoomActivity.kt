@@ -181,7 +181,7 @@ class ChatRoomActivity : AppCompatActivity() {
                             adapter.submitList(chatList){}
                             if (first){
                                 binding.root.post{
-                                    binding.chatRV.smoothScrollToPosition(adapter.itemCount - 1)
+                                    //binding.chatRV.smoothScrollToPosition(adapter.itemCount - 1)
                                 }
                                 first = false
                             }
