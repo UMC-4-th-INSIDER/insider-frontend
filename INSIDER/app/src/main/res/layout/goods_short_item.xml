@@ -146,8 +146,9 @@
                         android:id="@+id/salePrice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/sdsamliphopangchettfoutline"
+                        android:fontFamily="@font/nestocopper422"
                         android:text="2,400원"
+                        android:textColor="@color/red"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toTopOf="@id/itemPrice"
                         app:layout_constraintEnd_toEndOf="@id/itemPrice" />
