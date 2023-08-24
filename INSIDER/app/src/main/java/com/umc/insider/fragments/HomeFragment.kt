@@ -3,25 +3,37 @@ package com.umc.insider.fragments
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.umc.insider.OnNoteListener
 import com.umc.insider.R
 import com.umc.insider.adapter.CategoryAdapter
 import com.umc.insider.adapter.DiscountGoodsAdapter
+import com.umc.insider.adapter.GoodsShortAdapter
+import com.umc.insider.auth.UserManager
 import com.umc.insider.databinding.FragmentHomeBinding
 import com.umc.insider.model.SearchItem
+import com.umc.insider.purchase.PurchaseDetailActivity
+import com.umc.insider.retrofit.RetrofitInstance
+import com.umc.insider.retrofit.api.GoodsInterface
+import com.umc.insider.revise.SaleReviseDetailActivity
 import com.umc.insider.saleregistraion.SalesRegistrationActivity
 import com.umc.insider.utils.CategoryClickListener
 import com.umc.insider.utils.changeStatusBarColor
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class HomeFragment : Fragment(), CategoryClickListener {
+class HomeFragment : Fragment(), CategoryClickListener, OnNoteListener {
 
     private var _binding : FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -30,6 +42,9 @@ class HomeFragment : Fragment(), CategoryClickListener {
     private val categoryAdapter = CategoryAdapter(imageArray, clickImageArray, this)
     private val categoryTextArray = mutableListOf<String>("과일", "정육/계란", "채소", "유제품", "수산/건어물", "기타")
     private val discountGoodsAdapter = DiscountGoodsAdapter()
+    private val goodsShortAdapter = GoodsShortAdapter(this)
+    private val goodsAPI = RetrofitInstance.getInstance().create(GoodsInterface::class.java)
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -85,10 +100,40 @@ class HomeFragment : Fragment(), CategoryClickListener {
             categoryRV.addItemDecoration(CategoryAdapterDecoration())
             categoryRV.adapter = categoryAdapter
 
-            todayDiscountRV.adapter = discountGoodsAdapter
+//            todayDiscountRV.adapter = discountGoodsAdapter
+//            todayDiscountRV.layoutManager= GridLayoutManager(context, 2)
+//            todayDiscountRV.addItemDecoration(DiscountAdapterDecoration())
+
+            todayDiscountRV.adapter = goodsShortAdapter
             todayDiscountRV.layoutManager= GridLayoutManager(context, 2)
             todayDiscountRV.addItemDecoration(DiscountAdapterDecoration())
-            discountGoodsAdapter.submitList(DummyDate())
+
+            lifecycleScope.launch {
+
+                try {
+                    val response = withContext(Dispatchers.IO){
+                        goodsAPI.getGoodsWithSalePrice()
+                    }
+
+                    if (response.isSuccess){
+                        val saleList = response.result
+                        if (!saleList.isNullOrEmpty()){
+                            withContext(Dispatchers.Main){
+                                //discountGoodsAdapter.submitList(DummyDate())
+                                goodsShortAdapter.submitList(saleList)
+                            }
+                        }
+                    }
+                }catch (e : Exception){
+
+                }
+
+            }
+
+
+
+
+            //discountGoodsAdapter.submitList(DummyDate())
 
         }
 
@@ -132,6 +177,35 @@ class HomeFragment : Fragment(), CategoryClickListener {
         transaction.commit()
     }
 
+    override fun onNotePurchaseDetail(goods_id: Long) {
+        val userIdx = UserManager.getUserIdx(requireActivity().applicationContext)!!.toLong()
+        val goodsAPI = RetrofitInstance.getInstance().create(GoodsInterface::class.java)
+        Log.d("REVISEEE", "userIdx : {$userIdx}")
+        lifecycleScope.launch {
+            try {
+                val response = withContext(Dispatchers.IO){
+                    goodsAPI.getGoodsById(goods_id)
+                }
+                withContext(Dispatchers.Main){
+                    val sellerID = response.users_id.id
+
+                    if(userIdx != sellerID){
+                        val intent = Intent(requireContext(), PurchaseDetailActivity::class.java)
+                        intent.putExtra("goods_id", goods_id.toString())
+                        startActivity(intent)
+                    } else {
+                        val intent = Intent(requireContext(), SaleReviseDetailActivity::class.java)
+                        intent.putExtra("goods_id", goods_id.toString())
+                        startActivity(intent)
+                    }
+                }
+            }catch (e : Exception){
+
+            }
+
+        }
+    }
+
 }
 
 class CategoryAdapterDecoration : RecyclerView.ItemDecoration(){
@@ -163,6 +237,6 @@ class DiscountAdapterDecoration : RecyclerView.ItemDecoration(){
         if(position % 2 == 0) outRect.right = 10
         else outRect.left = 10
 
-        outRect.bottom = 25
+        outRect.bottom = 20
     }
 }

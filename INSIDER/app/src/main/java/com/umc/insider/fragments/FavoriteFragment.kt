@@ -74,10 +74,10 @@ class FavoriteFragment : Fragment(), OnNoteListener {
                 updateButtonUI()
             }
 
-            Exchange.setOnClickListener {
-                isGeneralPurchaseSelected = false
-                updateButtonUI()
-            }
+//            Exchange.setOnClickListener {
+//                isGeneralPurchaseSelected = false
+//                updateButtonUI()
+//            }
 
             // Update the button UI initially
             updateButtonUI()
@@ -129,7 +129,7 @@ class FavoriteFragment : Fragment(), OnNoteListener {
         }
     }
 
-    fun refreshData(){
+    private fun refreshData(){
         lifecycleScope.launch {
 
             try {

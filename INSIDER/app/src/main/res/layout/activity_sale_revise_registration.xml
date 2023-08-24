@@ -137,6 +137,7 @@
                         android:adjustViewBounds="true"
                         android:background="@drawable/product_image_round"
                         android:elevation="8dp"
+                        android:scaleType="fitXY"
                         android:radius="18dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"

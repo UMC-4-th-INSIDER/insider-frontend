@@ -163,13 +163,15 @@ class SaleReviseRegistrationActivity : AppCompatActivity() {
                 name = null
             )
 
-            val currentPriceInt = currentPrice.toInt()
+            var currentPriceInt = currentPrice.toInt()
             val modifyPriceInt = binding.priceExchangeInsert.text.toString().toInt()
 
             if ( modifyPriceInt < currentPriceInt ){
                 salePrice = modifyPriceInt
-                salePercent = (modifyPriceInt/currentPriceInt) * 100
-
+                val discountPrice = currentPriceInt - modifyPriceInt
+                salePercent = (100 * discountPrice.toLong() / currentPriceInt.toLong()).toInt()
+            }else if(modifyPriceInt > currentPriceInt){
+                currentPriceInt = modifyPriceInt
             }
 
             // val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
@@ -183,7 +185,7 @@ class SaleReviseRegistrationActivity : AppCompatActivity() {
                     Log.d("modifyyy", "$categoryIdx")
                     val partialGoods = PartialGoods(
                         title = title,
-                        price = currentPrice,
+                        price = currentPriceInt.toString(),
                         weight = productWeight,
                         rest = productAmount,
                         shelfLife = expirationDate,
@@ -252,17 +254,17 @@ class SaleReviseRegistrationActivity : AppCompatActivity() {
                 priceExchangeInsert.hint = "개당 판매 가격을 입력하세요."
             }
 
-            Exchange.setOnClickListener {
-                isGeneralSaleSelected = false   // 교환하기
-                updateButtonUI()
-                productAmountTv.text = "교환 갯수"
-                productAmountInsert.hint = "교환 갯수를 입력하세요."
-                val params = priceExchangeTv.layoutParams
-                params.width = dpToPx(150)
-                priceExchangeTv.layoutParams = params
-                priceExchangeTv.text = "원하는 교환 품목"
-                priceExchangeInsert.hint = "ex. 당근"
-            }
+//            Exchange.setOnClickListener {
+//                isGeneralSaleSelected = false   // 교환하기
+//                updateButtonUI()
+//                productAmountTv.text = "교환 갯수"
+//                productAmountInsert.hint = "교환 갯수를 입력하세요."
+//                val params = priceExchangeTv.layoutParams
+//                params.width = dpToPx(150)
+//                priceExchangeTv.layoutParams = params
+//                priceExchangeTv.text = "원하는 교환 품목"
+//                priceExchangeInsert.hint = "ex. 당근"
+//            }
 
             updateButtonUI()
 

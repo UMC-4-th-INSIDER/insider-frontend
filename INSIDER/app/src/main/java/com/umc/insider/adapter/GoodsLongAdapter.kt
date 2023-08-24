@@ -1,5 +1,6 @@
 package com.umc.insider.adapter
 
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,11 +33,12 @@ class GoodsLongAdapter(private val listener : OnNoteListener) : ListAdapter<Good
             fun bind(goods : GoodsGetRes){
 
                 binding.itemName.text = goods.title
-                binding.itemPrice.text = goods.price
+                binding.itemPrice.text = "${goods.price}원"
                 if(goods.sale_price == null){
                     binding.salePrice.visibility = View.INVISIBLE
                     binding.arrowImg.visibility = View.INVISIBLE
                     binding.itemDiscountRate.visibility = View.INVISIBLE
+                    binding.salePrice.text = ""
                 }else{
                     binding.salePrice.visibility = View.VISIBLE
                     binding.arrowImg.visibility = View.VISIBLE
@@ -50,7 +52,7 @@ class GoodsLongAdapter(private val listener : OnNoteListener) : ListAdapter<Good
                     binding.itemWeightOrRest.text = "(${goods.rest}개)"
                     binding.unit.text = "(개당)"
                 }else{
-                    binding.itemWeightOrRest.text = "(${goods.weight})"
+                    binding.itemWeightOrRest.text = "(${goods.weight}g)"
                     binding.unit.text = "(100g당)"
                 }
 

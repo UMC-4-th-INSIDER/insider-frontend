@@ -46,6 +46,12 @@ class SearchResultFragment : Fragment(), OnNoteListener {
     private var isDecorateCheck = true
 
     private val goodsAPI = RetrofitInstance.getInstance().create(GoodsInterface::class.java)
+    private var searchQuery : String? = null
+
+    override fun onResume() {
+        super.onResume()
+        refreshData()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -60,7 +66,7 @@ class SearchResultFragment : Fragment(), OnNoteListener {
         _binding = FragmentSearchResultBinding.inflate(inflater, container, false)
 
         initView()
-        val searchQuery = arguments?.getString("search_query")
+        searchQuery = arguments?.getString("search_query")
         binding.searchText.text = "\"$searchQuery\" 검색 결과"
 
         lifecycleScope.launch {
@@ -124,6 +130,33 @@ class SearchResultFragment : Fragment(), OnNoteListener {
                     // Handle any result if needed
                 }
             }
+    }
+
+    private fun refreshData(){
+        lifecycleScope.launch {
+
+            try {
+                val response = withContext(Dispatchers.IO) {
+                    goodsAPI.getGoods(searchQuery)
+                }
+                if(response.isSuccess){
+                    val goodsList = response.result
+                    if (goodsList.isNullOrEmpty()) {
+                        Toast.makeText(context, "찾으시는 상품이 없습니다.", Toast.LENGTH_SHORT).show()
+                    } else {
+                        val sortedGoodsList = goodsList.sortedByDescending { it.goods_id }
+                        goodsAdapter.submitList(sortedGoodsList)
+                    }
+
+                }else{
+
+                    // 에러
+                }
+            }catch ( e : Exception){ //
+                //네트워크나 기타 오류
+
+            }
+        }
     }
 
 

@@ -16,6 +16,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_margin="1dp"
+            android:id="@+id/goods"
             android:layout_marginStart="1dp"
             android:background="@drawable/gray30_round_18_rectangle"
             app:cardCornerRadius="18dp"
@@ -38,6 +39,7 @@
                         android:id="@+id/goodsImg"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:scaleType="fitXY"
                         app:srcCompat="@drawable/onion" />
 
 
@@ -53,30 +55,29 @@
 
                     <TextView
                         android:id="@+id/itemDiscountRate"
-                        tools:layout_editor_absoluteY="7dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="5dp"
+                        android:layout_marginEnd="10dp"
                         android:fontFamily="@font/roboto"
                         android:text="20%"
                         android:textColor="@color/red"
-                        android:textSize="15sp"
+                        android:textSize="30sp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
                         android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/itemName"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintHorizontal_chainStyle="packed"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/gradientLayout" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/itemName"
-                        tools:layout_editor_absoluteY="14dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="5dp"
                         android:fontFamily="@font/roboto"
                         android:text="양파"
+                        android:maxLines="1"
+                        android:maxWidth="70dp"
+                        android:ellipsize="end"
                         android:textColor="@color/white"
                         android:textSize="12sp"
                         android:textStyle="bold"
@@ -84,12 +85,12 @@
                         app:layout_constraintEnd_toStartOf="@+id/itemWeightOrRest"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintHorizontal_chainStyle="packed"
-                        app:layout_constraintStart_toEndOf="@+id/itemDiscountRate"
-                        app:layout_constraintTop_toTopOf="@id/gradientLayout" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/gradientLayout"
+                        tools:layout_editor_absoluteY="14dp" />
 
                     <TextView
                         android:id="@+id/itemWeightOrRest"
-                        tools:layout_editor_absoluteY="14dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="5dp"
@@ -102,11 +103,11 @@
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintHorizontal_chainStyle="packed"
                         app:layout_constraintStart_toEndOf="@+id/itemName"
-                        app:layout_constraintTop_toTopOf="@id/gradientLayout" />
+                        app:layout_constraintTop_toTopOf="@id/gradientLayout"
+                        tools:layout_editor_absoluteY="14dp" />
 
                     <TextView
                         android:id="@+id/itemPrice"
-                        tools:layout_editor_absoluteY="16dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="3,000원"
@@ -118,7 +119,8 @@
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintHorizontal_chainStyle="packed"
                         app:layout_constraintStart_toEndOf="@+id/itemWeightOrRest"
-                        app:layout_constraintTop_toTopOf="@id/gradientLayout" />
+                        app:layout_constraintTop_toTopOf="@id/gradientLayout"
+                        tools:layout_editor_absoluteY="16dp" />
 
                     <ImageView
                         android:id="@+id/cancelImg"

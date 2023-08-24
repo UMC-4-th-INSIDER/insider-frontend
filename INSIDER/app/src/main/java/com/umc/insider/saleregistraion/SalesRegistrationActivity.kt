@@ -107,8 +107,7 @@ class SalesRegistrationActivity : AppCompatActivity() {
             // 판매 등록하기 버튼
             sellRegistorBtn.setOnClickListener {
                 if(sellTitle.text.isNullOrBlank() || productNameInsert.text.isNullOrBlank() ||
-                    productAmountInsert.text.isNullOrBlank() || productWeightInsert.text.isNullOrBlank()
-                    || ExpirationDateInsert.text.isNullOrBlank() || priceExchangeInsert.text.isNullOrBlank()){
+                    productAmountInsert.text.isNullOrBlank() || ExpirationDateInsert.text.isNullOrBlank() || priceExchangeInsert.text.isNullOrBlank()){
                     Toast.makeText(applicationContext, "빈 항복을 채워주세요.", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
@@ -116,7 +115,7 @@ class SalesRegistrationActivity : AppCompatActivity() {
                 val title = binding.sellTitle.text.toString()
                 val productName = binding.productNameInsert.text.toString()
                 val productAmount = binding.productAmountInsert.text.toString().toIntOrNull()
-                val productWeight = binding.productWeightInsert.text.toString().toFloatOrNull()
+                val productWeight = binding.productWeightInsert.text.toString()
                 val expirationDate = binding.ExpirationDateInsert.text.toString()
                 val priceExchange = binding.priceExchangeInsert.text.toString()
                 val userIdx = UserManager.getUserIdx(applicationContext)!!.toLong()
@@ -131,7 +130,8 @@ class SalesRegistrationActivity : AppCompatActivity() {
                     shelf_life = expirationDate,
                     userIdx = userIdx,
                     name = productName,
-                    categoryId = categoryIdx
+                    categoryId = categoryIdx,
+                    weight = productWeight
                 )
 
                 val newGoodsJson = gson.toJson(postGoodsReq)
@@ -175,17 +175,17 @@ class SalesRegistrationActivity : AppCompatActivity() {
                 priceExchangeInsert.hint = "개당 판매 가격을 입력하세요."
             }
 
-            Exchange.setOnClickListener {
-                isGeneralSaleSelected = false   // 교환하기
-                updateButtonUI()
-                productAmountTv.text = "교환 갯수"
-                productAmountInsert.hint = "교환 갯수를 입력하세요."
-                val params = priceExchangeTv.layoutParams
-                params.width = dpToPx(150)
-                priceExchangeTv.layoutParams = params
-                priceExchangeTv.text = "원하는 교환 품목"
-                priceExchangeInsert.hint = "ex. 당근"
-            }
+//            Exchange.setOnClickListener {
+//                isGeneralSaleSelected = false   // 교환하기
+//                updateButtonUI()
+//                productAmountTv.text = "교환 갯수"
+//                productAmountInsert.hint = "교환 갯수를 입력하세요."
+//                val params = priceExchangeTv.layoutParams
+//                params.width = dpToPx(150)
+//                priceExchangeTv.layoutParams = params
+//                priceExchangeTv.text = "원하는 교환 품목"
+//                priceExchangeInsert.hint = "ex. 당근"
+//            }
 
             updateButtonUI()
 
