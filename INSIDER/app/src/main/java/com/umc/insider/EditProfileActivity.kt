@@ -167,6 +167,7 @@ class EditProfileActivity : AppCompatActivity() {
 
                     } catch (e: Exception) {
                         Log.e("EDITTT", "$e")
+                        flag = true
                     }
                 } else {
                     Log.d("EDITTT", "이미지 파일이 존재하지 않습니다.")
@@ -178,9 +179,14 @@ class EditProfileActivity : AppCompatActivity() {
             lifecycleScope.launch {
                 imageUploadJob.join()  // Wait for the image upload job to complete
 
-                Toast.makeText(applicationContext, "수정을 완료하였습니다!", Toast.LENGTH_SHORT).show()
+                if(flag){
+                    Toast.makeText(applicationContext, "이미지가 너무 큽니다!", Toast.LENGTH_SHORT).show()
+                    flag = false
+                }else{
+                    Toast.makeText(applicationContext, "수정을 완료하였습니다!", Toast.LENGTH_SHORT).show()
+                    finish()
+                }
 
-                finish()
             }
 
 
