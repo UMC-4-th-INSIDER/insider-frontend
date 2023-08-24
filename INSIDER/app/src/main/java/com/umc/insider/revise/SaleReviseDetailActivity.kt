@@ -41,16 +41,22 @@ class SaleReviseDetailActivity : AppCompatActivity() {
                     binding.productNameTitle.text = response.title
                     binding.productName.text = response.name
                     binding.PurchaseUnitamountTv.text = null
+
                     if(response.weight.isNullOrBlank()){
-                        binding.PurchaseTotalamountTv.text = "${response.rest}개"
                         binding.productUnit.text = "(개당)"
+                        binding.PurchaseTotalamountTv.text = "${response.rest}개"
                     }else{
-                        binding.PurchaseTotalamountTv.text = "${response.weight}g"
                         binding.productUnit.text = "(100g당)"
+                        binding.PurchaseTotalamountTv.text = "${response.weight}g"
                     }
+
                     binding.PurchaseExpirationDate.text= response.shelf_life
                     binding.sellerInfo.text = response.users_id.nickname
-                    binding.productPrice.text = "${response.price}원"
+                    if (response.sale_price != null){
+                        binding.productPrice.text = "${response.sale_price}원"
+                    }else{
+                        binding.productPrice.text = "${response.price}원"
+                    }
                     Log.d("detailAddresson", response.userZipCode.toString())
                     Log.d("detailAddresson", response.detailAddress)
                     binding.purchaseLocation.text = response.detailAddress

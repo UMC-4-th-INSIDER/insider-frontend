@@ -113,14 +113,16 @@ class PurchaseActivity : AppCompatActivity(), OnMapReadyCallback{
                     // 나중에 name
                     binding.productName.text = response.name
                     if(response.weight.isNullOrBlank()){
-                        binding.productWeight.text = "${response.rest}개"
                         binding.productUnit.text = "(개당)"
                     }else{
-                        binding.productWeight.text = "${response.weight}g"
                         binding.productUnit.text = "(100g당)"
                     }
                     binding.PurchaseExpirationDate.text= response.shelf_life
-                    binding.productPrice.text = "${response.price}원"
+                    if (response.sale_price != null){
+                        binding.productPrice.text = "${response.sale_price}원"
+                    }else{
+                        binding.productPrice.text = "${response.price}원"
+                    }
                     binding.purchaseLocation.text = response.detailAddress
                     zip = response.userZipCode.toString()
 

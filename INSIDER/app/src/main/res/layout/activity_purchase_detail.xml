@@ -63,12 +63,16 @@
 
                 <TextView
                     android:id="@+id/productName_Title"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="양파"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:gravity="start"
+                    android:ellipsize="end"
                     android:textColor="@color/black"
                     android:fontFamily="@font/roboto"
                     android:layout_marginTop="15dp"
+                    android:maxLines="1"
                     android:textSize="30sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
@@ -105,6 +109,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:text="양파"
+                        android:maxLines="1"
                         android:textColor="@color/black"
                         android:textSize="18dp"
                         android:textStyle="bold"
@@ -112,18 +117,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
-                        android:id="@+id/productWeight"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:text="(200g)"
-                        android:textColor="@color/black"
-                        android:textSize="17dp"
-                        android:textStyle="bold"
-                        android:layout_marginStart="3dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/productName"
-                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/productPrice"

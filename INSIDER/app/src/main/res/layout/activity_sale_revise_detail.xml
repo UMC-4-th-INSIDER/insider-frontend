@@ -60,7 +60,10 @@
 
                 <TextView
                     android:id="@+id/productName_Title"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     android:layout_height="wrap_content"
                     android:text="양파"
                     android:textColor="@color/black"
@@ -75,12 +78,12 @@
                     android:id="@+id/product_image"
                     android:elevation="8dp"
                     android:layout_width="0dp"
-                    android:scaleType="fitXY"
                     android:layout_height="328dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginStart="15dp"
                     android:layout_marginEnd="15dp"
                     android:radius="18dp"
+                    android:scaleType="fitXY"
                     android:background="@drawable/product_image_round"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -98,10 +101,12 @@
 
                     <TextView
                         android:id="@+id/productName"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:gravity="center"
+                        android:gravity="start"
+                        app:layout_constraintEnd_toEndOf="@id/productPrice"
                         android:text="양파"
+                        android:ellipsize="end"
                         android:textColor="@color/black"
                         android:textSize="18dp"
                         android:textStyle="bold"
@@ -109,18 +114,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
-                        android:id="@+id/productWeight"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:text="(200g)"
-                        android:textColor="@color/black"
-                        android:textSize="17dp"
-                        android:textStyle="bold"
-                        android:layout_marginStart="3dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/productName"
-                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/productPrice"

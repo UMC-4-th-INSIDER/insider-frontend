@@ -34,8 +34,11 @@ data class GoodsGetRes (
     @SerializedName("shelf_life")
     val shelf_life : String,
 
-    @SerializedName("sale")
-    val sale : Int?,
+    @SerializedName("sale_price")
+    val sale_price: Int?,
+
+    @SerializedName("sale_percent")
+    val sale_percent : Int?,
 
     @SerializedName("img_url")
     val img_url : String,

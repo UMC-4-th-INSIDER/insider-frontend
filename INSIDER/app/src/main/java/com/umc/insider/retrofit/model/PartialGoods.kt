@@ -25,6 +25,12 @@ data class PartialGoods(
     @SerializedName("category")
     val category: Category,
 
-    @SerializedName("imageUrl")
-    val imageUrl: String?
+//    @SerializedName("imageUrl")
+//    val imageUrl: String?,
+
+    @SerializedName("sale_price")
+    val sale_price: Int?,
+
+    @SerializedName("sale_percent")
+    val sale_percent : Int?,
 )

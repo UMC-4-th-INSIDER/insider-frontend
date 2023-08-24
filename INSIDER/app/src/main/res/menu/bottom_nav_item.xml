@@ -18,7 +18,8 @@
         android:id="@+id/trade"
         android:icon="@drawable/trade"
         android:title="교환하기"
-        app:showAsAction="always" />
+        app:showAsAction="always"
+        android:enabled="false"/>
 
     <item
         android:id="@+id/mypage"

@@ -39,6 +39,14 @@ class CategoryResultFragment : Fragment(), CategoryClickListener, OnNoteListener
     private lateinit var categoryImgAdapter : CategoryImgAdapter
     private lateinit var goodsAdapter : GoodsLongAdapter
 
+    private var selectPosition : Int? = null
+
+    override fun onResume() {
+        super.onResume()
+        //Toast.makeText(requireContext(), "언제 나올까", Toast.LENGTH_SHORT).show()
+        if (selectPosition == null) return
+        else onImageTouch(selectPosition!!)
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,9 +54,9 @@ class CategoryResultFragment : Fragment(), CategoryClickListener, OnNoteListener
         // Inflate the layout for this fragment
         _binding = FragmentCategoryResultBinding.inflate(inflater, container, false)
 
-        val selectPosition = arguments?.getString("select_category")!!.toInt()
+        selectPosition = arguments?.getString("select_category")!!.toInt()
         goodsAdapter = GoodsLongAdapter(this)
-        categoryImgAdapter = CategoryImgAdapter(imageArray,clickImageArray, selectPosition, this)
+        categoryImgAdapter = CategoryImgAdapter(imageArray,clickImageArray, selectPosition!!, this)
 
         initView()
 
@@ -86,6 +94,7 @@ class CategoryResultFragment : Fragment(), CategoryClickListener, OnNoteListener
     override fun onImageTouch(position: Int) {
         // 여기서 api 호출 - category
         //Toast.makeText(context, categoryTextArray[position], Toast.LENGTH_SHORT).show()
+        selectPosition = position
 
         val goodsAPI = RetrofitInstance.getInstance().create(GoodsInterface::class.java)
 
@@ -99,7 +108,8 @@ class CategoryResultFragment : Fragment(), CategoryClickListener, OnNoteListener
 
                 if (response.isSuccessful){
                     val categoryGoodsList = response.body()
-                    goodsAdapter.submitList(categoryGoodsList)
+                    val sortedGoodsList = categoryGoodsList?.sortedByDescending { it.goods_id }
+                    goodsAdapter.submitList(sortedGoodsList)
                 }else{
 
                 }

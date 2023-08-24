@@ -179,7 +179,7 @@ class ChatRoomActivity : AppCompatActivity() {
 
                         withContext(Dispatchers.Main) {
                             adapter.submitList(chatList){}
-                            if (first){
+                            if (first && currentChatList.isNotEmpty()){
                                 binding.root.post{
                                     //binding.chatRV.smoothScrollToPosition(adapter.itemCount - 1)
                                 }
