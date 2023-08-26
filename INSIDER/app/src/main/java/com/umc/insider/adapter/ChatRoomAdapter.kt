@@ -1,6 +1,8 @@
 package com.umc.insider.adapter
 
 import android.content.Context
+import android.text.StaticLayout
+import android.util.TypedValue
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -33,33 +35,72 @@ class ChatRoomAdapter(context : Context) : ListAdapter<MessageGetRes,ChatRoomAda
 
     inner class ChatRoomViewHolder(private val binding : ChatRoomItemBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(messageGetRes: MessageGetRes) {
-            // 너비와 높이를 동적으로 설정하기 위한 onPreDrawListener
-            binding.message.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
-                override fun onPreDraw(): Boolean {
-                    binding.message.viewTreeObserver.removeOnPreDrawListener(this)
-
-                    // 텍스트의 너비
-                    val textWidth = binding.message.paint.measureText(messageGetRes.content)
-
-                    // 너비와 높이 설정
-                    val layoutParams = binding.message.layoutParams
-                    layoutParams.width = (textWidth + binding.message.paddingLeft + binding.message.paddingRight).toInt()
-                    binding.message.layoutParams = layoutParams
-
-                    return true
-                }
-            })
 
             binding.message.text = messageGetRes.content
 
             if (messageGetRes.senderId.id == my_id) {
                 binding.chatLayout.gravity = Gravity.END
-                binding.message.setBackgroundResource(R.drawable.my_chat)
+                binding.backgroundImage.setImageResource(R.drawable.my_chat)
             } else {
                 binding.chatLayout.gravity = Gravity.START
-                binding.message.setBackgroundResource(R.drawable.opponent_chat)
+                binding.backgroundImage.setImageResource(R.drawable.opponent_chat)
             }
+
+            binding.message.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
+                override fun onPreDraw(): Boolean {
+                    binding.message.viewTreeObserver.removeOnPreDrawListener(this)
+
+                    val padding = binding.message.context.dpToPx(5f)
+                    val maxWidth = binding.message.context.dpToPx(200f)
+
+                    val staticLayout = StaticLayout.Builder.obtain(
+                        messageGetRes.content, 0, messageGetRes.content.length, binding.message.paint, maxWidth
+                    ).build()
+
+                    var maxLineWidth = 0f
+                    for (i in 0 until staticLayout.lineCount) {
+                        val lineWidth = staticLayout.getLineWidth(i)
+                        if (lineWidth > maxLineWidth) {
+                            maxLineWidth = lineWidth
+                        }
+                    }
+
+                    val textHeight = staticLayout.height
+
+                    // Considering line spacing
+                    val lineSpacingExtra = binding.message.lineSpacingExtra+10
+                    val lineSpacingMultiplier = binding.message.lineSpacingMultiplier
+
+                    // Adjusting the height considering both the line spacing extra and multiplier
+                    val textHeightWithSpacing = (textHeight + (staticLayout.lineCount - 1) * lineSpacingExtra) * lineSpacingMultiplier
+
+                    val calculatedWidth = (maxLineWidth + 2 * padding).coerceAtMost(maxWidth.toFloat()).toInt()
+                    val calculatedHeight = (textHeightWithSpacing + 2 * padding).toInt()
+
+                    val layoutParamsTextView = binding.message.layoutParams
+                    layoutParamsTextView.width = calculatedWidth
+                    layoutParamsTextView.height = calculatedHeight
+                    binding.message.layoutParams = layoutParamsTextView
+
+                    val layoutParamsImageView = binding.backgroundImage.layoutParams
+                    layoutParamsImageView.width = calculatedWidth
+                    layoutParamsImageView.height = calculatedHeight
+                    binding.backgroundImage.layoutParams = layoutParamsImageView
+
+                    return true
+                }
+            })
+
+
         }
+    }
+
+    fun Context.dpToPx(dp: Float): Int {
+        return TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            dp,
+            this.resources.displayMetrics
+        ).toInt()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatRoomViewHolder {
