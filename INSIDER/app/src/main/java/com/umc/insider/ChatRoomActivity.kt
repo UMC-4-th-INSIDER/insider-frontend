@@ -41,8 +41,7 @@ class ChatRoomActivity : AppCompatActivity() {
     private var pollingJob: Job? = null
     private var currentChatList: List<MessageGetRes> = emptyList()
     private var first = true
-    private lateinit var viewModel : ChatRoomViewModel
-    private var originalScrollY = 0
+
     override fun onResume() {
         super.onResume()
         chatRoom_id = intent.getStringExtra("chatRoom_id")!!.toLong()
@@ -178,12 +177,15 @@ class ChatRoomActivity : AppCompatActivity() {
                         val chatList = response.body()
 
                         withContext(Dispatchers.Main) {
-                            adapter.submitList(chatList){}
-                            if (first && currentChatList.isNotEmpty()){
-                                binding.root.post{
-                                    binding.chatRV.smoothScrollToPosition(adapter.itemCount - 1)
+                            adapter.submitList(chatList){
+                                if (first && currentChatList.isNotEmpty()){
+                                    binding.root.post{
+                                        binding.chatRV.scrollToPosition(adapter.itemCount - 1)
+                                        binding.progressBar.visibility = View.INVISIBLE
+                                        binding.chatRV.visibility = View.VISIBLE
+                                    }
+                                    first = false
                                 }
-                                first = false
                             }
                         }
                         currentChatList = chatList!!
@@ -203,6 +205,8 @@ class ChatRoomActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         stopPolling()
+        binding.progressBar.visibility = View.VISIBLE
+        binding.chatRV.visibility = View.INVISIBLE
     }
 
 }
