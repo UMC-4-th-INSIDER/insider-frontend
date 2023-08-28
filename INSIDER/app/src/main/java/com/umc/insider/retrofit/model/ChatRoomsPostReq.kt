@@ -10,6 +10,9 @@ data class ChatRoomsPostReq(
     @SerializedName("buyerId")
     val buyerId : Long,
 
-    @SerializedName("goodsId")
-    val goodsId : Long
+    @SerializedName("status")
+    val status : Int,
+
+    @SerializedName("goodsOrExchangesId")
+    val goodsOrExchangesId : Long
 )

@@ -297,7 +297,7 @@ class PurchaseActivity : AppCompatActivity(), OnMapReadyCallback{
 
                 val sellerId = sellerId!!
                 val buyerId = UserManager.getUserIdx(this@PurchaseActivity)!!.toLong()
-                val chatRoomsPostReq = ChatRoomsPostReq(sellerId,buyerId,goods_id!!)
+                val chatRoomsPostReq = ChatRoomsPostReq(sellerId,buyerId,0,goods_id!!)
 
                 CoroutineScope(Dispatchers.IO).launch{
                     try {

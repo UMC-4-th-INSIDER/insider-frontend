@@ -7,5 +7,9 @@ data class LoginPostRes (
     @SerializedName("id")
     val id : Long,
 
-    val jwt : String
+    @SerializedName("jwt")
+    val jwt : String,
+
+    @SerializedName("sellerOrBuyer")
+    val sellerOrBuyer : Int
 )

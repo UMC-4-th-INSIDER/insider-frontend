@@ -5,6 +5,7 @@ import android.app.Instrumentation.ActivityResult
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -127,6 +128,7 @@ class ExchangeMainFragment : Fragment(), CategoryClickListener, OnNoteListener {
         val exchangesAPI = RetrofitInstance.getInstance().create(ExchangesInterface::class.java)
 
         val categoryIdx = (position + 1).toLong()
+        Log.d("교환", categoryIdx.toString())
 
         lifecycleScope.launch {
 

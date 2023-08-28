@@ -178,6 +178,11 @@ class ChatRoomActivity : AppCompatActivity() {
 
                         withContext(Dispatchers.Main) {
                             adapter.submitList(chatList){
+
+                                if(currentChatList.isEmpty()){
+                                    binding.chatRV.visibility = View.VISIBLE
+                                }
+
                                 if (first && currentChatList.isNotEmpty()){
                                     binding.root.post{
                                         binding.chatRV.scrollToPosition(adapter.itemCount - 1)

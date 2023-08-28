@@ -157,6 +157,7 @@ class LogInActivity : AppCompatActivity() {
                             val loginPostRes = baseResponse.result
                             TokenManager.saveToken(this@LogInActivity, loginPostRes?.jwt)
                             UserManager.saveUserIdx(this@LogInActivity, loginPostRes?.id)
+                            UserManager.setUserSellerOrBuyer(this@LogInActivity, loginPostRes?.sellerOrBuyer)
                             if (autoLoginSwitch.isChecked){
                                 autoLoginManager.setAutoLogin(true)
                             }else{

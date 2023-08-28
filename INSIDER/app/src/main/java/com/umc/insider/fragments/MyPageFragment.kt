@@ -137,6 +137,7 @@ class MyPageFragment : Fragment() {
                 }
                 TokenManager.clearToken(requireContext())
                 UserManager.clearUserIdx(requireContext())
+                UserManager.clearUserSellerOrBuyer(requireContext())
                 startActivity(Intent(activity, LogInActivity::class.java))
                 activity?.finish()
             }

@@ -8,6 +8,7 @@ class UserManager private constructor() {
     companion object{
         private const val PREF_NAME = "UserPref"
         private const val USER_KEY = "userIdx"
+        private const val USER_STATUS_KEY = "userStatus"
 
         private fun getPreferences(context : Context) : SharedPreferences {
             return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
@@ -26,6 +27,22 @@ class UserManager private constructor() {
         fun clearUserIdx(context: Context) {
             val editor = getPreferences(context).edit()
             editor.remove(USER_KEY)
+            editor.apply()
+        }
+
+        fun setUserSellerOrBuyer(context: Context, sellerOrBuyer : Int?) {
+            val editor = getPreferences(context).edit()
+            editor.putString(USER_STATUS_KEY, sellerOrBuyer.toString())
+            editor.apply()
+        }
+
+        fun getUserSellerOrBuyer(context: Context): Int {
+            return getPreferences(context).getInt(USER_STATUS_KEY, 0)
+        }
+
+        fun clearUserSellerOrBuyer(context: Context) {
+            val editor = getPreferences(context).edit()
+            editor.remove(USER_STATUS_KEY)
             editor.apply()
         }
     }
