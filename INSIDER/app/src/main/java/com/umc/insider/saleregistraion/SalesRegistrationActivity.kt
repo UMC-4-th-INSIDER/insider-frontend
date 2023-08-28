@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
+import android.text.InputType
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
@@ -35,7 +36,9 @@ import com.umc.insider.auth.UserManager
 import com.umc.insider.auth.signUp.AddressActivity
 import com.umc.insider.databinding.ActivitySalesRegistrationBinding
 import com.umc.insider.retrofit.RetrofitInstance
+import com.umc.insider.retrofit.api.ExchangesInterface
 import com.umc.insider.retrofit.api.GoodsInterface
+import com.umc.insider.retrofit.model.ExchangesPostReq
 import com.umc.insider.retrofit.model.GoodsPostReq
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -70,7 +73,7 @@ class SalesRegistrationActivity : AppCompatActivity() {
     }
 
     private val GoodsApi = RetrofitInstance.getInstance().create(GoodsInterface::class.java)
-
+    private val ExchangesApi = RetrofitInstance.getInstance().create(ExchangesInterface::class.java)
     private var isGeneralSaleSelected = true    // true면 일반 판매
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -106,6 +109,7 @@ class SalesRegistrationActivity : AppCompatActivity() {
 
             // 판매 등록하기 버튼
             sellRegistorBtn.setOnClickListener {
+
                 if(sellTitle.text.isNullOrBlank() || productNameInsert.text.isNullOrBlank() ||
                     productAmountInsert.text.isNullOrBlank() || ExpirationDateInsert.text.isNullOrBlank() || priceExchangeInsert.text.isNullOrBlank()){
                     Toast.makeText(applicationContext, "빈 항복을 채워주세요.", Toast.LENGTH_SHORT).show()
@@ -120,45 +124,86 @@ class SalesRegistrationActivity : AppCompatActivity() {
                 val priceExchange = binding.priceExchangeInsert.text.toString()
                 val userIdx = UserManager.getUserIdx(applicationContext)!!.toLong()
                 val categoryIdx = (binding.categorySpinner.selectedItemPosition).toLong()
-                Log.d("category", categoryIdx.toString())
 
                 val gson = Gson()
-                val postGoodsReq = GoodsPostReq(
-                    title = title,
-                    price = priceExchange,
-                    rest = productAmount,
-                    shelf_life = expirationDate,
-                    userIdx = userIdx,
-                    name = productName,
-                    categoryId = categoryIdx,
-                    weight = productWeight
-                )
 
-                val newGoodsJson = gson.toJson(postGoodsReq)
-                val newGoodsRequestBody = newGoodsJson.toRequestBody("application/json".toMediaTypeOrNull())
+                if (isGeneralSaleSelected){
+                    val postGoodsReq = GoodsPostReq(
+                        title = title,
+                        price = priceExchange,
+                        rest = productAmount,
+                        shelf_life = expirationDate,
+                        userIdx = userIdx,
+                        name = productName,
+                        categoryId = categoryIdx,
+                        weight = productWeight
+                    )
 
-                CoroutineScope(Dispatchers.IO).launch {
+                    val newGoodsJson = gson.toJson(postGoodsReq)
+                    val newGoodsRequestBody = newGoodsJson.toRequestBody("application/json".toMediaTypeOrNull())
 
-                    val imageFile = convertImageUriToPngFile(applicationContext, "name")
-                    if(imageFile!=null){
-                        val imageRequestBody = RequestBody.create("image/*".toMediaTypeOrNull(), imageFile)
-                        val imagePart = MultipartBody.Part.createFormData("image", imageFile.name, imageRequestBody)
-                        val token = TokenManager.getToken(applicationContext)
-                        try {
-                            val response = GoodsApi.createGoods(token!!, newGoodsRequestBody, imagePart)
-                            if (response.isSuccessful){
-                                withContext(Dispatchers.Main){
-                                    Toast.makeText(applicationContext, "상품 등록되었습니다.", Toast.LENGTH_SHORT).show()
+                    CoroutineScope(Dispatchers.IO).launch {
+
+                        val imageFile = convertImageUriToPngFile(applicationContext, "name")
+                        if(imageFile!=null){
+                            val imageRequestBody = RequestBody.create("image/*".toMediaTypeOrNull(), imageFile)
+                            val imagePart = MultipartBody.Part.createFormData("image", imageFile.name, imageRequestBody)
+                            val token = TokenManager.getToken(applicationContext)
+                            try {
+                                val response = GoodsApi.createGoods(token!!, newGoodsRequestBody, imagePart)
+                                if (response.isSuccessful){
+                                    withContext(Dispatchers.Main){
+                                        Toast.makeText(applicationContext, "상품 등록되었습니다.", Toast.LENGTH_SHORT).show()
+                                    }
+
+                                }else{
                                 }
 
-                            }else{
+                            }catch (e : Exception){
                             }
-
-                        }catch (e : Exception){
+                        }else{
                         }
-                    }else{
+                    }
+
+                }else{
+                    val postExchangesReq = ExchangesPostReq(
+                        title = title,
+                        name = productName,
+                        count = productAmount,
+                        wantItem = priceExchange,
+                        weight = productWeight,
+                        shelfLife = expirationDate,
+                        categoryId = categoryIdx,
+                        userId = userIdx
+                    )
+
+                    val newExchangesJson = gson.toJson(postExchangesReq)
+                    val newExchangesRequestBody = newExchangesJson.toRequestBody("application/json".toMediaTypeOrNull())
+
+                    CoroutineScope(Dispatchers.IO).launch {
+
+                        val imageFile = convertImageUriToPngFile(applicationContext, "name")
+                        if(imageFile!=null){
+                            val imageRequestBody = RequestBody.create("image/*".toMediaTypeOrNull(), imageFile)
+                            val imagePart = MultipartBody.Part.createFormData("image", imageFile.name, imageRequestBody)
+                            val token = TokenManager.getToken(applicationContext)
+                            try {
+                                val response = ExchangesApi.createExchanges(newExchangesRequestBody, imagePart)
+                                if (response.isSuccessful){
+                                    withContext(Dispatchers.Main){
+                                        Toast.makeText(applicationContext, "교환 등록되었습니다.", Toast.LENGTH_SHORT).show()
+                                    }
+
+                                }else{
+                                }
+
+                            }catch (e : Exception){
+                            }
+                        }else{
+                        }
                     }
                 }
+
                 finish()
             }
 
@@ -172,20 +217,22 @@ class SalesRegistrationActivity : AppCompatActivity() {
                 params.width = dpToPx(90)
                 priceExchangeTv.layoutParams = params
                 priceExchangeTv.text = "개당 가격"
+                priceExchangeInsert.inputType = InputType.TYPE_NUMBER_FLAG_DECIMAL
                 priceExchangeInsert.hint = "개당 판매 가격을 입력하세요."
             }
 
-//            Exchange.setOnClickListener {
-//                isGeneralSaleSelected = false   // 교환하기
-//                updateButtonUI()
-//                productAmountTv.text = "교환 갯수"
-//                productAmountInsert.hint = "교환 갯수를 입력하세요."
-//                val params = priceExchangeTv.layoutParams
-//                params.width = dpToPx(150)
-//                priceExchangeTv.layoutParams = params
-//                priceExchangeTv.text = "원하는 교환 품목"
-//                priceExchangeInsert.hint = "ex. 당근"
-//            }
+            Exchange.setOnClickListener {
+                isGeneralSaleSelected = false   // 교환하기
+                updateButtonUI()
+                productAmountTv.text = "교환 갯수"
+                productAmountInsert.hint = "교환 갯수를 입력하세요."
+                val params = priceExchangeTv.layoutParams
+                params.width = dpToPx(150)
+                priceExchangeTv.layoutParams = params
+                priceExchangeTv.text = "원하는 교환 품목"
+                priceExchangeInsert.inputType = InputType.TYPE_CLASS_TEXT
+                priceExchangeInsert.hint = "ex. 당근"
+            }
 
             updateButtonUI()
 
