@@ -28,6 +28,7 @@ import com.umc.insider.model.ExchangeItem
 import com.umc.insider.model.SearchItem
 import com.umc.insider.purchase.PurchaseDetailActivity
 import com.umc.insider.retrofit.RetrofitInstance
+import com.umc.insider.retrofit.api.ExchangesInterface
 import com.umc.insider.retrofit.api.GoodsInterface
 import com.umc.insider.utils.CategoryClickListener
 import kotlinx.coroutines.launch
@@ -43,13 +44,18 @@ class ExchangeMainFragment : Fragment(), CategoryClickListener, OnNoteListener {
     private val imageArray = intArrayOf(R.drawable.category_fruit,R.drawable.category_meat_egg,R.drawable.category_vegetable,R.drawable.category_dairy_product,R.drawable.category_seafood_driedfish,R.drawable.category_etc)
     private val clickImageArray = intArrayOf(R.drawable.category_fruit_click,R.drawable.category_meat_egg_click,R.drawable.category_vegetable_click,R.drawable.category_dairy_product_click,R.drawable.category_seafood_driedfish_click,R.drawable.category_etc_click)
 
-    private val categoryAdapter = CategoryAdapter(imageArray, clickImageArray, this)
+    private var selectPosition : Int? = null
+    private lateinit var categoryImgAdapter : CategoryImgAdapter
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentExchangeMainBinding.inflate(inflater, container, false)
+
+        categoryImgAdapter = CategoryImgAdapter(imageArray,clickImageArray, -1, this)
+
 
         initview()
 
@@ -63,9 +69,8 @@ class ExchangeMainFragment : Fragment(), CategoryClickListener, OnNoteListener {
             searchRV.addItemDecoration(ExchangeAdapterDecoration())
             adapter.submitList(DummyDate())
 
-            categoryRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            categoryRecyclerView.addItemDecoration(CategoryAdapterDecoration())
-            categoryRecyclerView.adapter = categoryAdapter
+            categoryRecyclerView.adapter = categoryImgAdapter
+            categoryRecyclerView.layoutManager = GridLayoutManager(context, 6, GridLayoutManager.VERTICAL, false )
 
         }
 
@@ -117,7 +122,30 @@ class ExchangeMainFragment : Fragment(), CategoryClickListener, OnNoteListener {
     }
 
     override fun onImageTouch(position: Int) {
-        TODO("Not yet implemented")
+        selectPosition = position
+
+        val exchangesAPI = RetrofitInstance.getInstance().create(ExchangesInterface::class.java)
+
+        val categoryIdx = (position + 1).toLong()
+
+        lifecycleScope.launch {
+
+            try {
+
+                val response = exchangesAPI.getExchangesByCategoryId(categoryIdx)
+
+                if (response.isSuccessful){
+                    val categoryExchangesList = response.body()
+                    val sortedGoodsList = categoryExchangesList?.sortedByDescending { it.id }
+                    //adapter.submitList(sortedGoodsList)
+                }else{
+
+                }
+
+            }catch (e : Exception){
+
+            }
+        }
     }
 
 }

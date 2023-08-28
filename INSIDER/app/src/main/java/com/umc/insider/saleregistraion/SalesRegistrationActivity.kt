@@ -256,7 +256,7 @@ class SalesRegistrationActivity : AppCompatActivity() {
             try {
                 val inputStream = context.contentResolver.openInputStream(imgUri!!)
                 val bitmap = BitmapFactory.decodeStream(inputStream)
-                val file = File(context.cacheDir, fileName)
+                val file = File(context.cacheDir, "$fileName.png")
                 val outputStream = FileOutputStream(file)
                 bitmap?.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
                 outputStream.flush()

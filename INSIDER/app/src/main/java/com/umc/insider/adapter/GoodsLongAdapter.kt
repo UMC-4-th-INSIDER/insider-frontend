@@ -17,8 +17,7 @@ class GoodsLongAdapter(private val listener : OnNoteListener) : ListAdapter<Good
     companion object{
         private val DiffCallback = object  : DiffUtil.ItemCallback<GoodsGetRes>(){
             override fun areItemsTheSame(oldItem: GoodsGetRes, newItem: GoodsGetRes): Boolean {
-                return oldItem.title == newItem.title
-                //return oldItem.id == newItem.id
+                return oldItem.goods_id == newItem.goods_id
             }
 
             override fun areContentsTheSame(oldItem: GoodsGetRes, newItem: GoodsGetRes): Boolean {

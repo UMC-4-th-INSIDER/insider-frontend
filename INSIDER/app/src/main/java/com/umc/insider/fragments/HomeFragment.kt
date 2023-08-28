@@ -100,10 +100,6 @@ class HomeFragment : Fragment(), CategoryClickListener, OnNoteListener {
             categoryRV.addItemDecoration(CategoryAdapterDecoration())
             categoryRV.adapter = categoryAdapter
 
-//            todayDiscountRV.adapter = discountGoodsAdapter
-//            todayDiscountRV.layoutManager= GridLayoutManager(context, 2)
-//            todayDiscountRV.addItemDecoration(DiscountAdapterDecoration())
-
             todayDiscountRV.adapter = goodsShortAdapter
             todayDiscountRV.layoutManager= GridLayoutManager(context, 2)
             todayDiscountRV.addItemDecoration(DiscountAdapterDecoration())
@@ -119,7 +115,6 @@ class HomeFragment : Fragment(), CategoryClickListener, OnNoteListener {
                         val saleList = response.result
                         if (!saleList.isNullOrEmpty()){
                             withContext(Dispatchers.Main){
-                                //discountGoodsAdapter.submitList(DummyDate())
                                 goodsShortAdapter.submitList(saleList)
                             }
                         }
@@ -131,31 +126,9 @@ class HomeFragment : Fragment(), CategoryClickListener, OnNoteListener {
             }
 
 
-
-
-            //discountGoodsAdapter.submitList(DummyDate())
-
         }
 
 
-    }
-
-    private fun DummyDate() : ArrayList<SearchItem>{
-        val dummy1 = SearchItem(1, "양파1", "100g", "1000원","900원", "10%")
-        val dummy2 = SearchItem(2, "양파2", "200g", "2000원","1600원", "20%")
-        val dummy3 = SearchItem(3, "양파3", "300g", "3000원","2100원", "30%")
-        val dummy4 = SearchItem(4, "양파4", "400g", "4000원","2800원", "30%")
-        val dummy5 = SearchItem(5, "양파5", "500g", "6000원","3600원", "40%")
-        val dummy6 = SearchItem(6, "양파6", "800g", "8000원","4800원", "40%")
-
-        val arr = ArrayList<SearchItem>()
-        arr.add(dummy1)
-        arr.add(dummy2)
-        arr.add(dummy3)
-        arr.add(dummy4)
-        arr.add(dummy5)
-        arr.add(dummy6)
-        return arr
     }
 
     override fun onDestroyView() {
