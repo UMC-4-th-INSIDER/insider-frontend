@@ -5,21 +5,27 @@ import com.google.gson.annotations.SerializedName
 data class SignUpPostReq(
 
     @SerializedName("userId")
-    val userId : String,
+    val userId: String,
 
     @SerializedName("nickname")
-    val nickname : String,
+    val nickname: String,
 
     @SerializedName("pw")
-    val pw : String,
+    val pw: String,
 
     @SerializedName("email")
-    val email : String,
-    
+    val email: String,
+
     @SerializedName("zipCode")
-    val zipCode : Int,
+    val zipCode: Int,
 
     @SerializedName("detailAddress")
-    val detailAddress : String
+    val detailAddress: String,
 
-)
+    @SerializedName("sellerOrBuyer")
+    val sellerOrBuyer : Int,
+    @SerializedName("registerNum")
+    val registerNum : Long,
+
+
+    )

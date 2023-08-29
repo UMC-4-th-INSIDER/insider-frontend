@@ -30,11 +30,13 @@ import com.umc.insider.databinding.FragmentMyPageBinding
 import com.umc.insider.model.ExchangeItem
 import com.umc.insider.model.SearchItem
 import com.umc.insider.retrofit.RetrofitInstance
+import com.umc.insider.retrofit.api.ChattingInterface
 import com.umc.insider.retrofit.api.GoodsInterface
 import com.umc.insider.retrofit.api.UserInterface
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import retrofit2.create
 
 class MyPageFragment : Fragment() {
 
@@ -47,6 +49,9 @@ class MyPageFragment : Fragment() {
     private val exchangeEndAdapter = ExchangeEndAdapter()
 
     private val REQUEST_CODE_EDIT_PROFILE = 100
+    private val UserApi = RetrofitInstance.getInstance().create(UserInterface::class.java)
+    private val chattingApi = RetrofitInstance.getInstance().create(ChattingInterface::class.java)
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,7 +62,6 @@ class MyPageFragment : Fragment() {
 
         val userIdx = UserManager.getUserIdx(requireActivity().applicationContext)!!.toLong()
         Log.d("MYPAGEEE", "userIdx : {$userIdx}")
-        val UserApi = RetrofitInstance.getInstance().create(UserInterface::class.java)
 
         lifecycleScope.launch{
             try {
@@ -83,6 +87,39 @@ class MyPageFragment : Fragment() {
 
             }catch( e : Exception){
                 Log.e("MYPAGEEE", "$e")
+            }
+        }
+
+        lifecycleScope.launch {
+
+            try {
+                val response = chattingApi.getGoodsByUser(userIdx)
+
+                if (response.isSuccessful){
+                    val goodsList = response.body()
+                    if (goodsList != null) {
+                        for ((key, value) in goodsList)
+                            Log.d("리스트", "$key - $value")
+                    }
+                }
+            }catch (e : Exception ){
+
+            }
+        }
+
+        lifecycleScope.launch {
+            try {
+                val response = chattingApi.getExchangesByUser(userIdx)
+
+                if (response.isSuccessful){
+                    val exchangesList = response.body()
+                    if (exchangesList != null) {
+                        for ((key, value) in exchangesList)
+                            Log.d("리스트", "$key - $value")
+                    }
+                }
+            }catch (e : Exception ){
+
             }
         }
 
@@ -198,7 +235,6 @@ class MyPageFragment : Fragment() {
         super.onResume()
         val userIdx = UserManager.getUserIdx(requireActivity().applicationContext)!!.toLong()
         Log.d("MYPAGEEE", "userIdx : {$userIdx}")
-        val UserApi = RetrofitInstance.getInstance().create(UserInterface::class.java)
 
         lifecycleScope.launch{
             try {

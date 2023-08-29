@@ -76,7 +76,8 @@ class SignUpActivity : AppCompatActivity() {
                     val zipCode = addressNum.text.toString().toInt()
                     val detailAddress = addressText.text.toString()
 
-                    val signUpPostReq = SignUpPostReq(userId,nickname,pwd,email, zipCode, detailAddress)
+                    // 구매자 회원가입
+                    val signUpPostReq = SignUpPostReq(userId,nickname,pwd,email, zipCode, detailAddress, 0, 0)
 
                     val response = withContext(Dispatchers.IO){
                         userAPI.createUser(signUpPostReq)

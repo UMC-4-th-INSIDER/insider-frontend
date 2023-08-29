@@ -5,6 +5,8 @@ import com.umc.insider.retrofit.model.ChatRoomsListRes
 import com.umc.insider.retrofit.model.ChatRoomsPostReq
 import com.umc.insider.retrofit.model.ChatRoomsPostRes
 import com.umc.insider.retrofit.model.ChatRoomsUsersGetRes
+import com.umc.insider.retrofit.model.ExchangesPostRes
+import com.umc.insider.retrofit.model.GoodsGetRes
 import com.umc.insider.retrofit.response.BaseResponse
 import retrofit2.Response
 import retrofit2.http.Body
@@ -24,5 +26,11 @@ interface ChattingInterface {
 
     // 유저의 채팅방 목록 출력
     @GET("/chatRooms/{id}")
-    suspend fun getChatRoomByUser(@Path("id") userId: Long): Response<List<ChatRoomsListRes>>
+    suspend fun getChatRoomByUser(@Path("id") userId: Long) : Response<List<ChatRoomsListRes>>
+
+    @GET("/chatRooms/goods/{id}")
+    suspend fun getGoodsByUser(@Path("id") userId : Long) : Response<Map<String, List<GoodsGetRes>>>
+
+    @GET("/chatRooms/exchanges/{id}")
+    suspend fun getExchangesByUser(@Path("id") userId : Long) : Response<Map<String, List<ExchangesPostRes>>>
 }
