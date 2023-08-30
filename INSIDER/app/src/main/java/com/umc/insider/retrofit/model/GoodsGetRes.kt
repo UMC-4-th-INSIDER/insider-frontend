@@ -50,6 +50,9 @@ data class GoodsGetRes (
     val userZipCode: Int,
 
     @SerializedName("detailAddress")
-    val detailAddress: String
+    val detailAddress: String,
+
+    @SerializedName("createdAt")
+    val createdAt: String
 
 )
