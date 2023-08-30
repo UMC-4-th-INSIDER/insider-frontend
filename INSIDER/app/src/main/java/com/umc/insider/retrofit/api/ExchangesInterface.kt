@@ -26,4 +26,7 @@ interface ExchangesInterface {
 
     @GET("/exchanges/category/{category_id}")
     suspend fun getExchangesByCategoryId(@Path("category_id") category_id : Long) : Response<List<ExchangesPostRes>>
+
+    @GET("/exchanges/{id}")
+    suspend fun getGoodsById(@Path("id") id : Long) : ExchangesPostRes
 }

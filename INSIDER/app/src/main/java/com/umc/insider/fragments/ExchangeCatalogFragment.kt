@@ -76,7 +76,7 @@ class ExchangeCatalogFragment : Fragment(), OnNoteListener {
                 if(isDecorateCheck){
                     exchangeCatalogRV.addItemDecoration(SearchResultAdapterDecoration())
                 }
-                exchangingAdapter.submitList(ExchangeDummyDate())
+                //exchangingAdapter.submitList(ExchangeDummyDate())
             } else {
                 exchangeIng.background = ContextCompat.getDrawable(requireContext(),
                     R.drawable.white_left_round

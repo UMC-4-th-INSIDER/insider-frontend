@@ -23,6 +23,7 @@ import com.umc.insider.adapter.CategoryAdapter
 import com.umc.insider.adapter.CategoryImgAdapter
 import com.umc.insider.adapter.ExchangeAdapter
 import com.umc.insider.adapter.GoodsLongAdapter
+import com.umc.insider.auth.UserManager
 import com.umc.insider.databinding.FragmentExchangeMainBinding
 import com.umc.insider.exchange.ExchangeDetailActivity
 import com.umc.insider.model.ExchangeItem
@@ -31,8 +32,11 @@ import com.umc.insider.purchase.PurchaseDetailActivity
 import com.umc.insider.retrofit.RetrofitInstance
 import com.umc.insider.retrofit.api.ExchangesInterface
 import com.umc.insider.retrofit.api.GoodsInterface
+import com.umc.insider.revise.SaleReviseDetailActivity
 import com.umc.insider.utils.CategoryClickListener
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ExchangeMainFragment : Fragment(), CategoryClickListener, OnNoteListener {
 
@@ -47,6 +51,7 @@ class ExchangeMainFragment : Fragment(), CategoryClickListener, OnNoteListener {
 
     private var selectPosition : Int? = null
     private lateinit var categoryImgAdapter : CategoryImgAdapter
+    val exchangesAPI = RetrofitInstance.getInstance().create(ExchangesInterface::class.java)
 
 
     override fun onCreateView(
@@ -68,41 +73,37 @@ class ExchangeMainFragment : Fragment(), CategoryClickListener, OnNoteListener {
             searchRV.adapter = adapter
             searchRV.layoutManager = LinearLayoutManager(context)
             searchRV.addItemDecoration(ExchangeAdapterDecoration())
-            adapter.submitList(DummyDate())
 
             categoryRecyclerView.adapter = categoryImgAdapter
             categoryRecyclerView.layoutManager = GridLayoutManager(context, 6, GridLayoutManager.VERTICAL, false )
 
-        }
+            lifecycleScope.launch {
 
-        getResultText =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if (result.resultCode == Activity.RESULT_OK) {
-                    // Handle any result if needed
+                try {
+
+                    val response = withContext(Dispatchers.IO){
+                        exchangesAPI.getAllExchanges(null)
+                    }
+
+                    if (response.isSuccess){
+                        val categoryExchangesList = response.result
+                        val sortedExchangesList = categoryExchangesList?.sortedByDescending { it.id }
+                        adapter.submitList(sortedExchangesList)
+                    }else{
+
+                    }
+
+                }catch (e : Exception){
+
                 }
             }
+        }
+
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private fun DummyDate(): ArrayList<ExchangeItem> {
-        val dummy1 = ExchangeItem(1, "군양파", "1개", "당근", "")
-        val dummy2 = ExchangeItem(2, "시양파", "2개", "씨앗", "")
-        val dummy3 = ExchangeItem(3, "도양파", "3개", "코코넛", "")
-        val dummy4 = ExchangeItem(4, "섬양파", "4개", "해삼", "")
-        val dummy5 = ExchangeItem(5, "바다양파", "5개", "말미잘", "")
-
-        val arr = ArrayList<ExchangeItem>()
-        arr.add(dummy1)
-        arr.add(dummy2)
-        arr.add(dummy3)
-        arr.add(dummy4)
-        arr.add(dummy5)
-
-        return arr
     }
 
     class ExchangeAdapterDecoration : RecyclerView.ItemDecoration() {
@@ -120,12 +121,37 @@ class ExchangeMainFragment : Fragment(), CategoryClickListener, OnNoteListener {
 
     override fun onNotePurchaseDetail(goods_id: Long) {
 
+        val userIdx = UserManager.getUserIdx(requireActivity().applicationContext)!!.toLong()
+        Log.d("REVISEEE", "userIdx : {$userIdx}")
+        lifecycleScope.launch {
+            try {
+                val response = withContext(Dispatchers.IO){
+                    exchangesAPI.getGoodsById(goods_id)
+                }
+                withContext(Dispatchers.Main){
+                    val sellerID = response.userId
+
+                    if(userIdx != sellerID){
+                        //Toast.makeText(requireContext(), goods_id.toString(), Toast.LENGTH_SHORT).show()
+                        val intent = Intent(requireContext(), ExchangeDetailActivity::class.java)
+                        intent.putExtra("goods_id", goods_id.toString())
+                        startActivity(intent)
+                    } else {
+                        val intent = Intent(requireContext(), SaleReviseDetailActivity::class.java)
+                        intent.putExtra("goods_id", goods_id.toString())
+                        startActivity(intent)
+                    }
+                }
+            }catch (e : Exception){
+
+            }
+
+        }
+
     }
 
     override fun onImageTouch(position: Int) {
         selectPosition = position
-
-        val exchangesAPI = RetrofitInstance.getInstance().create(ExchangesInterface::class.java)
 
         val categoryIdx = (position + 1).toLong()
         Log.d("교환", categoryIdx.toString())
@@ -134,12 +160,14 @@ class ExchangeMainFragment : Fragment(), CategoryClickListener, OnNoteListener {
 
             try {
 
-                val response = exchangesAPI.getExchangesByCategoryId(categoryIdx)
+                val response = withContext(Dispatchers.IO) {
+                    exchangesAPI.getExchangesByCategoryId(categoryIdx)
+                }
 
                 if (response.isSuccessful){
                     val categoryExchangesList = response.body()
-                    val sortedGoodsList = categoryExchangesList?.sortedByDescending { it.id }
-                    //adapter.submitList(sortedGoodsList)
+                    val sortedExchangesList = categoryExchangesList?.sortedByDescending { it.id }
+                    adapter.submitList(sortedExchangesList)
                 }else{
 
                 }

@@ -7,20 +7,23 @@ import com.umc.insider.OnNoteListener
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.umc.insider.databinding.ExchangeItemBinding
 import com.umc.insider.model.ExchangeItem
+import com.umc.insider.retrofit.model.ExchangesPostRes
 import okhttp3.internal.connection.Exchange
 
 class ExchangeAdapter(private val onNoteListener: OnNoteListener) :
-    ListAdapter<ExchangeItem, ExchangeAdapter.ExchangeViewHolder>(DiffCallback){
+    ListAdapter<ExchangesPostRes, ExchangeAdapter.ExchangeViewHolder>(DiffCallback){
 
     companion object{
-        private val DiffCallback = object  : DiffUtil.ItemCallback<ExchangeItem>(){
-            override fun areItemsTheSame(oldItem: ExchangeItem, newItem: ExchangeItem): Boolean {
+        private val DiffCallback = object  : DiffUtil.ItemCallback<ExchangesPostRes>(){
+            override fun areItemsTheSame(oldItem: ExchangesPostRes, newItem: ExchangesPostRes): Boolean {
                 return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: ExchangeItem, newItem: ExchangeItem): Boolean {
+            override fun areContentsTheSame(oldItem: ExchangesPostRes, newItem: ExchangesPostRes): Boolean {
                 return oldItem == newItem
             }
 
@@ -28,28 +31,28 @@ class ExchangeAdapter(private val onNoteListener: OnNoteListener) :
     }
 
     inner class ExchangeViewHolder(private val binding : ExchangeItemBinding) :
-        RecyclerView.ViewHolder(binding.root), View.OnClickListener{
+        RecyclerView.ViewHolder(binding.root){
 
-            init{
-                itemView.setOnClickListener(this)
-            }
+            fun bind(exchangesPostRes : ExchangesPostRes){
+                binding.itemTitle.text = exchangesPostRes.title
+                binding.itemName.text = exchangesPostRes.name
+                if (exchangesPostRes.weight.isBlank()){
+                    binding.itemWeightOrRest.text = "${exchangesPostRes.count}개"
+                }else{
+                    binding.itemWeightOrRest.text = "${exchangesPostRes.weight}g"
+                }
+                binding.exchangeText.text = "${exchangesPostRes.wantItem} (이랑)\n교환 원해요!"
+                Glide.with(binding.goodsImg.context)
+                    .load(exchangesPostRes.imageUrl)
+                    .placeholder(null)
+                    .into(binding.goodsImg)
 
-            fun bind(exchangeItem : ExchangeItem){
-                binding.itemName.text = exchangeItem.itemName
-                binding.itemAmount.text = "(" + exchangeItem.itemAmount + ")"
-                binding.itemExchange.text = exchangeItem.itemExchange
-            }
-
-
-            override fun onClick(v: View?) {
-                val position = adapterPosition
-                if(position != RecyclerView.NO_POSITION){
-                    //onNoteListener.onNotePurchaseDetail(position)
+                binding.goods.setOnClickListener {
+                    onNoteListener.onNotePurchaseDetail(exchangesPostRes.id)
                 }
             }
 
-
-        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExchangeViewHolder {
         val binding = ExchangeItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -60,7 +63,7 @@ class ExchangeAdapter(private val onNoteListener: OnNoteListener) :
         holder.bind(getItem(position))
     }
 
-    fun getItemAtPosition(position: Int): ExchangeItem {
+    fun getItemAtPosition(position: Int): ExchangesPostRes {
         return getItem(position)
     }
 

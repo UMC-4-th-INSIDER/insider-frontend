@@ -129,11 +129,12 @@ class FavoriteFragment : Fragment(), OnNoteListener {
                 Exchange.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
 
                 favoriteRV.adapter = exchangeAdapter
+
                 favoriteRV.layoutManager = LinearLayoutManager(context)
-                if(isDecorateCheck){
-                    //favoriteRV.addItemDecoration(ExchangeMainFragment.ExchangeAdapterDecoration())
-                }
-                exchangeAdapter.submitList(ExchangeDummyDate())
+//                if(isDecorateCheck){
+//                    //favoriteRV.addItemDecoration(ExchangeMainFragment.ExchangeAdapterDecoration())
+//                }
+//                //exchangeAdapter.submitList(ExchangeDummyDate())
             }
         }
     }
