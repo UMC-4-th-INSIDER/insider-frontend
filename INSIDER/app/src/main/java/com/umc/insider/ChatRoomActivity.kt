@@ -176,12 +176,9 @@ class ChatRoomActivity : AppCompatActivity() {
                     if (response.isSuccessful) {
                         val chatList = response.body()
 
+
                         withContext(Dispatchers.Main) {
                             adapter.submitList(chatList){
-
-                                if(currentChatList.isEmpty()){
-                                    binding.chatRV.visibility = View.VISIBLE
-                                }
 
                                 if (first && currentChatList.isNotEmpty()){
                                     binding.root.post{
@@ -194,6 +191,9 @@ class ChatRoomActivity : AppCompatActivity() {
                             }
                         }
                         currentChatList = chatList!!
+                        if(currentChatList.isEmpty()){
+                            binding.chatRV.visibility = View.VISIBLE
+                        }
                     } else { }
                 } catch (e: Exception) {
                 }

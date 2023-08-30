@@ -61,7 +61,7 @@ class ChatListFragment : Fragment(), ChatListClickListener {
                 } catch (e: Exception) {
                 }
 
-                delay(3000L)
+                delay(1000L)
             }
         }
     }
