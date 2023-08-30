@@ -1,5 +1,6 @@
 package com.umc.insider.adapter
 
+import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,6 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.umc.insider.OnNoteListener
 import com.umc.insider.databinding.GoodsShortItemBinding
 import com.umc.insider.retrofit.model.GoodsGetRes
@@ -34,12 +36,16 @@ class GoodsShortAdapter(private val listener : OnNoteListener) : ListAdapter<Goo
             binding.itemName.text = goods.title
             binding.itemPrice.text = "${goods.price}원"
             if(goods.sale_price == null){
-                binding.salePrice.visibility = View.INVISIBLE
+                binding.itemDiscountRateLayout.visibility = View.GONE
+                binding.salePrice.visibility = View.GONE
                 binding.itemDiscountRate.visibility = View.INVISIBLE
+                binding.itemPrice.paintFlags = binding.itemPrice.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
                 binding.salePrice.text = ""
             }else{
+                binding.itemDiscountRateLayout.visibility = View.VISIBLE
                 binding.salePrice.visibility = View.VISIBLE
                 binding.itemDiscountRate.visibility = View.VISIBLE
+                binding.itemPrice.paintFlags = binding.itemPrice.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
                 binding.salePrice.text = "${goods.sale_price}원"
                 binding.itemDiscountRate.text = "${goods.sale_percent}%"
             }
@@ -47,14 +53,17 @@ class GoodsShortAdapter(private val listener : OnNoteListener) : ListAdapter<Goo
 
             if(goods.weight.isNullOrBlank()){
                 binding.itemWeightOrRest.text = "(${goods.rest}개)"
+                binding.itemUnit.text = "(개당)"
             }else{
                 binding.itemWeightOrRest.text = "(${goods.weight}g)"
+                binding.itemUnit.text = "(100g당)"
             }
 
 
             Glide.with(binding.goodsImg.context)
                 .load(goods.img_url)
                 .placeholder(null)
+                .transform(RoundedCorners(30))
                 .into(binding.goodsImg)
 
             binding.goods.setOnClickListener {
