@@ -3,7 +3,6 @@ package com.umc.insider.auth.signUp
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -12,10 +11,9 @@ import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.google.gson.annotations.SerializedName
 import com.umc.insider.R
 import com.umc.insider.auth.login.LogInActivity
-import com.umc.insider.databinding.ActivitySignUpBinding
+import com.umc.insider.databinding.ActivitySellerSignUpBinding
 import com.umc.insider.retrofit.RetrofitInstance
 import com.umc.insider.retrofit.api.UserInterface
 import com.umc.insider.retrofit.model.SignUpPostReq
@@ -23,17 +21,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class SignUpActivity : AppCompatActivity() {
+class SellerSignUpActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivitySignUpBinding
+    private lateinit var binding : ActivitySellerSignUpBinding
     private lateinit var viewModel : SignUpViewModel
     private lateinit var getSearchResult : ActivityResultLauncher<Intent>
     private val userAPI = RetrofitInstance.getInstance().create(UserInterface::class.java)
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_sign_up)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_seller_sign_up)
+
         viewModel = ViewModelProvider(this)[SignUpViewModel::class.java]
 
         binding.vm = viewModel
@@ -60,9 +58,10 @@ class SignUpActivity : AppCompatActivity() {
             pwdEdit.addTextChangedListener { viewModel.setUserPwd(it.toString()) }
             pwdCheckEdit.addTextChangedListener { viewModel.setCheckPwd(it.toString()) }
             emailEdit.addTextChangedListener { viewModel.setUserEmail(it.toString()) }
+            registerNumEdit.addTextChangedListener { viewModel.setResgisterNum((it.toString())) }
 
             addressFindBtn.setOnClickListener {
-                val intent = Intent(this@SignUpActivity, AddressActivity::class.java)
+                val intent = Intent(this@SellerSignUpActivity, AddressActivity::class.java)
                 getSearchResult.launch(intent)
             }
 
@@ -75,10 +74,11 @@ class SignUpActivity : AppCompatActivity() {
                     val email = emailEdit.text.toString()
                     val zipCode = addressNum.text.toString().toInt()
                     val detailAddress = addressText.text.toString()
-                    val sellerOrBuyer: Int = 0
+                    val registerNum = registerNumEdit.text.toString().toLong()
+                    val sellerOrBuyer: Int = 1
 
                     // 구매자 회원가입
-                    val signUpPostReq = SignUpPostReq(userId,nickname,pwd,email, zipCode, detailAddress, sellerOrBuyer, 0)
+                    val signUpPostReq = SignUpPostReq(userId,nickname,pwd,email, zipCode, detailAddress, sellerOrBuyer, registerNum)
 
                     val response = withContext(Dispatchers.IO){
                         userAPI.createUser(signUpPostReq)
@@ -88,7 +88,7 @@ class SignUpActivity : AppCompatActivity() {
                         val baseResponse = response.body()
                         if(baseResponse?.isSuccess == true){
                             val loginPostRes = baseResponse.result
-                            Toast.makeText(this@SignUpActivity, "회원가입 성공하셨습니다.",Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@SellerSignUpActivity, "회원가입 성공하셨습니다.", Toast.LENGTH_SHORT).show()
                             finish()
                         }else{
                             // baseResponse가 실패

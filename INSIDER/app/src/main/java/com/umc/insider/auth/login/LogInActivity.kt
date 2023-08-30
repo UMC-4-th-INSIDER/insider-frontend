@@ -10,13 +10,6 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
-import com.facebook.AccessToken
-import com.facebook.CallbackManager
-import com.facebook.FacebookCallback
-import com.facebook.FacebookException
-import com.facebook.GraphRequest
-import com.facebook.login.LoginManager
-import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -28,14 +21,13 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.KakaoSdk
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
-import com.kakao.sdk.common.util.Utility
 import com.kakao.sdk.user.UserApiClient
 import com.umc.insider.MainActivity
 import com.umc.insider.R
+import com.umc.insider.auth.signUp.SellerBuyerActivity
 import com.umc.insider.auth.AutoLoginManager
 import com.umc.insider.auth.TokenManager
 import com.umc.insider.auth.UserManager
-import com.umc.insider.auth.signUp.SignUpActivity
 import com.umc.insider.databinding.ActivityLogInBinding
 import com.umc.insider.retrofit.RetrofitInstance
 import com.umc.insider.retrofit.api.UserInterface
@@ -177,7 +169,7 @@ class LogInActivity : AppCompatActivity() {
             }
 
             singUp.setOnClickListener {
-                startActivity(Intent(this@LogInActivity, SignUpActivity::class.java))
+                startActivity(Intent(this@LogInActivity, SellerBuyerActivity::class.java))
             }
             googleBtn.setOnClickListener {
                 signIn()

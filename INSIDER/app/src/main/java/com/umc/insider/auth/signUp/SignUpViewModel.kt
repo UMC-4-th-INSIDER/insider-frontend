@@ -22,6 +22,9 @@ class SignUpViewModel : ViewModel() {
     private val _userEmail = MutableLiveData("")
     val userEmail : LiveData<String> = _userEmail
 
+    private val _registerNum = MutableLiveData("")
+    val registerNum : LiveData<String> = _registerNum
+
     val idState: LiveData<EditState> = Transformations.map(_userId) { id ->
         when {
             id.isNullOrBlank() -> EditState.EMPTY
@@ -54,6 +57,14 @@ class SignUpViewModel : ViewModel() {
         when {
             email.isNullOrBlank() -> EditState.EMPTY
             REGEX_EMAIL.toRegex().matches(email) -> EditState.CHECK
+            else -> EditState.CLOSE
+        }
+    }
+
+    val registerNumState: LiveData<EditState> = Transformations.map(_registerNum) { registerNum ->
+        when{
+            registerNum.isNullOrBlank() -> EditState.EMPTY
+            REGEX_REGISTER.toRegex().matches(registerNum) -> EditState.CHECK
             else -> EditState.CLOSE
         }
     }
@@ -97,6 +108,10 @@ class SignUpViewModel : ViewModel() {
         _userEmail.value = email
     }
 
+    fun setResgisterNum(registerNum : String){
+        _registerNum.value = registerNum
+    }
+
     companion object{
         //최소 6자 이상, 10자 이하
         //알파벳 소문자와 대문자 포함
@@ -111,6 +126,8 @@ class SignUpViewModel : ViewModel() {
         private const val REGEX_SPECIALCHAR = "[!@#\$%^&*()-=_+]"
 
         private const val REGEX_EMAIL = "^[a-zA-Z0-9+-\\_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+\$"
+
+        private const val REGEX_REGISTER = "^[0-9]{10}\$"
     }
 }
 

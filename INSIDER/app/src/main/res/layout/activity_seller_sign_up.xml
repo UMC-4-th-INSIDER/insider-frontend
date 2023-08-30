@@ -29,7 +29,6 @@
                 android:id="@+id/logo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 app:srcCompat="@drawable/login_singup_logo"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -42,7 +41,7 @@
             android:id="@+id/inputLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="10dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toTopOf="@id/addressLayout"
             app:layout_constraintEnd_toEndOf="parent"
@@ -193,13 +192,43 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/editTextTint"
                     android:hint="@string/emailHint"
-                    android:imeOptions="actionDone"
                     android:inputType="textWebEmailAddress"
                     android:text="@{vm.userEmail}"
+                    android:nextFocusDown="@id/registerNumEdit"
                     tools:drawableEnd="@drawable/baseline_check_24" />
 
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/registerNumLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/userEmailLayout">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/registerNum"
+                    android:textColor="@color/loginSingUpTextColor" />
+
+                <EditText
+                    android:id="@+id/registerNumEdit"
+                    stateCheck="@{vm.registerNumState}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/editTextTint"
+                    android:hint="@string/registerNumHint"
+                    android:imeOptions="actionDone"
+                    android:inputType="numberDecimal"
+                    android:text="@{vm.registerNum}"
+                    tools:drawableEnd="@drawable/baseline_check_24" />
+
+            </LinearLayout>
+I
         </LinearLayout>
 
 
