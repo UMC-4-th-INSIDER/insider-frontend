@@ -32,8 +32,8 @@ class GoodsShortAdapter(private val listener : OnNoteListener) : ListAdapter<Goo
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(goods : GoodsGetRes){
-
-            binding.itemName.text = goods.title
+            binding.itemTitle.text = goods.title
+            binding.itemName.text = goods.name
             binding.itemPrice.text = "${goods.price}원"
             if(goods.sale_price == null){
                 binding.itemDiscountRateLayout.visibility = View.GONE
@@ -55,7 +55,13 @@ class GoodsShortAdapter(private val listener : OnNoteListener) : ListAdapter<Goo
                 binding.itemWeightOrRest.text = "(${goods.rest}개)"
                 binding.itemUnit.text = "(개당)"
             }else{
-                binding.itemWeightOrRest.text = "(${goods.weight}g)"
+                val weightText = if (goods.weight.toLong() >= 1000) {
+                    String.format("(%.1fkg)", goods.weight.toLong() / 1000.0)
+                } else {
+                    "(${goods.weight}g)"
+                }
+
+                binding.itemWeightOrRest.text = weightText
                 binding.itemUnit.text = "(100g당)"
             }
 

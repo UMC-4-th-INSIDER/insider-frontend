@@ -58,7 +58,21 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
+            <TextView
+                android:id="@+id/itemTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fontFamily="@font/roboto"
+                android:gravity="center"
+                android:maxWidth="120dp"
+                android:maxLines="1"
+                android:text="드라큘라 잡는 양파ddddddddddddddddddddddddddddddddd"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/itemDiscountRateLayout"/>
             <TextView
                 android:id="@+id/itemName"
                 android:layout_width="wrap_content"
@@ -67,7 +81,7 @@
                 android:fontFamily="@font/roboto"
                 android:gravity="center"
                 android:maxWidth="80dp"
-                android:maxLines="1"
+                android:maxLines="2"
                 android:text="드라큘라 잡는 양파ddddddddddddddddddddddddddddddddd"
                 android:textSize="15sp"
                 android:textStyle="bold"
@@ -75,7 +89,7 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toEndOf="@+id/itemDiscountRateLayout"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/itemTitle" />
 
             <TextView
                 android:id="@+id/itemWeightOrRest"
@@ -86,10 +100,11 @@
                 android:text="(2개)"
                 android:textSize="15sp"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/itemName"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/itemName"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/itemTitle" />
 
             <TextView
                 android:id="@+id/itemPrice"
@@ -127,9 +142,10 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/itemPrice"
                 android:text="2000원"
-                android:textSize="13sp"
+                android:textColor="@color/red"
+                android:textSize="15sp"
                 android:textStyle="bold"
-                android:fontFamily="@font/roboto" />
+                android:fontFamily="@font/nestocopper422" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
