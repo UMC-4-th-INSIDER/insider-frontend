@@ -73,11 +73,11 @@ class SaleReviseDetailActivity : AppCompatActivity() {
 
         binding.sellRegistorBtn.setOnClickListener {
 
-            UserManager.getUserIdx(this@SaleReviseDetailActivity, )
+            UserManager.getUserIdx(this@SaleReviseDetailActivity)
 
             val intent = Intent(this@SaleReviseDetailActivity, SaleReviseRegistrationActivity::class.java)
             intent.putExtra("goods_id", goods_id.toString())
-            intent.putExtra("sellOrExchange", "buy")
+            intent.putExtra("sellOrExchange", "sell")
             startActivity(intent)
             finish()
 

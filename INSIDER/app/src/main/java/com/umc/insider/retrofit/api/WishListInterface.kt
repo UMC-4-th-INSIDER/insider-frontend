@@ -1,5 +1,6 @@
 package com.umc.insider.retrofit.api
 
+import com.umc.insider.retrofit.model.ExchangesPostRes
 import com.umc.insider.retrofit.model.GoodsGetRes
 import com.umc.insider.retrofit.model.WishListGetRes
 import com.umc.insider.retrofit.model.WishListPostReq
@@ -17,13 +18,24 @@ interface WishListInterface {
     @POST("/wishlist/create")
     suspend fun addGoodsToWishList(@Body postWishListsReq: WishListPostReq): Response<BaseResponse<WishListPostRes>>
 
-    @GET("/wishlist/{userId}")
+    @GET("/wishlist/goods/{userId}")
     suspend fun getGoodsInWishList (@Path("userId") userId : Long) : Response<List<GoodsGetRes>>
 
-    @DELETE("/wishlist/delete/{userId}/{goodsId}")
-    suspend fun deleteWishList(@Path("userId") userId: Long, @Path("goodsId") goodsId: Long): Response<BaseResponse<WishListPostRes>>
+    @GET("/wishlist/exchanges/{userId}")
+    suspend fun getExchangesInWishList(@Path("userId") userId : Long) : Response<List<ExchangesPostRes>>
 
-    @GET("/wishlist/check/{userId}/{goodsId}")
-    suspend fun checkWishList(@Path("userId") userId : Long, @Path("goodsId") goodsId : Long) : Boolean
+    @DELETE("/wishlist/delete/{userId}/{goodsOrExchangesId}/{status}")
+    suspend fun deleteWishList(
+        @Path("userId") userId: Long,
+        @Path("goodsOrExchangesId") goodsOrExchangesId: Long,
+        @Path("status") status : Int
+    ): Response<BaseResponse<WishListPostRes>>
+
+    @GET("/wishlist/check/{userId}/{goodsOrExchangesId}/{status}")
+    suspend fun checkWishList(
+        @Path("userId") userId : Long,
+        @Path("goodsOrExchangesId") goodsOrExchangesId : Long,
+        @Path("status") status : Int
+    ) : Boolean
 
 }

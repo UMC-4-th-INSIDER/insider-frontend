@@ -1,41 +1,53 @@
 package com.umc.insider.exchange
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.umc.insider.R
 import com.umc.insider.auth.UserManager
-import com.umc.insider.databinding.ActivityExchangeDetailBinding
+import com.umc.insider.databinding.ActivityExchangeModifyBinding
 import com.umc.insider.retrofit.RetrofitInstance
 import com.umc.insider.retrofit.api.ExchangesInterface
-import com.umc.insider.retrofit.api.GoodsInterface
+import com.umc.insider.revise.SaleReviseRegistrationActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class ExchangeDetailActivity : AppCompatActivity() {
+class ExchangeModifyActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivityExchangeDetailBinding
+    private lateinit var binding : ActivityExchangeModifyBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_exchange_detail)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_exchange_modify)
 
         val user_id = UserManager.getUserIdx(this)!!.toLong()
         val goods_id = intent.getStringExtra("goods_id")!!.toLong()
 
         val exchangesAPI = RetrofitInstance.getInstance().create(ExchangesInterface::class.java)
-
+        //Toast.makeText(this, goods_id.toString(), Toast.LENGTH_SHORT).show()
         lifecycleScope.launch {
 
             try {
 
-                val response = exchangesAPI.getGoodsById(goods_id)
+                val response = withContext(Dispatchers.IO){
+                    exchangesAPI.getGoodsById(goods_id)
+                }
+
 
                 withContext(Dispatchers.Main){
+
+//                  binding.purchaseLocation.text = response.user.address.detailAddress
+                    binding.sellerInfo.text = response.user.nickname
+                    binding.productNameTitle.text = response.title
+
+                    binding.productName.text = response.name
 
                     Glide.with(binding.productImage.context)
                         .load(response.imageUrl)
@@ -43,8 +55,8 @@ class ExchangeDetailActivity : AppCompatActivity() {
                         .transform(RoundedCorners(30))
                         .into(binding.productImage)
 
-                    binding.productNameTitle.text = response.title
-                    binding.productName.text = response.name
+                    binding.PurchaseExpirationDate.text = response.shelfLife
+
                     if (response.weight.isNullOrBlank()){
                         binding.productAmount.text = "(${response.count}개)"
                         binding.PurchaseTotalamountTv.text = "${response.count}g"
@@ -52,9 +64,6 @@ class ExchangeDetailActivity : AppCompatActivity() {
                         binding.productAmount.text = "(${response.weight}g)"
                         binding.PurchaseTotalamountTv.text = "${response.count}개"
                     }
-                    binding.PurchaseExpirationDate.text = response.shelfLife
-                    binding.purchaseLocation.text = response.user.address.detailAddress
-                    binding.sellerInfo.text = response.user.nickname
 
                 }
 
@@ -64,5 +73,17 @@ class ExchangeDetailActivity : AppCompatActivity() {
             }
         }
 
+
+        binding.sellRegistorBtn.setOnClickListener {
+
+            UserManager.getUserIdx(this@ExchangeModifyActivity)
+
+            val intent = Intent(this@ExchangeModifyActivity, SaleReviseRegistrationActivity::class.java)
+            intent.putExtra("goods_id", goods_id.toString())
+            intent.putExtra("sellOrExchange", "exchange")
+            startActivity(intent)
+            finish()
+
+        }
     }
 }

@@ -88,13 +88,13 @@ class PurchaseActivity : AppCompatActivity(), OnMapReadyCallback{
         val userAPI = RetrofitInstance.getInstance().create(UserInterface::class.java)
         val wishListAPI = RetrofitInstance.getInstance().create(WishListInterface::class.java)
 
-        val wishListPostReq = WishListPostReq(user_id ,goods_id!!)
+        val wishListPostReq = WishListPostReq(user_id ,goods_id!!,0)
 
         lifecycleScope.launch {
 
             try {
                 val response = withContext(Dispatchers.IO){
-                    wishListAPI.checkWishList(user_id,goods_id!!)
+                    wishListAPI.checkWishList(user_id,goods_id!!, 0)
                 }
                 withContext(Dispatchers.Main) { binding.favoriteBtn.isChecked = response }
             }catch (e : Exception){
@@ -167,7 +167,7 @@ class PurchaseActivity : AppCompatActivity(), OnMapReadyCallback{
 
                     try {
 
-                        val response = wishListAPI.deleteWishList(userId = user_id, goodsId = goods_id!!)
+                        val response = wishListAPI.deleteWishList(userId = user_id, goodsOrExchangesId = goods_id!!, status = 0)
 
                         if (response.isSuccessful){
                             withContext(Dispatchers.Main){

@@ -26,6 +26,7 @@ import com.umc.insider.adapter.GoodsLongAdapter
 import com.umc.insider.auth.UserManager
 import com.umc.insider.databinding.FragmentExchangeMainBinding
 import com.umc.insider.exchange.ExchangeDetailActivity
+import com.umc.insider.exchange.ExchangeModifyActivity
 import com.umc.insider.model.ExchangeItem
 import com.umc.insider.model.SearchItem
 import com.umc.insider.purchase.PurchaseDetailActivity
@@ -129,7 +130,7 @@ class ExchangeMainFragment : Fragment(), CategoryClickListener, OnNoteListener {
                     exchangesAPI.getGoodsById(goods_id)
                 }
                 withContext(Dispatchers.Main){
-                    val sellerID = response.userId
+                    val sellerID = response.user.id
 
                     if(userIdx != sellerID){
                         //Toast.makeText(requireContext(), goods_id.toString(), Toast.LENGTH_SHORT).show()
@@ -137,7 +138,7 @@ class ExchangeMainFragment : Fragment(), CategoryClickListener, OnNoteListener {
                         intent.putExtra("goods_id", goods_id.toString())
                         startActivity(intent)
                     } else {
-                        val intent = Intent(requireContext(), SaleReviseDetailActivity::class.java)
+                        val intent = Intent(requireContext(), ExchangeModifyActivity::class.java)
                         intent.putExtra("goods_id", goods_id.toString())
                         startActivity(intent)
                     }

@@ -1,25 +1,18 @@
 package com.umc.insider.retrofit.model
 
+import Category
 import com.google.gson.annotations.SerializedName
-import com.umc.insider.model.Users
-import java.util.Date
 
-data class ExchangesPostRes(
-
-    @SerializedName("id")
-    val id : Long,
+data class PartialExchanges(
 
     @SerializedName("title")
     val title : String,
-
-    @SerializedName("imageUrl")
-    val imageUrl : String,
 
     @SerializedName("name")
     val name : String,
 
     @SerializedName("count")
-    val count : Int,
+    val count : Int?,
 
     @SerializedName("wantItem")
     val wantItem : String,
@@ -30,12 +23,7 @@ data class ExchangesPostRes(
     @SerializedName("shelfLife")
     val shelfLife : String,
 
-    @SerializedName("createdAt")
-    val createdAt : Date,
+    @SerializedName("category")
+    val category: Category,
 
-    @SerializedName("categoryId")
-    val categoryId : Long,
-
-    @SerializedName("user")
-    val user : Users,
 )

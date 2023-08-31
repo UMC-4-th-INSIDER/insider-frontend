@@ -13,4 +13,4 @@ data class Address(
     @SerializedName("detailAddress")
     val detailAddress: String
 
-    )
+)

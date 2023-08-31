@@ -39,17 +39,20 @@ class PurchaseDetailActivity : AppCompatActivity() {
         val goodsAPI = RetrofitInstance.getInstance().create(GoodsInterface::class.java)
         val wishListAPI = RetrofitInstance.getInstance().create(WishListInterface::class.java)
 
-        val wishListPostReq = WishListPostReq(user_id ,goods_id)
+        val wishListPostReq = WishListPostReq(user_id ,goods_id, 0)
 
         lifecycleScope.launch {
-
+            Log.d("찜", "시작")
             try {
                 val response = withContext(Dispatchers.IO){
-                    wishListAPI.checkWishList(user_id,goods_id)
+                    wishListAPI.checkWishList(user_id,goods_id, 0)
                 }
+                Log.d("찜", response.toString())
+                Log.d("찜", goods_id.toString()+" "+user_id.toString() )
                 withContext(Dispatchers.Main) { binding.favoriteBtn.isChecked = response }
             }catch (e : Exception){
-
+                Log.d("찜", "네트워크 에러")
+                Log.d("찜", goods_id.toString()+" "+user_id.toString() )
             }
         }
 
@@ -123,7 +126,7 @@ class PurchaseDetailActivity : AppCompatActivity() {
 
                     try {
 
-                        val response = wishListAPI.deleteWishList(userId = user_id, goodsId = goods_id)
+                        val response = wishListAPI.deleteWishList(userId = user_id, goodsOrExchangesId = goods_id, status = 0)
 
                         if (response.isSuccessful){
                             withContext(Dispatchers.Main){
