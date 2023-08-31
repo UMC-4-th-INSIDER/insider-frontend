@@ -75,6 +75,9 @@ class SaleReviseRegistrationActivity : AppCompatActivity() {
 
     private var imgUri : Uri? = null
 
+    private var sellOrExchange = ""
+
+
     private val selectImageResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             imgUri = result.data?.data
@@ -99,6 +102,8 @@ class SaleReviseRegistrationActivity : AppCompatActivity() {
             }
         }
 
+        sellOrExchange = intent.getStringExtra("sellOrExchange").toString()
+
         val categories = listOf("카테고리", "과일", "정육/계란", "채소", "유제품", "수산/건어물", "기타")
         categorySpinner = findViewById(R.id.categorySpinner)
         adapter = CustomSpinnerAdapter(this, categories)
@@ -107,6 +112,16 @@ class SaleReviseRegistrationActivity : AppCompatActivity() {
         window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         val goods_id = intent.getStringExtra("goods_id")!!.toLong()
+        if (sellOrExchange.isNullOrBlank()){
+            if (sellOrExchange == "sell"){
+                isGeneralSaleSelected = true
+                binding.generalSale.isClickable = false
+            }else{
+                isGeneralSaleSelected = false
+                binding.generalSale.isClickable = false
+            }
+            updateButtonUI()
+        }
 
         // 가져오기
         lifecycleScope.launch{
@@ -232,8 +247,6 @@ class SaleReviseRegistrationActivity : AppCompatActivity() {
             frontShadowLayout.setOnClickListener {
                 frontShadowLayout.visibility = View.GONE
             }
-
-
 
             // 갤러리 호출
             sellImageView.setOnClickListener{

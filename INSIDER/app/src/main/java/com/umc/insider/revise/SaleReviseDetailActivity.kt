@@ -77,6 +77,7 @@ class SaleReviseDetailActivity : AppCompatActivity() {
 
             val intent = Intent(this@SaleReviseDetailActivity, SaleReviseRegistrationActivity::class.java)
             intent.putExtra("goods_id", goods_id.toString())
+            intent.putExtra("sellOrExchange", "buy")
             startActivity(intent)
             finish()
 
