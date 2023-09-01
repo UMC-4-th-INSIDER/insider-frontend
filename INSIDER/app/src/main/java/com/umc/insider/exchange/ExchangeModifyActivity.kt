@@ -20,7 +20,7 @@ import kotlinx.coroutines.withContext
 
 class ExchangeModifyActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivityExchangeModifyBinding
+    private lateinit var binding: ActivityExchangeModifyBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,14 +36,14 @@ class ExchangeModifyActivity : AppCompatActivity() {
 
             try {
 
-                val response = withContext(Dispatchers.IO){
+                val response = withContext(Dispatchers.IO) {
                     exchangesAPI.getGoodsById(goods_id)
                 }
 
 
-                withContext(Dispatchers.Main){
+                withContext(Dispatchers.Main) {
 
-//                  binding.purchaseLocation.text = response.user.address.detailAddress
+                    binding.purchaseLocation.text = response.detail
                     binding.sellerInfo.text = response.user.nickname
                     binding.productNameTitle.text = response.title
 
@@ -57,10 +57,10 @@ class ExchangeModifyActivity : AppCompatActivity() {
 
                     binding.PurchaseExpirationDate.text = response.shelfLife
 
-                    if (response.weight.isNullOrBlank()){
+                    if (response.weight.isNullOrBlank()) {
                         binding.productAmount.text = "(${response.count}개)"
                         binding.PurchaseTotalamountTv.text = "${response.count}g"
-                    }else{
+                    } else {
                         binding.productAmount.text = "(${response.weight}g)"
                         binding.PurchaseTotalamountTv.text = "${response.count}개"
                     }
@@ -68,7 +68,7 @@ class ExchangeModifyActivity : AppCompatActivity() {
                 }
 
 
-            }catch (e : Exception){
+            } catch (e: Exception) {
 
             }
         }
@@ -78,7 +78,8 @@ class ExchangeModifyActivity : AppCompatActivity() {
 
             UserManager.getUserIdx(this@ExchangeModifyActivity)
 
-            val intent = Intent(this@ExchangeModifyActivity, SaleReviseRegistrationActivity::class.java)
+            val intent =
+                Intent(this@ExchangeModifyActivity, SaleReviseRegistrationActivity::class.java)
             intent.putExtra("goods_id", goods_id.toString())
             intent.putExtra("sellOrExchange", "exchange")
             startActivity(intent)

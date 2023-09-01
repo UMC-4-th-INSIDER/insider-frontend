@@ -23,7 +23,10 @@ data class PartialExchanges(
     @SerializedName("shelfLife")
     val shelfLife : String,
 
-    @SerializedName("category")
-    val category: Category,
+    @SerializedName("categoryId")
+    val categoryId: Long,
+
+    @SerializedName("userId")
+    val userId : Long
 
 )

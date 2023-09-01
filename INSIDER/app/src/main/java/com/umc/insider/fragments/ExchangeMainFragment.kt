@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
@@ -50,10 +51,61 @@ class ExchangeMainFragment : Fragment(), CategoryClickListener, OnNoteListener {
     private val imageArray = intArrayOf(R.drawable.category_fruit,R.drawable.category_meat_egg,R.drawable.category_vegetable,R.drawable.category_dairy_product,R.drawable.category_seafood_driedfish,R.drawable.category_etc)
     private val clickImageArray = intArrayOf(R.drawable.category_fruit_click,R.drawable.category_meat_egg_click,R.drawable.category_vegetable_click,R.drawable.category_dairy_product_click,R.drawable.category_seafood_driedfish_click,R.drawable.category_etc_click)
 
-    private var selectPosition : Int? = null
+    private var selectPosition : Int = -1
     private lateinit var categoryImgAdapter : CategoryImgAdapter
     val exchangesAPI = RetrofitInstance.getInstance().create(ExchangesInterface::class.java)
 
+    override fun onResume() {
+        super.onResume()
+
+        val categoryIdx = (selectPosition + 1).toLong()
+        Log.d("교환", categoryIdx.toString())
+        //Toast.makeText(requireContext(), selectPosition.toString(), Toast.LENGTH_SHORT).show()
+
+        if (categoryIdx.toInt() == 0){
+            lifecycleScope.launch {
+
+                try {
+
+                    val response = withContext(Dispatchers.IO){
+                        exchangesAPI.getAllExchanges(null)
+                    }
+
+                    if (response.isSuccess){
+                        val categoryExchangesList = response.result
+                        val sortedExchangesList = categoryExchangesList?.sortedByDescending { it.id }
+                        adapter.submitList(sortedExchangesList)
+                    }else{
+
+                    }
+
+                }catch (e : Exception){
+
+                }
+            }
+        }else{
+            lifecycleScope.launch {
+
+                try {
+
+                    val response = withContext(Dispatchers.IO) {
+                        exchangesAPI.getExchangesByCategoryId(categoryIdx)
+                    }
+
+                    if (response.isSuccessful){
+                        val categoryExchangesList = response.body()
+                        val sortedExchangesList = categoryExchangesList?.sortedByDescending { it.id }
+                        adapter.submitList(sortedExchangesList)
+                    }else{
+
+                    }
+
+                }catch (e : Exception){
+
+                }
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -156,6 +208,7 @@ class ExchangeMainFragment : Fragment(), CategoryClickListener, OnNoteListener {
 
         val categoryIdx = (position + 1).toLong()
         Log.d("교환", categoryIdx.toString())
+        //Toast.makeText(requireContext(), selectPosition.toString(), Toast.LENGTH_SHORT).show()
 
         lifecycleScope.launch {
 

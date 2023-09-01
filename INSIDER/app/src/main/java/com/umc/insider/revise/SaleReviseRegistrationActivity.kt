@@ -55,6 +55,7 @@ class SaleReviseRegistrationActivity : AppCompatActivity() {
     private var imgUri: Uri? = null
 
     private var sellOrExchange = ""
+    private var imgUrl : String = ""
 
     private val selectImageResultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -114,6 +115,7 @@ class SaleReviseRegistrationActivity : AppCompatActivity() {
                     }
                     val category = response.categoryId.id
                     currentPrice = response.price
+                    imgUrl = response.img_url
                     withContext(Dispatchers.Main) {
 
                         Glide.with(binding.sellImageView.context)
@@ -256,9 +258,10 @@ class SaleReviseRegistrationActivity : AppCompatActivity() {
                             shelfLife = expirationDate,
                             weight = productWeight,
                             wantItem = wantItem.toString(),
-                            category = category,
+                            categoryId = categoryIdx,
                             count = productAmount,
-                            name = productName
+                            name = productName,
+                            userId = UserManager.getUserIdx(application).toString().toLong()
                         )
 
                         //Log.d("modifyyy", "$imageFile")
@@ -307,10 +310,10 @@ class SaleReviseRegistrationActivity : AppCompatActivity() {
             }
 
             // 갤러리 호출
-            sellImageView.setOnClickListener {
-                val intent = Intent(MediaStore.ACTION_PICK_IMAGES)
-                selectImageResultLauncher.launch(intent)
-            }
+//            sellImageView.setOnClickListener {
+//                val intent = Intent(MediaStore.ACTION_PICK_IMAGES)
+//                selectImageResultLauncher.launch(intent)
+//            }
 
             if (sellOrExchange == "sell"){
                 isGeneralSaleSelected = true    // 일반 구매

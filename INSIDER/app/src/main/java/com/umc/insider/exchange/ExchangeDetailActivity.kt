@@ -53,7 +53,7 @@ class ExchangeDetailActivity : AppCompatActivity() {
                         binding.PurchaseTotalamountTv.text = "${response.count}개"
                     }
                     binding.PurchaseExpirationDate.text = response.shelfLife
-                    binding.purchaseLocation.text = response.user.address.detailAddress
+                    binding.purchaseLocation.text = response.detail
                     binding.sellerInfo.text = response.user.nickname
 
                 }
