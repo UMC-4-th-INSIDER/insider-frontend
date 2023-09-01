@@ -70,56 +70,6 @@
                     android:textSize="24sp"
                     android:textStyle="bold"/>
 
-                <!--일반, 교환 선택-->
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/selectStatus"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/white_eight_round_rectangle"
-                    android:elevation="8dp"
-                    android:layout_marginHorizontal="15dp"
-                    android:layout_marginTop="12dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/searchText">
-
-                    <TextView
-                        android:id="@+id/exchangeIng"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:paddingVertical="10dp"
-                        android:text="판매중"
-                        android:textSize="18dp"
-                        android:textStyle="bold"
-                        android:gravity="center"
-                        android:fontFamily="@font/roboto"
-                        android:textColor="@color/white"
-                        android:background="@drawable/green_left_round"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintWidth_percent="0.5"/>
-
-                    <TextView
-                        android:id="@+id/exchangeEnd"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:paddingVertical="10dp"
-                        android:text="판매완료"
-                        android:textSize="18dp"
-                        android:textStyle="bold"
-                        android:gravity="center"
-                        android:fontFamily="@font/roboto"
-                        android:textColor="@color/main"
-                        android:background="@drawable/white_right_round"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/exchangeIng"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintWidth_percent="0.5"/>
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/exchangeCatalogRV"
                     android:layout_marginTop="10dp"
@@ -128,7 +78,7 @@
                     android:layout_marginHorizontal="15dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/selectStatus"
+                    app:layout_constraintTop_toBottomOf="@id/searchText"
                     app:layout_constraintBottom_toBottomOf="parent"
                     tools:listitem="@layout/exchange_item"/>
 

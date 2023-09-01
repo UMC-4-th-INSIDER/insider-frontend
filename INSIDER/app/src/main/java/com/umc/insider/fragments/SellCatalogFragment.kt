@@ -1,6 +1,7 @@
 package com.umc.insider.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.umc.insider.OnNoteListener
 import com.umc.insider.R
 import com.umc.insider.adapter.GoodsLongAdapter
+import com.umc.insider.adapter.PurchaseCatalogAdapter
 import com.umc.insider.adapter.SearchResultAdapter
 import com.umc.insider.auth.UserManager
 import com.umc.insider.databinding.FragmentSellCatalogBinding
@@ -19,14 +21,12 @@ import com.umc.insider.retrofit.RetrofitInstance
 import com.umc.insider.retrofit.api.ChattingInterface
 import kotlinx.coroutines.launch
 
-class SellCatalogFragment : Fragment(), OnNoteListener {
+class SellCatalogFragment : Fragment(){
 
     private var _binding: FragmentSellCatalogBinding? = null
     private val binding get() = _binding!!
 
-    private val sellCatalogAdapter = SearchResultAdapter(this)
-
-    private lateinit var goodsAdapter : GoodsLongAdapter
+    private lateinit var goodsAdapter : PurchaseCatalogAdapter
     private val chattingApi = RetrofitInstance.getInstance().create(ChattingInterface::class.java)
 
     override fun onCreateView(
@@ -35,7 +35,7 @@ class SellCatalogFragment : Fragment(), OnNoteListener {
     ): View? {
         _binding = FragmentSellCatalogBinding.inflate(inflater, container, false)
 
-        goodsAdapter = GoodsLongAdapter(this)
+        goodsAdapter = PurchaseCatalogAdapter()
         val userIdx = UserManager.getUserIdx(requireActivity().applicationContext)!!.toLong()
 
         lifecycleScope.launch {
@@ -48,7 +48,7 @@ class SellCatalogFragment : Fragment(), OnNoteListener {
                     goodsAdapter.submitList(PurchaseGoodsList)
                 }
             }catch (e : Exception ){
-
+                Log.d("BUGGG", "$e")
             }
         }
 
@@ -61,22 +61,13 @@ class SellCatalogFragment : Fragment(), OnNoteListener {
         with(binding){
             sellCatalogRV.adapter = goodsAdapter
             sellCatalogRV.layoutManager = LinearLayoutManager(context)
-            sellCatalogRV.addItemDecoration(SearchResultAdapterDecoration())
+            sellCatalogRV.addItemDecoration(PurchaseAdapterDecoration())
         }
-    }
-
-    override fun onPause(){
-        super.onPause()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
-    override fun onNotePurchaseDetail(goods_id: Long) {
-        TODO("Not yet implemented")
-    }
-
 
 }

@@ -33,18 +33,24 @@ class ShoppingSaleAdapter: ListAdapter<GoodsGetRes, ShoppingSaleAdapter.Shopping
         fun bind(goods : GoodsGetRes){
             binding.itemName.text = goods.name
             binding.itemPrice.text = "${goods.price}원"
-            if(goods.weight.isNullOrBlank()){
-                binding.itemWeightOrRest.text = "(${goods.rest}개)"
-                binding.unit.text = "(개당)"
-            } else {
-                val weightText = if (goods.weight.toLong() >= 1000) {
-                    String.format("(%.1fkg)", goods.weight.toLong() / 1000.0)
-                } else {
-                    "(${goods.weight}g)"
-                }
 
-                binding.itemWeightOrRest.text = weightText
+            if(goods.weight == "String"){
+                binding.itemWeightOrRest.text = "20g"
                 binding.unit.text = "(100g당)"
+            } else {
+                if(goods.weight.isNullOrBlank()){
+                    binding.itemWeightOrRest.text = "(${goods.rest}개)"
+                    binding.unit.text = "(개당)"
+                } else {
+                    val weightText = if (goods.weight.toLong() >= 1000) {
+                        String.format("(%.1fkg)", goods.weight.toLong() / 1000.0)
+                    } else {
+                        "(${goods.weight}g)"
+                    }
+
+                    binding.itemWeightOrRest.text = weightText
+                    binding.unit.text = "(100g당)"
+                }
             }
 
             Glide.with(binding.goodsImg.context)

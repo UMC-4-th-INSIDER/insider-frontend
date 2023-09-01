@@ -1,14 +1,18 @@
 package com.umc.insider.fragments
 
+import android.graphics.Rect
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.umc.insider.OnNoteListener
 import com.umc.insider.adapter.GoodsLongAdapter
+import com.umc.insider.adapter.PurchaseCatalogAdapter
 import com.umc.insider.adapter.SearchResultAdapter
 import com.umc.insider.auth.UserManager
 import com.umc.insider.databinding.FragmentPurchaseCatalogBinding
@@ -19,12 +23,12 @@ import com.umc.insider.retrofit.api.ChattingInterface
 import com.umc.insider.retrofit.api.GoodsInterface
 import kotlinx.coroutines.launch
 
-class PurchaseCatalogFragment : Fragment(), OnNoteListener {
+class PurchaseCatalogFragment : Fragment(){
 
     private var _binding: FragmentPurchaseCatalogBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var goodsAdapter : GoodsLongAdapter
+    private lateinit var goodsAdapter : PurchaseCatalogAdapter
     private val chattingApi = RetrofitInstance.getInstance().create(ChattingInterface::class.java)
 
     private var selectPosition : Int? = null
@@ -35,7 +39,7 @@ class PurchaseCatalogFragment : Fragment(), OnNoteListener {
     ): View? {
         _binding = FragmentPurchaseCatalogBinding.inflate(inflater, container, false)
 
-        goodsAdapter = GoodsLongAdapter(this)
+        goodsAdapter = PurchaseCatalogAdapter()
         val userIdx = UserManager.getUserIdx(requireActivity().applicationContext)!!.toLong()
 
         lifecycleScope.launch {
@@ -48,7 +52,7 @@ class PurchaseCatalogFragment : Fragment(), OnNoteListener {
                     goodsAdapter.submitList(PurchaseGoodsList)
                 }
             }catch (e : Exception ){
-
+                Log.d("BUGGGG", "$e")
             }
         }
 
@@ -61,7 +65,7 @@ class PurchaseCatalogFragment : Fragment(), OnNoteListener {
         with(binding){
             PurchaseCatalogRV.adapter = goodsAdapter
             PurchaseCatalogRV.layoutManager = LinearLayoutManager(context)
-            PurchaseCatalogRV.addItemDecoration(ShoppingSaleListAdapterDecoration())
+            PurchaseCatalogRV.addItemDecoration(PurchaseAdapterDecoration())
         }
     }
 
@@ -70,9 +74,18 @@ class PurchaseCatalogFragment : Fragment(), OnNoteListener {
         _binding = null
     }
 
+}
 
-    override fun onNotePurchaseDetail(goods_id: Long) {
-        TODO("Not yet implemented")
+class PurchaseAdapterDecoration : RecyclerView.ItemDecoration(){
+
+    override fun getItemOffsets(
+        outRect: Rect,
+        view: View,
+        parent: RecyclerView,
+        state: RecyclerView.State
+    ) {
+        super.getItemOffsets(outRect, view, parent, state)
+
+        outRect.bottom = 20
     }
-
 }
