@@ -47,12 +47,10 @@ class PurchaseDetailActivity : AppCompatActivity() {
                 val response = withContext(Dispatchers.IO){
                     wishListAPI.checkWishList(user_id,goods_id, 0)
                 }
-                Log.d("찜", response.toString())
-                Log.d("찜", goods_id.toString()+" "+user_id.toString() )
+
                 withContext(Dispatchers.Main) { binding.favoriteBtn.isChecked = response }
             }catch (e : Exception){
-                Log.d("찜", "네트워크 에러")
-                Log.d("찜", goods_id.toString()+" "+user_id.toString() )
+
             }
         }
 
