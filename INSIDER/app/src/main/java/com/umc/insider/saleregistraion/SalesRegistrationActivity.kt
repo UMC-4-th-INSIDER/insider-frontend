@@ -62,6 +62,7 @@ class SalesRegistrationActivity : AppCompatActivity() {
     private lateinit var adapter: CustomSpinnerAdapter
 
     private var imgUri : Uri? = null
+    private var sellerOrBuyer = -1
 
     private val selectImageResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
@@ -85,6 +86,8 @@ class SalesRegistrationActivity : AppCompatActivity() {
         binding.sellvm = viewModel
         binding.lifecycleOwner = this
 
+        // 1이면 셀러, 0이면 바이어
+        sellerOrBuyer = UserManager.getUserSellerOrBuyer(applicationContext)!!.toInt()
 
 
         val categories = listOf("카테고리", "과일", "정육/계란", "채소", "유제품", "수산/건어물", "기타")
@@ -95,6 +98,11 @@ class SalesRegistrationActivity : AppCompatActivity() {
         window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         initview()
+
+        if (sellerOrBuyer == 0){
+            isGeneralSaleSelected = false
+            updateButtonUI()
+        }
 
     }
 
@@ -115,6 +123,17 @@ class SalesRegistrationActivity : AppCompatActivity() {
                     Toast.makeText(applicationContext, "빈 항복을 채워주세요.", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
+
+                if(imgUri == null) {
+                    Toast.makeText(applicationContext, "상품의 이미지를 올려주세요", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                if (categorySpinner.selectedItemPosition == 0) {
+                    Toast.makeText(applicationContext, "카테고리를 선택해 주세요", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
 
                 val title = binding.sellTitle.text.toString()
                 val productName = binding.productNameInsert.text.toString()
@@ -209,6 +228,8 @@ class SalesRegistrationActivity : AppCompatActivity() {
 
             // 일반 구매, 교환하기 설정
             generalSale.setOnClickListener {
+                if (sellerOrBuyer == 0) return@setOnClickListener
+
                 isGeneralSaleSelected = true    // 일반 구매
                 updateButtonUI()
                 productAmountTv.text = "판매 갯수"

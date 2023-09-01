@@ -171,6 +171,11 @@ class SaleReviseRegistrationActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            if (categorySpinner.selectedItemPosition == 0) {
+                Toast.makeText(applicationContext, "카테고리를 선택해 주세요", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
 
             val title = binding.sellTitle.text.toString()
             val productName = binding.productNameInsert.text.toString()

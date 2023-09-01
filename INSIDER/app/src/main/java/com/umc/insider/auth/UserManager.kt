@@ -36,8 +36,8 @@ class UserManager private constructor() {
             editor.apply()
         }
 
-        fun getUserSellerOrBuyer(context: Context): Int {
-            return getPreferences(context).getInt(USER_STATUS_KEY, 0)
+        fun getUserSellerOrBuyer(context: Context): String? {
+            return getPreferences(context).getString(USER_STATUS_KEY, null)
         }
 
         fun clearUserSellerOrBuyer(context: Context) {
