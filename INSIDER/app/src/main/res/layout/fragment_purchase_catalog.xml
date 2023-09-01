@@ -80,7 +80,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/searchText"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    tools:listitem="@layout/search_result_item"/>
+                    tools:listitem="@layout/goods_long_item" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

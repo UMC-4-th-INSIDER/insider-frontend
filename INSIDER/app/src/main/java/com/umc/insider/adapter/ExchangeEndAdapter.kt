@@ -28,9 +28,9 @@ class ExchangeEndAdapter : ListAdapter<ExchangeItem, ExchangeEndAdapter.Exchange
     inner class ExchangeEndViewHolder(private val binding : ExchangeEndListItemBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(listItem : ExchangeItem){
             binding.itemName.text = listItem.itemName
-            binding.itemAmount.text = "("+listItem.itemAmount+")"
-            binding.itemExchange.text = listItem.itemExchange
-            binding.itemExchangeAmount.text = "("+listItem.itemExchangeAmount+")"
+            //binding.itemAmount.text = "("+listItem.itemAmount+")"
+            //binding.itemExchange.text = listItem.itemExchange
+            //binding.itemExchangeAmount.text = "("+listItem.itemExchangeAmount+")"
         }
     }
 

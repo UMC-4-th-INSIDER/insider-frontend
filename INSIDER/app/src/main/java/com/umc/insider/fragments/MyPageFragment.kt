@@ -141,9 +141,9 @@ class MyPageFragment : Fragment() {
             shoppingListRV.addItemDecoration(ShoppingSaleListAdapterDecoration())
 
             // 판매하기 판매중
-            saleListRV.adapter = saleListAdapter
-            saleListRV.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            saleListRV.addItemDecoration(ShoppingSaleListAdapterDecoration())
+            //saleListRV.adapter = saleListAdapter
+            //saleListRV.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            //saleListRV.addItemDecoration(ShoppingSaleListAdapterDecoration())
             //saleListAdapter.submitList(SaleGoodsList)
 
             // 판매하기 판매완료
@@ -154,10 +154,10 @@ class MyPageFragment : Fragment() {
 
             val exdummies = exchangingDummyDate()
             // 교환하기 교환중
-            exchangeListRV.adapter = exchangingListAdapter
-            exchangeListRV.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            exchangeListRV.addItemDecoration(ShoppingSaleListAdapterDecoration())
-            exchangingListAdapter.submitList(exdummies)
+            //exchangeListRV.adapter = exchangingListAdapter
+            //exchangeListRV.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            //exchangeListRV.addItemDecoration(ShoppingSaleListAdapterDecoration())
+            //exchangingListAdapter.submitList(exdummies)
             // 교환하기 교환완료
             exchangeEndListRV.adapter = exchangeEndAdapter
             exchangeEndListRV.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)

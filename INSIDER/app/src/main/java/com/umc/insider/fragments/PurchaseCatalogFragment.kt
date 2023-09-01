@@ -5,25 +5,52 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.umc.insider.OnNoteListener
+import com.umc.insider.adapter.GoodsLongAdapter
 import com.umc.insider.adapter.SearchResultAdapter
+import com.umc.insider.auth.UserManager
 import com.umc.insider.databinding.FragmentPurchaseCatalogBinding
 import com.umc.insider.fragments.SearchResultAdapterDecoration
 import com.umc.insider.model.SearchItem
+import com.umc.insider.retrofit.RetrofitInstance
+import com.umc.insider.retrofit.api.ChattingInterface
+import com.umc.insider.retrofit.api.GoodsInterface
+import kotlinx.coroutines.launch
 
 class PurchaseCatalogFragment : Fragment(), OnNoteListener {
 
     private var _binding: FragmentPurchaseCatalogBinding? = null
     private val binding get() = _binding!!
 
-    private val purchaseCatalogAdapter = SearchResultAdapter(this)
+    private lateinit var goodsAdapter : GoodsLongAdapter
+    private val chattingApi = RetrofitInstance.getInstance().create(ChattingInterface::class.java)
+
+    private var selectPosition : Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentPurchaseCatalogBinding.inflate(inflater, container, false)
+
+        goodsAdapter = GoodsLongAdapter(this)
+        val userIdx = UserManager.getUserIdx(requireActivity().applicationContext)!!.toLong()
+
+        lifecycleScope.launch {
+            try {
+                val response = chattingApi.getGoodsByUser(userIdx)
+
+                if (response.isSuccessful){
+                    val map = response.body()
+                    val PurchaseGoodsList = map?.get("purchase")
+                    goodsAdapter.submitList(PurchaseGoodsList)
+                }
+            }catch (e : Exception ){
+
+            }
+        }
 
         initview()
 
@@ -32,10 +59,9 @@ class PurchaseCatalogFragment : Fragment(), OnNoteListener {
 
     private fun initview(){
         with(binding){
-            PurchaseCatalogRV.adapter = purchaseCatalogAdapter
+            PurchaseCatalogRV.adapter = goodsAdapter
             PurchaseCatalogRV.layoutManager = LinearLayoutManager(context)
-            PurchaseCatalogRV.addItemDecoration(SearchResultAdapterDecoration())
-            purchaseCatalogAdapter.submitList(GeneralDummyDate())
+            PurchaseCatalogRV.addItemDecoration(ShoppingSaleListAdapterDecoration())
         }
     }
 
@@ -44,22 +70,6 @@ class PurchaseCatalogFragment : Fragment(), OnNoteListener {
         _binding = null
     }
 
-    private fun GeneralDummyDate(): ArrayList<SearchItem> {
-        val dummy1 = SearchItem(1, "양파1", "100g", "1000원", null, null)
-        val dummy2 = SearchItem(2, "양파2", "200g", "2000원", null, null)
-        val dummy3 = SearchItem(3, "양파3", "300g", "2800원", null, null)
-        val dummy4 = SearchItem(4, "양파4", "400g", "3800원", null, null)
-        val dummy5 = SearchItem(5, "양파5", "500g", "4500원", null, null)
-
-        val arr = ArrayList<SearchItem>()
-        arr.add(dummy1)
-        arr.add(dummy2)
-        arr.add(dummy3)
-        arr.add(dummy4)
-        arr.add(dummy5)
-
-        return arr
-    }
 
     override fun onNotePurchaseDetail(goods_id: Long) {
         TODO("Not yet implemented")
