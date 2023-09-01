@@ -247,16 +247,16 @@
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/shoppingListRV"
                                 android:layout_width="0dp"
-                                android:layout_height="150dp"
+                                android:layout_height="170dp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
-                                android:layout_marginTop="10dp"
-                                app:layout_constraintTop_toBottomOf="@id/shoppingListText"/>
+                                app:layout_constraintTop_toBottomOf="@id/shoppingListText"
+                                tools:listitem="@layout/shopping_sale_list_item"
+                                tools:itemCount="5"/>
 
                             <View
                                 android:layout_width="0dp"
                                 android:layout_height="1dp"
-                                android:layout_marginTop="10dp"
                                 android:background="@color/editTextTint"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -303,16 +303,16 @@
                                 android:background="@drawable/green_20_round_rectangle"
                                 android:gravity="center"
                                 android:paddingHorizontal="10dp"
+                                android:layout_marginTop="10dp"
                                 app:layout_constraintTop_toTopOf="@id/saleListRV"
                                 app:layout_constraintStart_toStartOf="parent" />
 
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/saleListRV"
                                 android:layout_width="0dp"
-                                android:layout_height="150dp"
+                                android:layout_height="170dp"
                                 app:layout_constraintStart_toEndOf="@id/saleing"
                                 app:layout_constraintEnd_toEndOf="parent"
-                                android:layout_marginTop="10dp"
                                 android:layout_marginStart="8dp"
                                 app:layout_constraintTop_toBottomOf="@id/saleListText"
                                 tools:listitem="@layout/shopping_sale_list_item"

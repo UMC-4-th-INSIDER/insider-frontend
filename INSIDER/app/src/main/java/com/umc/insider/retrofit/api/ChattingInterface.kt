@@ -28,9 +28,11 @@ interface ChattingInterface {
     @GET("/chatRooms/{id}")
     suspend fun getChatRoomByUser(@Path("id") userId: Long) : Response<List<ChatRoomsListRes>>
 
+    // 구매목록 출력
     @GET("/chatRooms/goods/{id}")
     suspend fun getGoodsByUser(@Path("id") userId : Long) : Response<Map<String, List<GoodsGetRes>>>
 
+    // 교환목록 출력
     @GET("/chatRooms/exchanges/{id}")
     suspend fun getExchangesByUser(@Path("id") userId : Long) : Response<Map<String, List<ExchangesPostRes>>>
 }

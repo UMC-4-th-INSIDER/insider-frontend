@@ -90,23 +90,26 @@ class MyPageFragment : Fragment() {
             }
         }
 
+        // 구매목록, 판매목록 가져오기
         lifecycleScope.launch {
 
             try {
                 val response = chattingApi.getGoodsByUser(userIdx)
 
                 if (response.isSuccessful){
-                    val goodsList = response.body()
-                    if (goodsList != null) {
-                        for ((key, value) in goodsList)
-                            Log.d("리스트", "$key - $value")
-                    }
+                    val map = response.body()
+                    val SaleGoodsList = map?.get("sale") // or "purchase" or any other key
+                    val PurchaseGoodsList = map?.get("purchase")
+                    saleendListAdapter.submitList(SaleGoodsList)
+                    shoppingListAdapter.submitList(PurchaseGoodsList)
+
                 }
             }catch (e : Exception ){
 
             }
         }
 
+        // 교환목록 가져오기
         lifecycleScope.launch {
             try {
                 val response = chattingApi.getExchangesByUser(userIdx)
@@ -132,21 +135,22 @@ class MyPageFragment : Fragment() {
     private fun initView(){
         with(binding){
             val dummies = DummyDate()
+            // 구매완료
             shoppingListRV.adapter = shoppingListAdapter
             shoppingListRV.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             shoppingListRV.addItemDecoration(ShoppingSaleListAdapterDecoration())
-            shoppingListAdapter.submitList(dummies)
 
             // 판매하기 판매중
             saleListRV.adapter = saleListAdapter
             saleListRV.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             saleListRV.addItemDecoration(ShoppingSaleListAdapterDecoration())
-            saleListAdapter.submitList(dummies)
+            //saleListAdapter.submitList(SaleGoodsList)
+
             // 판매하기 판매완료
             saleEndListRV.adapter = saleendListAdapter
             saleEndListRV.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             saleEndListRV.addItemDecoration(ShoppingSaleListAdapterDecoration())
-            saleendListAdapter.submitList(dummies)
+
 
             val exdummies = exchangingDummyDate()
             // 교환하기 교환중
