@@ -1,5 +1,6 @@
 package com.umc.insider.retrofit.api
 
+import com.umc.insider.model.ChatRooms
 import com.umc.insider.model.Users
 import com.umc.insider.retrofit.model.ChatRoomsListRes
 import com.umc.insider.retrofit.model.ChatRoomsPostReq
@@ -12,6 +13,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface ChattingInterface {
@@ -35,4 +37,7 @@ interface ChattingInterface {
     // 교환목록 출력
     @GET("/chatRooms/exchanges/{id}")
     suspend fun getExchangesByUser(@Path("id") userId : Long) : Response<Map<String, List<ExchangesPostRes>>>
+
+    @PUT("/chatRooms/purchase/{chatRoomId}/{id}")
+    suspend fun purchase(@Path("chatRoomId") chatRoomId : Long, @Path("id") id : Long) : Response<ChatRooms>
 }

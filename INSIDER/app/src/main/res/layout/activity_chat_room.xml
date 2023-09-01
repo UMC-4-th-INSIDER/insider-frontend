@@ -40,6 +40,22 @@
                 android:layout_marginBottom="12dp"
                 android:src="@drawable/app_name_english_yellow" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="end"
+                android:paddingRight="10dp">
+
+                <ImageView
+                    android:id="@+id/menuBtn"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@drawable/baseline_menu_24"
+                    android:layout_gravity="center_vertical"/>
+
+            </LinearLayout>
+
 
         </LinearLayout>
 
@@ -47,7 +63,7 @@
             android:id="@+id/interlocutorLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/chatLayout"
+            app:layout_constraintBottom_toTopOf="@id/chatRV"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbarLayout"

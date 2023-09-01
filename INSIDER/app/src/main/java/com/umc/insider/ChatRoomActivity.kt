@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
@@ -17,6 +18,7 @@ import com.umc.insider.adapter.ChatRoomAdapter
 import com.umc.insider.auth.UserManager
 import com.umc.insider.databinding.ActivityChatRoomBinding
 import com.umc.insider.retrofit.RetrofitInstance
+import com.umc.insider.retrofit.api.ChattingInterface
 import com.umc.insider.retrofit.api.GoodsInterface
 import com.umc.insider.retrofit.api.MessageInterface
 import com.umc.insider.retrofit.model.MessageGetRes
@@ -38,6 +40,7 @@ class ChatRoomActivity : AppCompatActivity() {
     private var sender_id : Long? = null
     private val messageAPI = RetrofitInstance.getInstance().create(MessageInterface::class.java)
     private val goodsAPI = RetrofitInstance.getInstance().create(GoodsInterface::class.java)
+    private val chattingAPI = RetrofitInstance.getInstance().create(ChattingInterface::class.java)
     private var pollingJob: Job? = null
     private var currentChatList: List<MessageGetRes> = emptyList()
     private var first = true
@@ -56,7 +59,8 @@ class ChatRoomActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val goods_id = intent.getStringExtra("goods_id")!!.toLong()
-
+        chatRoom_id = intent.getStringExtra("chatRoom_id")!!.toLong()
+        sender_id = UserManager.getUserIdx(this)!!.toLong()
         lifecycleScope.launch {
 
             try {
@@ -80,6 +84,7 @@ class ChatRoomActivity : AppCompatActivity() {
 
 
         initView()
+
     }
 
     private fun initView(){
@@ -163,6 +168,31 @@ class ChatRoomActivity : AppCompatActivity() {
                     previousHeight = visibleHeight
                 }
             })
+
+            menuBtn.setOnClickListener {
+                val popupMenu = PopupMenu(this@ChatRoomActivity, it)
+                menuInflater?.inflate(R.menu.chat_room_menu, popupMenu.menu)
+                popupMenu.show()
+                popupMenu.setOnMenuItemClickListener {
+                    when(it.itemId){
+                        R.id.purchaseCompleted -> {
+                            CoroutineScope(Dispatchers.IO).launch{
+
+                                try {
+                                    val response = withContext(Dispatchers.IO){chattingAPI.purchase(chatRoom_id!!, sender_id!!)}
+                                    if (response.isSuccessful){
+                                        Toast.makeText(this@ChatRoomActivity, "거래 완료를 누르셨습니다. \n변경하실 수 없습니다.",Toast.LENGTH_SHORT).show()
+                                    }
+                                }catch (e : Exception){}
+                            }
+                            return@setOnMenuItemClickListener true
+                        }
+                        else->{
+                            return@setOnMenuItemClickListener false
+                        }
+                    }
+                }
+            }
         }
     }
 
