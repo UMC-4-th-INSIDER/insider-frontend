@@ -29,7 +29,7 @@ class ExchangingListAdapter : ListAdapter<ExchangeItem, ExchangingListAdapter.Ex
     inner class ExchangingViewHolder(private val binding : ExchangingListItemBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(listItem : ExchangeItem){
             binding.itemName.text = listItem.itemName
-            binding.itemAmount.text = "("+listItem.itemAmount+")"
+            //binding.itemAmount.text = "("+listItem.itemAmount+")"
         }
     }
 

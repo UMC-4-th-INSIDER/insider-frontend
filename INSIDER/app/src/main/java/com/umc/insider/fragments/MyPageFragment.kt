@@ -43,9 +43,9 @@ class MyPageFragment : Fragment() {
     private var _binding : FragmentMyPageBinding? = null
     private val binding get() = _binding!!
     private val shoppingListAdapter = ShoppingSaleAdapter()
-    private val saleListAdapter = ShoppingSaleAdapter()
+    //private val saleListAdapter = ShoppingSaleAdapter()
     private val saleendListAdapter = ShoppingSaleAdapter()
-    private val exchangingListAdapter = ExchangingListAdapter()
+    //private val exchangingListAdapter = ExchangingListAdapter()
     private val exchangeEndAdapter = ExchangeEndAdapter()
 
     private val REQUEST_CODE_EDIT_PROFILE = 100
@@ -115,11 +115,9 @@ class MyPageFragment : Fragment() {
                 val response = chattingApi.getExchangesByUser(userIdx)
 
                 if (response.isSuccessful){
-                    val exchangesList = response.body()
-                    if (exchangesList != null) {
-                        for ((key, value) in exchangesList)
-                            Log.d("리스트", "$key - $value")
-                    }
+                    val map = response.body()
+                    val ExchangeGoodsList = map?.get("Exchange your item")
+                    exchangeEndAdapter.submitList(ExchangeGoodsList)
                 }
             }catch (e : Exception ){
 
@@ -134,16 +132,16 @@ class MyPageFragment : Fragment() {
 
     private fun initView(){
         with(binding){
-            val dummies = DummyDate()
+            //val dummies = DummyDate()
             // 구매완료
             shoppingListRV.adapter = shoppingListAdapter
             shoppingListRV.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             shoppingListRV.addItemDecoration(ShoppingSaleListAdapterDecoration())
 
             // 판매하기 판매중
-            saleListRV.adapter = saleListAdapter
-            saleListRV.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            saleListRV.addItemDecoration(ShoppingSaleListAdapterDecoration())
+            //saleListRV.adapter = saleListAdapter
+            //saleListRV.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            //saleListRV.addItemDecoration(ShoppingSaleListAdapterDecoration())
             //saleListAdapter.submitList(SaleGoodsList)
 
             // 판매하기 판매완료
@@ -152,17 +150,16 @@ class MyPageFragment : Fragment() {
             saleEndListRV.addItemDecoration(ShoppingSaleListAdapterDecoration())
 
 
-            val exdummies = exchangingDummyDate()
+            //val exdummies = exchangingDummyDate()
             // 교환하기 교환중
-            exchangeListRV.adapter = exchangingListAdapter
-            exchangeListRV.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            exchangeListRV.addItemDecoration(ShoppingSaleListAdapterDecoration())
-            exchangingListAdapter.submitList(exdummies)
+            //exchangeListRV.adapter = exchangingListAdapter
+            //exchangeListRV.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            //exchangeListRV.addItemDecoration(ShoppingSaleListAdapterDecoration())
+            //exchangingListAdapter.submitList(exdummies)
             // 교환하기 교환완료
             exchangeEndListRV.adapter = exchangeEndAdapter
             exchangeEndListRV.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             exchangeEndListRV.addItemDecoration(ShoppingSaleListAdapterDecoration())
-            exchangeEndAdapter.submitList(exdummies)
 
             logoutTextView.setOnClickListener {
                 val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
@@ -268,40 +265,6 @@ class MyPageFragment : Fragment() {
         }
     }
 
-    private fun DummyDate() : ArrayList<SearchItem>{
-        val dummy1 = SearchItem(1, "양파1", "100g", "1000원",null, null)
-        val dummy2 = SearchItem(2, "양파2", "200g", "2000원",null, null)
-        val dummy3 = SearchItem(3, "양파3", "300g", "2800원",null, null)
-        val dummy4 = SearchItem(4, "양파4", "400g", "3800원",null, null)
-        val dummy5 = SearchItem(5, "양파5", "500g", "4500원",null, null)
-
-        val arr = ArrayList<SearchItem>()
-        arr.add(dummy1)
-        arr.add(dummy2)
-        arr.add(dummy3)
-        arr.add(dummy4)
-        arr.add(dummy5)
-
-        return arr
-    }
-
-    private fun exchangingDummyDate() : ArrayList<ExchangeItem>{
-        val dummy1 = ExchangeItem(1, "양파1", "1개", "당근1","1개")
-        val dummy2 = ExchangeItem(2, "양파2", "2개", "당근2","2개")
-        val dummy3 = ExchangeItem(3, "양파3", "3개", "당근3","3개")
-        val dummy4 = ExchangeItem(4, "양파4", "4개", "당근4","4개")
-        val dummy5 = ExchangeItem(5, "양파5", "5개", "당근5","5개")
-
-        val arr = ArrayList<ExchangeItem>()
-        arr.add(dummy1)
-        arr.add(dummy2)
-        arr.add(dummy3)
-        arr.add(dummy4)
-        arr.add(dummy5)
-
-        return arr
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -318,7 +281,6 @@ class MyPageFragment : Fragment() {
             editedAddress?.let { binding.liveAddress.text = it }
         }
     }
-
 }
 
 class ShoppingSaleListAdapterDecoration : RecyclerView.ItemDecoration(){
