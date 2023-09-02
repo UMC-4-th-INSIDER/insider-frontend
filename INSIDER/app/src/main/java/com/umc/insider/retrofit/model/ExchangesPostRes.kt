@@ -40,5 +40,8 @@ data class ExchangesPostRes(
     val user : Users,
 
     @SerializedName("detail")
-    val detail : String
+    val detail : String,
+
+    @SerializedName("zipCode")
+    val zipCode : Int
 )

@@ -1,5 +1,6 @@
 package com.umc.insider.exchange
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +12,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.umc.insider.R
 import com.umc.insider.auth.UserManager
 import com.umc.insider.databinding.ActivityExchangeDetailBinding
+import com.umc.insider.purchase.PurchaseActivity
 import com.umc.insider.retrofit.RetrofitInstance
 import com.umc.insider.retrofit.api.ExchangesInterface
 import com.umc.insider.retrofit.api.GoodsInterface
@@ -132,6 +134,13 @@ class ExchangeDetailActivity : AppCompatActivity() {
                 }
 
             }
+        }
+
+        binding.ExchangeBtn.setOnClickListener {
+            val intent = Intent(this@ExchangeDetailActivity, ExchangeActivity::class.java)
+            intent.putExtra("goods_id", goods_id.toString())
+            startActivity(intent)
+            finish()
         }
 
     }

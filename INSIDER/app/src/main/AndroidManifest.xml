@@ -23,6 +23,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".exchange.ExchangeActivity"
+            android:exported="false" />
+        <activity
             android:name=".exchange.ExchangeModifyActivity"
             android:exported="false" />
         <activity
