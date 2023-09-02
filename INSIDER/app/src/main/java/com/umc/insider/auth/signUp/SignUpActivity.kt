@@ -67,6 +67,17 @@ class SignUpActivity : AppCompatActivity() {
             }
 
             signUpBtn.setOnClickListener {
+
+                if (
+                    idEdit.text.isNullOrBlank() || nicknameEdit.text.isNullOrBlank() || pwdEdit.text.isNullOrBlank() ||
+                    pwdCheckEdit.text.isNullOrBlank() || emailEdit.text.isNullOrBlank() || addressNum.text.isNullOrBlank() ||
+                    addressText.text.isNullOrBlank()
+                ){
+                    Toast.makeText(this@SignUpActivity, "빈 항목을 채워주세요", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+                
+
                 lifecycleScope.launch {
 
                     val userId = idEdit.text.toString()
