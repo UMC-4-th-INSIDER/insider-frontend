@@ -14,7 +14,7 @@ import com.umc.insider.OnNoteListener
 import com.umc.insider.databinding.GoodsLongItemBinding
 import com.umc.insider.retrofit.model.GoodsGetRes
 
-class PurchaseCatalogAdapter : ListAdapter<GoodsGetRes, PurchaseCatalogAdapter.GoodsLongViewHolder>(DiffCallback) {
+class PurchaseCatalogAdapter(private val listener : OnNoteListener) : ListAdapter<GoodsGetRes, PurchaseCatalogAdapter.GoodsLongViewHolder>(DiffCallback) {
 
     companion object{
         private val DiffCallback = object  : DiffUtil.ItemCallback<GoodsGetRes>(){
@@ -75,6 +75,10 @@ class PurchaseCatalogAdapter : ListAdapter<GoodsGetRes, PurchaseCatalogAdapter.G
                     .placeholder(null)
                     .transform(RoundedCorners(30))
                     .into(binding.goodsImg)
+
+                binding.goods.setOnClickListener {
+                    listener.onNotePurchaseDetail(goods.goods_id)
+                }
 
             }
 
