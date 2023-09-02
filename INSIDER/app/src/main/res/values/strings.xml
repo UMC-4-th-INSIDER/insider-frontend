@@ -19,12 +19,12 @@
     <string name="userPasswordSignUp">비밀번호(대문자, 특수 문자 1개 이상. 연속된 숫자 3자리 x)</string>
     <string name="passwordCheckSignUp">비밀번호 확인(위의 비밀번호와 일치)</string>
     <string name="userEmailSignUp">이메일 주소</string>
-    <string name="registerNum">사업자 번호</string>
+    <string name="registerNum">사업자 번호(10자리)</string>
     <string name="address">주소</string>
     <string name="addressFind">우편번호 찾기</string>
 
 
-    <string name="registerNumHint">111-11-11111</string>
+    <string name="registerNumHint">1111111111</string>
     <string name="emailHint">example@insider.com</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

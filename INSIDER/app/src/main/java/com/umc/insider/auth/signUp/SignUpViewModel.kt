@@ -25,6 +25,9 @@ class SignUpViewModel : ViewModel() {
     private val _registerNum = MutableLiveData("")
     val registerNum : LiveData<String> = _registerNum
 
+    private val _registerNumCheckResult = MutableLiveData(false)
+    private val registerNumCheckResult : LiveData<Boolean> = _registerNumCheckResult
+
     val idState: LiveData<EditState> = Transformations.map(_userId) { id ->
         when {
             id.isNullOrBlank() -> EditState.EMPTY
