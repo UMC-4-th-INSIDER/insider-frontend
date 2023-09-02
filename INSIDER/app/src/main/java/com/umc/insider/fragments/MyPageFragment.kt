@@ -33,6 +33,7 @@ import com.umc.insider.retrofit.RetrofitInstance
 import com.umc.insider.retrofit.api.ChattingInterface
 import com.umc.insider.retrofit.api.GoodsInterface
 import com.umc.insider.retrofit.api.UserInterface
+import com.umc.insider.retrofit.model.ExchangesPostRes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -116,8 +117,20 @@ class MyPageFragment : Fragment() {
 
                 if (response.isSuccessful){
                     val map = response.body()
-                    val ExchangeGoodsList = map?.get("Exchange your item")
-                    exchangeEndAdapter.submitList(ExchangeGoodsList)
+                    val ExchangeYourGoodsList = map?.get("Exchange your item")
+                    val ExchangeMyGoodsList = map?.get("Exchange my item")
+
+                    val combinedList = mutableListOf<ExchangesPostRes>()
+
+                    if(ExchangeYourGoodsList != null){
+                        combinedList.addAll(ExchangeYourGoodsList)
+                    }
+
+                    if(ExchangeMyGoodsList != null){
+                        combinedList.addAll(ExchangeMyGoodsList)
+                    }
+
+                    exchangeEndAdapter.submitList(combinedList)
                     for ((listName, list) in map!!){
                         Log.d("교환 리스트", "$listName : $list")
                     }

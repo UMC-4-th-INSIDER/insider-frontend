@@ -19,6 +19,7 @@ import com.umc.insider.model.ExchangeItem
 import com.umc.insider.retrofit.RetrofitInstance
 import com.umc.insider.retrofit.api.ChattingInterface
 import com.umc.insider.retrofit.api.ExchangesInterface
+import com.umc.insider.retrofit.model.ExchangesPostRes
 import kotlinx.coroutines.launch
 
 
@@ -46,8 +47,20 @@ class ExchangeCatalogFragment : Fragment(), OnNoteListener {
 
                 if (response.isSuccessful){
                     val map = response.body()
-                    val ExchangeGoodsList = map?.get("Exchange your item")
-                    exchangeEndAdapter.submitList(ExchangeGoodsList)
+                    val ExchangeYourGoodsList = map?.get("Exchange your item")
+                    val ExchangeMyGoodsList = map?.get("Exchange my item")
+
+                    val combinedList = mutableListOf<ExchangesPostRes>()
+
+                    if(ExchangeYourGoodsList != null){
+                        combinedList.addAll(ExchangeYourGoodsList)
+                    }
+
+                    if(ExchangeMyGoodsList != null){
+                        combinedList.addAll(ExchangeMyGoodsList)
+                    }
+
+                    exchangeEndAdapter.submitList(combinedList)
                 }
             }catch (e : Exception ){
 
