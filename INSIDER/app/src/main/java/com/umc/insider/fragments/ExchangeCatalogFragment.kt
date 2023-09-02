@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.umc.insider.ExchangeShowFragment
+import com.umc.insider.GoodsShowFragment
 import com.umc.insider.OnNoteListener
 import com.umc.insider.R
 import com.umc.insider.adapter.ExchangeAdapter
@@ -19,6 +21,7 @@ import com.umc.insider.model.ExchangeItem
 import com.umc.insider.retrofit.RetrofitInstance
 import com.umc.insider.retrofit.api.ChattingInterface
 import com.umc.insider.retrofit.api.ExchangesInterface
+import com.umc.insider.retrofit.api.GoodsInterface
 import com.umc.insider.retrofit.model.ExchangesPostRes
 import kotlinx.coroutines.launch
 
@@ -94,7 +97,18 @@ class ExchangeCatalogFragment : Fragment(), OnNoteListener {
 
 
     override fun onNotePurchaseDetail(goods_id: Long) {
-        TODO("Not yet implemented")
+        val ExchangeShow = ExchangeShowFragment().apply{
+            arguments = Bundle().apply{
+                putString("ExchangeShw", goods_id.toString())
+            }
+        }
+
+        val transaction = parentFragmentManager.beginTransaction()
+
+        transaction.replace(R.id.frame_layout, ExchangeShow)
+        transaction.addToBackStack(null)
+
+        transaction.commit()
     }
 
 
