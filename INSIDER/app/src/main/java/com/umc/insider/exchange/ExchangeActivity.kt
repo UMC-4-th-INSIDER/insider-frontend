@@ -274,7 +274,7 @@ class ExchangeActivity : AppCompatActivity() , OnMapReadyCallback {
 
                 val sellerId = sellerId!!
                 val buyerId = UserManager.getUserIdx(this@ExchangeActivity)!!.toLong()
-                val chatRoomsPostReq = ChatRoomsPostReq(sellerId,buyerId,0,goods_id!!)
+                val chatRoomsPostReq = ChatRoomsPostReq(sellerId,buyerId,1,goods_id!!)
 
                 CoroutineScope(Dispatchers.IO).launch{
                     try {
@@ -285,6 +285,7 @@ class ExchangeActivity : AppCompatActivity() , OnMapReadyCallback {
                                 val intent = Intent(this@ExchangeActivity, ChatRoomActivity::class.java)
                                 intent.putExtra("chatRoom_id",response.body()!!.result!!.id.toString())
                                 intent.putExtra("goods_id",goods_id.toString())
+                                intent.putExtra("status",1)
                                 startActivity(intent)
                             }
                         }else{

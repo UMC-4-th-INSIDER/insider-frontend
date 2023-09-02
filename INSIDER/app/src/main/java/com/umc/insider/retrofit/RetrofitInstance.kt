@@ -11,7 +11,7 @@ class RetrofitInstance {
         //private const val BASE_URL = "http://10.0.2.2:8080/"
         // 해당 ip
         //private const val BASE_URL = "http://172.30.1.51:8080/"
-        private const val BASE_URL = "http://172.30.1.60:8080/"
+        private const val BASE_URL = "http://10.254.2.111:8080/"
         //private const val BASE_URL = "http://172.30.1.13:8080/"
         //private const val BASE_URL = "http://172.30.1.48:8080/"
         //private const val BASE_URL = "http://192.168.44.185:8080/"

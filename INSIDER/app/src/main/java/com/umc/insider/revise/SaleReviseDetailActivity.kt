@@ -87,9 +87,11 @@ class SaleReviseDetailActivity : AppCompatActivity() {
         binding.deleteBtn.setOnClickListener {
             lifecycleScope.launch {
                 try {
-                    val responseId = goodsAPI.deleteGoods(goods_id)
+                    val responseId = withContext(Dispatchers.IO){goodsAPI.deleteGoods(goods_id)}
                     Log.d("APIII", "Deleted goods with ID: $responseId")
-                    Toast.makeText(applicationContext, "상품이 성공적으로 삭제되었습니다.", Toast.LENGTH_SHORT).show()
+                    withContext(Dispatchers.Main){
+                        Toast.makeText(applicationContext, "상품이 성공적으로 삭제되었습니다.", Toast.LENGTH_SHORT).show()
+                    }
                 } catch (e: Exception) {
                     Log.e("APIII", "Failed to delete goods", e)
                     Toast.makeText(applicationContext, "상품 삭제에 실패하였습니다.", Toast.LENGTH_SHORT).show()

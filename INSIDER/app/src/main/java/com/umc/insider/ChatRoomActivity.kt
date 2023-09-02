@@ -19,6 +19,7 @@ import com.umc.insider.auth.UserManager
 import com.umc.insider.databinding.ActivityChatRoomBinding
 import com.umc.insider.retrofit.RetrofitInstance
 import com.umc.insider.retrofit.api.ChattingInterface
+import com.umc.insider.retrofit.api.ExchangesInterface
 import com.umc.insider.retrofit.api.GoodsInterface
 import com.umc.insider.retrofit.api.MessageInterface
 import com.umc.insider.retrofit.model.MessageGetRes
@@ -40,6 +41,7 @@ class ChatRoomActivity : AppCompatActivity() {
     private var sender_id : Long? = null
     private val messageAPI = RetrofitInstance.getInstance().create(MessageInterface::class.java)
     private val goodsAPI = RetrofitInstance.getInstance().create(GoodsInterface::class.java)
+    private val exchangesAPI = RetrofitInstance.getInstance().create(ExchangesInterface::class.java)
     private val chattingAPI = RetrofitInstance.getInstance().create(ChattingInterface::class.java)
     private var pollingJob: Job? = null
     private var currentChatList: List<MessageGetRes> = emptyList()
@@ -61,26 +63,54 @@ class ChatRoomActivity : AppCompatActivity() {
         val goods_id = intent.getStringExtra("goods_id")!!.toLong()
         chatRoom_id = intent.getStringExtra("chatRoom_id")!!.toLong()
         sender_id = UserManager.getUserIdx(this)!!.toLong()
-        lifecycleScope.launch {
+        val status = intent.getIntExtra("status", 0)
 
-            try {
-                val response = withContext(Dispatchers.IO){
-                    goodsAPI.getGoodsById(goods_id)
-                }
-                withContext(Dispatchers.Main){
-                    binding.goodsName.text = response.name
-                    binding.goodsPrice.text = "${response.price}원"
-                    Glide.with(binding.goodsImg.context)
-                        .load(response.img_url)
-                        .placeholder(null)
-                        .into(binding.goodsImg)
-                    binding.interlocutor.text = response.users_id.nickname
-                    //binding.interlocutorRating.text = null
-                }
-            }catch (e : Exception){
+        if(status == 0){
+            lifecycleScope.launch {
 
+                try {
+                    val response = withContext(Dispatchers.IO){
+                        goodsAPI.getGoodsById(goods_id)
+                    }
+                    withContext(Dispatchers.Main){
+                        binding.goodsName.text = response.name
+                        binding.goodsPrice.text = "${response.price}원"
+                        Glide.with(binding.goodsImg.context)
+                            .load(response.img_url)
+                            .placeholder(null)
+                            .into(binding.goodsImg)
+                        binding.interlocutor.text = response.users_id.nickname
+                        //binding.interlocutorRating.text = null
+                    }
+                }catch (e : Exception){
+
+                }
             }
         }
+
+        if (status == 1){
+            lifecycleScope.launch {
+
+                try {
+                    val response = withContext(Dispatchers.IO){
+                        exchangesAPI.getGoodsById(goods_id)
+                    }
+                    withContext(Dispatchers.Main){
+                        binding.goodsName.text = response.name
+                        binding.goodsPrice.text = " 교환 원하는 상품 : ${response.wantItem}"
+                        Glide.with(binding.goodsImg.context)
+                            .load(response.imageUrl)
+                            .placeholder(null)
+                            .into(binding.goodsImg)
+                        binding.interlocutor.text = response.user.nickname
+                        //binding.interlocutorRating.text = null
+                    }
+                }catch (e : Exception){
+
+                }
+            }
+        }
+
 
 
         initView()

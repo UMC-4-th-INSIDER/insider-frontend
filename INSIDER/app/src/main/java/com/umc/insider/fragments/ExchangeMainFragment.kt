@@ -150,6 +150,13 @@ class ExchangeMainFragment : Fragment(), CategoryClickListener, OnNoteListener {
 
                 }
             }
+
+            searchImg.setOnClickListener {
+                val transaction = activity?.supportFragmentManager?.beginTransaction()
+                transaction?.replace(R.id.frame_layout, SearchFragment())
+                transaction?.addToBackStack(null)
+                transaction?.commit()
+            }
         }
 
     }

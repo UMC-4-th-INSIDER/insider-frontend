@@ -118,6 +118,9 @@ class MyPageFragment : Fragment() {
                     val map = response.body()
                     val ExchangeGoodsList = map?.get("Exchange your item")
                     exchangeEndAdapter.submitList(ExchangeGoodsList)
+                    for ((listName, list) in map!!){
+                        Log.d("교환 리스트", "$listName : $list")
+                    }
                 }
             }catch (e : Exception ){
 

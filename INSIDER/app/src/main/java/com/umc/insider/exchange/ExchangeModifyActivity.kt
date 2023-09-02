@@ -3,6 +3,7 @@ package com.umc.insider.exchange
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
@@ -85,6 +86,21 @@ class ExchangeModifyActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
 
+        }
+
+        binding.deleteBtn.setOnClickListener {
+            lifecycleScope.launch {
+                try {
+                    val response = withContext(Dispatchers.IO){exchangesAPI.deleteGoods(goods_id)}
+                    withContext(Dispatchers.Main){
+                        Toast.makeText(applicationContext, "상품이 성공적으로 삭제되었습니다.", Toast.LENGTH_SHORT).show()
+                    }
+                } catch (e: Exception) {
+                    Log.e("APIII", "Failed to delete goods", e)
+                    Toast.makeText(applicationContext, "상품 삭제에 실패하였습니다.", Toast.LENGTH_SHORT).show()
+                }
+            }
+            finish()
         }
     }
 }
