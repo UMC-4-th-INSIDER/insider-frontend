@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -75,6 +76,16 @@ class MyPageFragment : Fragment() {
                     binding.nicknameTextView.text = response.nickname + "님"
                     binding.idTextView.text = response.userId
                     binding.liveAddress.text = response.detailAddress
+
+                    if(response.sellerOrBuyer == 1){
+                        binding.buyerTextView.text = "Seller"
+                        binding.buyerTextView.background =
+                            ContextCompat.getDrawable(requireContext(), R.drawable.yellow_round_rectangle)
+                    }else{
+                        binding.buyerTextView.text = "Buyer"
+                        binding.buyerTextView.background =
+                            ContextCompat.getDrawable(requireContext(), R.drawable.main_round_rectangle)
+                    }
 
                     if(response.img != null) {
                         Glide.with(binding.profileImg.context)
@@ -245,6 +256,7 @@ class MyPageFragment : Fragment() {
                     .addToBackStack(null)
                     .commit()
             }
+
         }
     }
 
