@@ -157,7 +157,7 @@ class ExchangeActivity : AppCompatActivity() , OnMapReadyCallback {
 
                     try {
 
-                        val response = wishListAPI.deleteWishList(userId = user_id, goodsOrExchangesId = goods_id!!, status = 0)
+                        val response = wishListAPI.deleteWishList(userId = user_id, goodsOrExchangesId = goods_id!!, status = 1)
 
                         if (response.isSuccessful){
                             withContext(Dispatchers.Main){
