@@ -119,17 +119,32 @@
                             </FrameLayout>
 
                             <TextView
+                                android:id="@+id/buyerTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Buyer"
+                                android:fontFamily="@font/roboto"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                android:layout_marginStart="15dp"
+                                android:layout_marginTop="5dp"
+                                android:paddingHorizontal="15dp"
+                                android:paddingVertical="2dp"
+                                android:background="@drawable/main_round_rectangle"
+                                app:layout_constraintTop_toTopOf="@id/profileImgLayout"
+                                app:layout_constraintStart_toEndOf="@id/profileImgLayout" />
+
+                            <TextView
                                 android:id="@+id/nicknameTextView"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="15dp"
-                                android:layout_marginTop="10dp"
+                                android:layout_marginTop="5dp"
                                 android:fontFamily="@font/roboto"
                                 android:text="\@@님"
                                 android:textSize="20sp"
                                 android:textStyle="bold"
-                                app:layout_constraintStart_toEndOf="@id/profileImgLayout"
-                                app:layout_constraintTop_toTopOf="@id/profileImgLayout" />
+                                app:layout_constraintStart_toStartOf="@id/buyerTextView"
+                                app:layout_constraintTop_toBottomOf="@id/buyerTextView" />
 
                             <TextView
                                 android:id="@+id/idTextView"

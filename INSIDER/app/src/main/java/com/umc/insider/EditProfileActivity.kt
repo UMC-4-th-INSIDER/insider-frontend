@@ -1,5 +1,6 @@
 package com.umc.insider
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -63,6 +64,7 @@ class EditProfileActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_edit_profile)
@@ -98,6 +100,13 @@ class EditProfileActivity : AppCompatActivity() {
                     binding.editaddressNum.setText(response.zipCode.toString())
                     password = response.pw
                     Log.d("EDITTT", "password : $password")
+
+                    if(response.sellerOrBuyer == 1){
+                        binding.registerNumCheck.text = "인증 완료"
+                        binding.registerNumCheck.setBackgroundColor(R.color.lightMain)
+                    }else{
+
+                    }
 
                     if(response.img != null) {
                         Glide.with(binding.profileImg.context)

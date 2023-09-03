@@ -135,8 +135,6 @@ class SellerSignUpActivity : AppCompatActivity() {
                 }
                 lifecycleScope.launch {
 
-
-
                     val userId = idEdit.text.toString()
                     val nickname = nicknameEdit.text.toString()
                     val pwd = pwdEdit.text.toString()
