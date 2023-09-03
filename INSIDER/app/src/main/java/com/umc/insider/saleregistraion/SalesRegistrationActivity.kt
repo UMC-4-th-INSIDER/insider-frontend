@@ -245,14 +245,14 @@ class SalesRegistrationActivity : AppCompatActivity() {
             Exchange.setOnClickListener {
                 isGeneralSaleSelected = false   // 교환하기
                 updateButtonUI()
-                productAmountTv.text = "교환 갯수"
-                productAmountInsert.hint = "교환 갯수를 입력하세요."
-                val params = priceExchangeTv.layoutParams
-                params.width = dpToPx(150)
-                priceExchangeTv.layoutParams = params
-                priceExchangeTv.text = "원하는 교환 품목"
-                priceExchangeInsert.inputType = InputType.TYPE_CLASS_TEXT
-                priceExchangeInsert.hint = "ex. 당근"
+//                productAmountTv.text = "교환 갯수"
+//                productAmountInsert.hint = "교환 갯수를 입력하세요."
+//                val params = priceExchangeTv.layoutParams
+//                params.width = dpToPx(150)
+//                priceExchangeTv.layoutParams = params
+//                priceExchangeTv.text = "원하는 교환 품목"
+//                priceExchangeInsert.inputType = InputType.TYPE_CLASS_TEXT
+//                priceExchangeInsert.hint = "ex. 당근"
             }
 
             updateButtonUI()
@@ -316,11 +316,29 @@ class SalesRegistrationActivity : AppCompatActivity() {
                 generalSale.setTextColor(ContextCompat.getColor(this@SalesRegistrationActivity, R.color.white))
                 Exchange.background = ContextCompat.getDrawable(this@SalesRegistrationActivity, R.drawable.white_right_round)
                 Exchange.setTextColor(ContextCompat.getColor(this@SalesRegistrationActivity, R.color.main))
+
+                productAmountTv.text = "판매 갯수"
+                productAmountInsert.hint = "판매 갯수를 입력하세요."
+                val params = priceExchangeTv.layoutParams
+                params.width = dpToPx(90)
+                priceExchangeTv.layoutParams = params
+                priceExchangeTv.text = "개당 가격"
+                priceExchangeInsert.inputType = InputType.TYPE_NUMBER_FLAG_DECIMAL
+                priceExchangeInsert.hint = "개당 판매 가격을 입력하세요."
             } else {
                 generalSale.background = ContextCompat.getDrawable(this@SalesRegistrationActivity, R.drawable.white_left_round)
                 generalSale.setTextColor(ContextCompat.getColor(this@SalesRegistrationActivity, R.color.main))
                 Exchange.background = ContextCompat.getDrawable(this@SalesRegistrationActivity, R.drawable.green_right_round)
                 Exchange.setTextColor(ContextCompat.getColor(this@SalesRegistrationActivity, R.color.white))
+
+                productAmountTv.text = "교환 갯수"
+                productAmountInsert.hint = "교환 갯수를 입력하세요."
+                val params = priceExchangeTv.layoutParams
+                params.width = dpToPx(150)
+                priceExchangeTv.layoutParams = params
+                priceExchangeTv.text = "원하는 교환 품목"
+                priceExchangeInsert.inputType = InputType.TYPE_CLASS_TEXT
+                priceExchangeInsert.hint = "ex. 당근"
             }
         }
     }
