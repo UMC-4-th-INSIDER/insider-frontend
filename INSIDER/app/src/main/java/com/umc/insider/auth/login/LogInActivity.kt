@@ -48,19 +48,6 @@ class LogInActivity : AppCompatActivity() {
     lateinit var mGoogleSignClient : GoogleSignInClient
     lateinit var resultLauncher : ActivityResultLauncher<Intent>
 
-    // Kakao
-    private val mCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
-        if (error != null) {
-            Log.e("kakao", "로그인 실패 $error")
-            //Toast.makeText(this@LogInActivity, "어플 없어서 웹으로 실패", Toast.LENGTH_SHORT).show()
-
-        } else if (token != null) {
-            Log.d("kakao", "로그인 성공 ${token.accessToken}")
-            //Toast.makeText(this@LogInActivity, "어플 없어서 웹으로 성공", Toast.LENGTH_SHORT).show()
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
-        }
-    }
 
     override fun onStart() {
         super.onStart()
@@ -73,16 +60,6 @@ class LogInActivity : AppCompatActivity() {
             goMainActivity()
         } ?: {}
 
-        // Kakao
-        if (AuthApiClient.instance.hasToken()) {
-            UserApiClient.instance.accessTokenInfo { _, error ->
-                if (error == null) {
-//                    startActivity(Intent(this, MainActivity::class.java))
-//                    finish()
-                    goMainActivity()
-                }
-            }
-        }
 
         if(!TokenManager.getToken(applicationContext).isNullOrBlank() &&
             !UserManager.getUserIdx(applicationContext).isNullOrBlank() &&
@@ -113,8 +90,6 @@ class LogInActivity : AppCompatActivity() {
         mGoogleSignClient = GoogleSignIn.getClient(this, gso)
         val account = GoogleSignIn.getLastSignedInAccount(this)
 
-        // kakao - 카카오톡이 있으면 카카오톡 로그인, 없으면 카카오 이메일 로그인
-        KakaoSdk.init(this, getString(R.string.kakao_native_app_key))
     }
 
     private fun initView(){

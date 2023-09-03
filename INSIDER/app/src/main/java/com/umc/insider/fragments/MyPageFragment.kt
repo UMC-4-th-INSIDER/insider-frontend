@@ -192,14 +192,7 @@ class MyPageFragment : Fragment() {
                 val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
                 val googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
                 googleSignInClient.signOut()
-                UserApiClient.instance.logout { error ->
-                    if (error != null) {
-                        //Toast.makeText(this, "로그아웃 실패 $error", Toast.LENGTH_SHORT).show()
-                        return@logout
-                    }else {
-                        //Toast.makeText(this, "로그아웃 성공", Toast.LENGTH_SHORT).show()
-                    }
-                }
+
                 TokenManager.clearToken(requireContext())
                 UserManager.clearUserIdx(requireContext())
                 UserManager.clearUserSellerOrBuyer(requireContext())

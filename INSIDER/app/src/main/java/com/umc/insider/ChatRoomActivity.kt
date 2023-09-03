@@ -60,57 +60,73 @@ class ChatRoomActivity : AppCompatActivity() {
         binding = ActivityChatRoomBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val goods_id = intent.getStringExtra("goods_id")!!.toLong()
+        var goods_id = intent.getStringExtra("goods_id")!!.toLong()
         chatRoom_id = intent.getStringExtra("chatRoom_id")!!.toLong()
         sender_id = UserManager.getUserIdx(this)!!.toLong()
-        val status = intent.getIntExtra("status", 0)
+        var status = intent.getIntExtra("status", 0)
 
-        if(status == 0){
-            lifecycleScope.launch {
+        lifecycleScope.launch {
 
-                try {
-                    val response = withContext(Dispatchers.IO){
-                        goodsAPI.getGoodsById(goods_id)
+            try {
+
+                val response = withContext(Dispatchers.IO){
+                    chattingAPI.getChatRoomByChatRoomId(chatId = chatRoom_id!!)
+                }
+
+                if (response.isSuccess){
+                    val chatRoomInfo = response.result
+                    goods_id = chatRoomInfo!!.goodsOrExchangesId
+                    status = chatRoomInfo.status
+                }
+
+            }catch (e : Exception){
+
+            }
+
+            when(status) {
+                0 -> {
+                    try {
+                        val response = withContext(Dispatchers.IO) {
+                            goodsAPI.getGoodsById(goods_id)
+                        }
+
+                        withContext(Dispatchers.Main) {
+                            binding.goodsName.text = response.name
+                            binding.goodsPrice.text = "${response.price}원"
+                            Glide.with(binding.goodsImg.context)
+                                .load(response.img_url)
+                                .placeholder(null)
+                                .into(binding.goodsImg)
+                            binding.interlocutor.text = response.users_id.nickname
+                            //binding.interlocutorRating.text = null
+                        }
+                    } catch (e: Exception) {
+                        // 예외 처리를 해주세요.
                     }
-                    withContext(Dispatchers.Main){
-                        binding.goodsName.text = response.name
-                        binding.goodsPrice.text = "${response.price}원"
-                        Glide.with(binding.goodsImg.context)
-                            .load(response.img_url)
-                            .placeholder(null)
-                            .into(binding.goodsImg)
-                        binding.interlocutor.text = response.users_id.nickname
-                        //binding.interlocutorRating.text = null
-                    }
-                }catch (e : Exception){
+                }
 
+                1 -> {
+                    try {
+                        val response = withContext(Dispatchers.IO) {
+                            exchangesAPI.getGoodsById(goods_id)
+                        }
+
+                        withContext(Dispatchers.Main) {
+                            binding.goodsName.text = response.name
+                            binding.goodsPrice.text = "교환 원하는 상품: ${response.wantItem}"
+                            Glide.with(binding.goodsImg.context)
+                                .load(response.imageUrl)
+                                .placeholder(null)
+                                .into(binding.goodsImg)
+                            binding.interlocutor.text = response.user.nickname
+                            //binding.interlocutorRating.text = null
+                        }
+                    } catch (e: Exception) {
+                        // 예외 처리를 해주세요.
+                    }
                 }
             }
         }
-
-        if (status == 1){
-            lifecycleScope.launch {
-
-                try {
-                    val response = withContext(Dispatchers.IO){
-                        exchangesAPI.getGoodsById(goods_id)
-                    }
-                    withContext(Dispatchers.Main){
-                        binding.goodsName.text = response.name
-                        binding.goodsPrice.text = " 교환 원하는 상품 : ${response.wantItem}"
-                        Glide.with(binding.goodsImg.context)
-                            .load(response.imageUrl)
-                            .placeholder(null)
-                            .into(binding.goodsImg)
-                        binding.interlocutor.text = response.user.nickname
-                        //binding.interlocutorRating.text = null
-                    }
-                }catch (e : Exception){
-
-                }
-            }
-        }
-
 
 
         initView()

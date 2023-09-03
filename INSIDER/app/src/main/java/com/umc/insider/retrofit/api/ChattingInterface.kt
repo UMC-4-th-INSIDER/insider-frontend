@@ -2,6 +2,7 @@ package com.umc.insider.retrofit.api
 
 import com.umc.insider.model.ChatRooms
 import com.umc.insider.model.Users
+import com.umc.insider.retrofit.model.ChatRoomInfoGetRes
 import com.umc.insider.retrofit.model.ChatRoomsListRes
 import com.umc.insider.retrofit.model.ChatRoomsPostReq
 import com.umc.insider.retrofit.model.ChatRoomsPostRes
@@ -40,4 +41,7 @@ interface ChattingInterface {
 
     @PUT("/chatRooms/purchase/{chatRoomId}/{id}")
     suspend fun purchase(@Path("chatRoomId") chatRoomId : Long, @Path("id") id : Long) : Response<ChatRooms>
+
+    @GET("/chatRooms/info/{chatId}")
+    suspend fun getChatRoomByChatRoomId(@Path("chatId") chatId : Long) : BaseResponse<ChatRoomInfoGetRes>
 }
