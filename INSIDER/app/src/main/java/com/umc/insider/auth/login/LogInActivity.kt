@@ -39,6 +39,7 @@ import kotlinx.coroutines.withContext
 
 class LogInActivity : AppCompatActivity() {
 
+
     private lateinit var binding : ActivityLogInBinding
     private val userAPI = RetrofitInstance.getInstance().create(UserInterface::class.java)
     private lateinit var autoLoginManager: AutoLoginManager
@@ -176,24 +177,9 @@ class LogInActivity : AppCompatActivity() {
             }
 
             kakaoBtn.setOnClickListener {
-                if (UserApiClient.instance.isKakaoTalkLoginAvailable(this@LogInActivity)) {
-                    UserApiClient.instance.loginWithKakaoTalk(this@LogInActivity) { token, error ->
-                        if (error != null) {
-                            if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
-                                return@loginWithKakaoTalk
-                            } else {
-                                UserApiClient.instance.loginWithKakaoAccount(this@LogInActivity, callback = mCallback)
-                            }
-                        } else if (token != null) {
-                            // token.accessToken}
-                            //Toast.makeText(this@LogInActivity, "어플로 성공", Toast.LENGTH_SHORT).show()
-                            startActivity(Intent(this@LogInActivity, MainActivity::class.java))
-                            finish()
-                        }
-                    }
-                } else {
-                    UserApiClient.instance.loginWithKakaoAccount(this@LogInActivity, callback = mCallback)
-                }
+                val intent = Intent(this@LogInActivity, KakaoWebViewActivity::class.java)
+                resultLauncher.launch(intent)
+
             }
         }
     }
@@ -209,6 +195,10 @@ class LogInActivity : AppCompatActivity() {
                 finish()
             }else{
                 //Toast.makeText(this, "로그인 실패", Toast.LENGTH_SHORT).show()
+            }
+
+            if (result.resultCode == 101){
+                Toast.makeText(this@LogInActivity, "로그인 성공", Toast.LENGTH_SHORT).show()
             }
         }
     }

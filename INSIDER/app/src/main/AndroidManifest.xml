@@ -23,6 +23,11 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".auth.login.KakaoWebViewActivity"
+            android:exported="false"
+            android:label="@string/title_activity_ka_kao_web_view"
+            android:theme="@style/Theme.INSIDER" />
+        <activity
             android:name=".exchange.ExchangeActivity"
             android:exported="false" />
         <activity
@@ -72,23 +77,8 @@
         <activity
             android:name=".auth.signUp.AddressActivity"
             android:exported="true"
-            android:screenOrientation="portrait" /> <!-- kakao -->
-        <!-- kakao -->
-        <activity
-            android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
+            android:screenOrientation="portrait" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <!-- Redirect URI: "kakao${NATIVE_APP_KEY}://oauth" -->
-                <data
-                    android:host="oauth"
-                    android:scheme="kakao6dbbe6829b35061737a96be9a123ce9b" />
-            </intent-filter>
-        </activity> <!-- kakao -->
         <activity
             android:name=".auth.signUp.SignUpActivity"
             android:exported="false"

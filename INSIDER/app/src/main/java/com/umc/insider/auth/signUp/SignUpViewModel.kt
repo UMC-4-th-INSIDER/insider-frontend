@@ -2,8 +2,8 @@ package com.umc.insider.auth.signUp
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
 
 class SignUpViewModel : ViewModel() {
 
@@ -28,7 +28,7 @@ class SignUpViewModel : ViewModel() {
     private val _registerNumCheckResult = MutableLiveData(false)
     private val registerNumCheckResult : LiveData<Boolean> = _registerNumCheckResult
 
-    val idState: LiveData<EditState> = Transformations.map(_userId) { id ->
+    val idState: LiveData<EditState> = _userId.map { id ->
         when {
             id.isNullOrBlank() -> EditState.EMPTY
             REGEX_ID.toRegex().matches(id) -> EditState.CHECK
@@ -36,7 +36,7 @@ class SignUpViewModel : ViewModel() {
         }
     }
 
-    val nicknameState : LiveData<EditState> = Transformations.map(_userNickname) { nickname ->
+    val nicknameState : LiveData<EditState> = _userNickname.map { nickname ->
         when{
             nickname.isNullOrBlank() -> EditState.EMPTY
             REGEX_NICKNAME.toRegex().matches(nickname) -> EditState.CHECK
@@ -44,11 +44,11 @@ class SignUpViewModel : ViewModel() {
         }
     }
 
-    val securityState: LiveData<SecurityState> = Transformations.map(_userPWD) { password ->
+    val securityState: LiveData<SecurityState> = _userPWD.map { password ->
         checkPWD(password)
     }
 
-    val checkState : LiveData<EditState> = Transformations.map(_checkPWD) { checkPassword ->
+    val checkState : LiveData<EditState> = _checkPWD.map { checkPassword ->
         when {
             checkPassword.isNullOrBlank() -> EditState.EMPTY
             checkPassword == _userPWD.value -> EditState.CHECK
@@ -56,7 +56,7 @@ class SignUpViewModel : ViewModel() {
         }
     }
 
-    val emailState: LiveData<EditState> = Transformations.map(_userEmail) { email ->
+    val emailState: LiveData<EditState> = _userEmail.map { email ->
         when {
             email.isNullOrBlank() -> EditState.EMPTY
             REGEX_EMAIL.toRegex().matches(email) -> EditState.CHECK
@@ -64,7 +64,7 @@ class SignUpViewModel : ViewModel() {
         }
     }
 
-    val registerNumState: LiveData<EditState> = Transformations.map(_registerNum) { registerNum ->
+    val registerNumState: LiveData<EditState> = _registerNum.map { registerNum ->
         when{
             registerNum.isNullOrBlank() -> EditState.EMPTY
             REGEX_REGISTER.toRegex().matches(registerNum) -> EditState.CHECK
