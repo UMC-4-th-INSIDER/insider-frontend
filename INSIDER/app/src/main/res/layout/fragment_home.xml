@@ -54,6 +54,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="15dp"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@id/appName"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:srcCompat="@drawable/notifications" />
@@ -262,25 +263,34 @@
                             app:layout_constraintTop_toBottomOf="@id/categoryLayout">
 
                             <TextView
-                                android:id="@+id/todayDiscountTextView"
+                                android:id="@+id/hotGoodsTextView"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/roboto"
-                                android:text="@string/todayDiscount"
+                                android:text="@string/hotGoods"
                                 android:textSize="24sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/black"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
+                            <TextView
+                                android:id="@+id/hotGoodsListShow"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/roboto"
+                                android:text="더보기"
+                                app:layout_constraintBottom_toBottomOf="@id/hotGoodsTextView"
+                                app:layout_constraintEnd_toEndOf="parent" />
+
                             <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/todayDiscountRV"
+                                android:id="@+id/hotGoodsRV"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="15dp"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@id/todayDiscountTextView"
+                                app:layout_constraintTop_toBottomOf="@id/hotGoodsTextView"
                                 app:spanCount="2" />
 
                         </androidx.constraintlayout.widget.ConstraintLayout>

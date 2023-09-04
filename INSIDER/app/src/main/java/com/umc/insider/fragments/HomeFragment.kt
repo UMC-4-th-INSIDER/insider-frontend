@@ -25,6 +25,7 @@ import com.umc.insider.model.SearchItem
 import com.umc.insider.purchase.PurchaseDetailActivity
 import com.umc.insider.retrofit.RetrofitInstance
 import com.umc.insider.retrofit.api.GoodsInterface
+import com.umc.insider.retrofit.api.WishListInterface
 import com.umc.insider.revise.SaleReviseDetailActivity
 import com.umc.insider.saleregistraion.SalesRegistrationActivity
 import com.umc.insider.utils.CategoryClickListener
@@ -44,6 +45,7 @@ class HomeFragment : Fragment(), CategoryClickListener, OnNoteListener {
     private val discountGoodsAdapter = DiscountGoodsAdapter()
     private val goodsShortAdapter = GoodsShortAdapter(this)
     private val goodsAPI = RetrofitInstance.getInstance().create(GoodsInterface::class.java)
+    private val wishListAPI = RetrofitInstance.getInstance().create(WishListInterface::class.java)
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -92,6 +94,16 @@ class HomeFragment : Fragment(), CategoryClickListener, OnNoteListener {
                 startActivity(intent)
             }
 
+            hotGoodsListShow.setOnClickListener {
+                val hotGoodsFragment = HotGoodsFragment()
+                val transaction = parentFragmentManager.beginTransaction()
+
+                transaction.replace(R.id.frame_layout, hotGoodsFragment)
+                transaction.addToBackStack(null)
+
+                transaction.commit()
+            }
+
             pointLayout.setOnClickListener {
                 return@setOnClickListener
             }
@@ -100,22 +112,23 @@ class HomeFragment : Fragment(), CategoryClickListener, OnNoteListener {
             categoryRV.addItemDecoration(CategoryAdapterDecoration())
             categoryRV.adapter = categoryAdapter
 
-            todayDiscountRV.adapter = goodsShortAdapter
-            todayDiscountRV.layoutManager= GridLayoutManager(context, 2)
-            todayDiscountRV.addItemDecoration(DiscountAdapterDecoration())
+            hotGoodsRV.adapter = goodsShortAdapter
+            hotGoodsRV.layoutManager= GridLayoutManager(context, 2)
+            hotGoodsRV.addItemDecoration(DiscountAdapterDecoration())
 
             lifecycleScope.launch {
 
                 try {
                     val response = withContext(Dispatchers.IO){
-                        goodsAPI.getGoodsWithSalePrice()
+                        wishListAPI.getHotGoods()
                     }
 
                     if (response.isSuccess){
-                        val saleList = response.result
-                        if (!saleList.isNullOrEmpty()){
+                        val hotList = response.result
+                        if(!hotList.isNullOrEmpty()){
+                            val fourHotList = hotList.take(4)
                             withContext(Dispatchers.Main){
-                                goodsShortAdapter.submitList(saleList)
+                                goodsShortAdapter.submitList(fourHotList)
                             }
                         }
                     }

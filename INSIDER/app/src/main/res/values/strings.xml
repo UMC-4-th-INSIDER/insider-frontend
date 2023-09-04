@@ -4,7 +4,6 @@
     <string name="app_purpose">나누는 식재료, 줄어드는 부담</string>
 
 
-
     <!-- Login-->
     <string name="userId">사용자 ID</string>
     <string name="userPassword">비밀번호</string>
@@ -32,7 +31,7 @@
 
     <!-- home, search -->
     <string name="categoryText">어떤거 찾아?</string>
-    <string name="todayDiscount">오늘의 할인 상품 !</string>
+    <string name="hotGoods">🔥 지금 가장 핫한 상품!</string>
     <string name="searchHint">원하는 상품을 검색하세요!</string>
     <string name="favoriteList">찜목록</string>
     <string name="ProductDetail">상품 상세 정보</string>

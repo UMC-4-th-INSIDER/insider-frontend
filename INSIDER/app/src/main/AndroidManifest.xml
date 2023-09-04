@@ -22,6 +22,7 @@
         android:theme="@style/Theme.INSIDER"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+
         <activity
             android:name=".auth.login.KakaoWebViewActivity"
             android:exported="false"
@@ -78,7 +79,6 @@
             android:name=".auth.signUp.AddressActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".auth.signUp.SignUpActivity"
             android:exported="false"

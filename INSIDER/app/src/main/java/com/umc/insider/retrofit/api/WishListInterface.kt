@@ -38,4 +38,6 @@ interface WishListInterface {
         @Path("status") status : Int
     ) : Boolean
 
+    @GET("/wishlist/hot")
+    suspend fun getHotGoods() : BaseResponse<List<GoodsGetRes>>
 }
