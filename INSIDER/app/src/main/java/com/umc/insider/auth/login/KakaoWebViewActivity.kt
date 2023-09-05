@@ -1,5 +1,7 @@
 package com.umc.insider.auth.login
 
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.webkit.WebResourceRequest
@@ -21,14 +23,21 @@ class KakaoWebViewActivity : AppCompatActivity() {
 
         binding.webview.settings.javaScriptEnabled = true
 
+        val client_id = getString(R.string.client_id)
+        val redirect_uri = getString(R.string.redirect_uri)
+        val response_type = getString(R.string.response_type)
+        val client_secret = getString(R.string.client_secret)
+
         binding.webview.webViewClient = object  : WebViewClient(){
             override fun shouldOverrideUrlLoading(
                 view: WebView?,
                 request: WebResourceRequest?
             ): Boolean {
                 if (request?.url.toString().startsWith("http://localhost:8080/oauth2/callback/kakao")){
-
-                    setResult(101, intent)
+                    val code = Uri.parse(request!!.url.toString()).getQueryParameter("code")
+                    val resultIntent = Intent()
+                    resultIntent.putExtra("code", code)
+                    setResult(101, resultIntent)
                     finish()
                     return true
                 }
@@ -36,7 +45,7 @@ class KakaoWebViewActivity : AppCompatActivity() {
             }
         }
 
-        binding.webview.loadUrl("https://kauth.kakao.com/oauth/authorize?client_id=6026319034992a6bec505b8b721969bb&redirect_uri=http://localhost:8080/oauth2/callback/kakao&response_type=code&client_secret=AkN4ChNdEUztQbawEcWzQyXN1beyANQM")
+        binding.webview.loadUrl("https://kauth.kakao.com/oauth/authorize?client_id=$client_id&redirect_uri=$redirect_uri&response_type=$response_type&client_secret=$client_secret")
 
     }
 }

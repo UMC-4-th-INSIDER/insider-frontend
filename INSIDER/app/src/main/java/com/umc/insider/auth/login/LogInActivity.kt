@@ -21,6 +21,7 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.KakaoSdk
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
+import com.kakao.sdk.common.util.Utility
 import com.kakao.sdk.user.UserApiClient
 import com.umc.insider.MainActivity
 import com.umc.insider.R
@@ -30,6 +31,7 @@ import com.umc.insider.auth.TokenManager
 import com.umc.insider.auth.UserManager
 import com.umc.insider.databinding.ActivityLogInBinding
 import com.umc.insider.retrofit.RetrofitInstance
+import com.umc.insider.retrofit.api.KakaoInterface
 import com.umc.insider.retrofit.api.UserInterface
 import com.umc.insider.retrofit.model.LoginPostReq
 import kotlinx.coroutines.Dispatchers
@@ -42,6 +44,8 @@ class LogInActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityLogInBinding
     private val userAPI = RetrofitInstance.getInstance().create(UserInterface::class.java)
+    private val kakaoAPI = RetrofitInstance.getInstance().create(KakaoInterface::class.java)
+
     private lateinit var autoLoginManager: AutoLoginManager
 
     // Google
@@ -89,6 +93,9 @@ class LogInActivity : AppCompatActivity() {
 
         mGoogleSignClient = GoogleSignIn.getClient(this, gso)
         val account = GoogleSignIn.getLastSignedInAccount(this)
+
+        var keyHash = Utility.getKeyHash(this)
+        //Log.d("keyhash", keyHash)
 
     }
 
@@ -152,6 +159,7 @@ class LogInActivity : AppCompatActivity() {
             }
 
             kakaoBtn.setOnClickListener {
+                //Toast.makeText(this@LogInActivity, "누름", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this@LogInActivity, KakaoWebViewActivity::class.java)
                 resultLauncher.launch(intent)
 
@@ -171,10 +179,29 @@ class LogInActivity : AppCompatActivity() {
             }else{
                 //Toast.makeText(this, "로그인 실패", Toast.LENGTH_SHORT).show()
             }
+            if ( result.resultCode == 101){
+                val code = result.data?.getStringExtra("code")
+                if (code != null) {
+                    Toast.makeText(this@LogInActivity, code,Toast.LENGTH_SHORT).show()
+                    lifecycleScope.launch {
 
-            if (result.resultCode == 101){
-                Toast.makeText(this@LogInActivity, "로그인 성공", Toast.LENGTH_SHORT).show()
+                        try {
+                            val response = withContext(Dispatchers.IO){
+                                kakaoAPI.kakaoCallback(code)
+                            }
+                            if (response.isSuccess){
+                                Log.d("카카오", response.result.toString())
+                            }
+                        }catch (e : Exception){
+
+                        }
+                    }
+                } else {
+                    // code 값이 없는 경우의 처리
+                    Toast.makeText(this@LogInActivity, "code가 없습니다.",Toast.LENGTH_SHORT).show()
+                }
             }
+
         }
     }
 
