@@ -22,6 +22,7 @@ import com.umc.insider.retrofit.api.ChattingInterface
 import com.umc.insider.retrofit.api.ExchangesInterface
 import com.umc.insider.retrofit.api.GoodsInterface
 import com.umc.insider.retrofit.api.MessageInterface
+import com.umc.insider.retrofit.api.UserInterface
 import com.umc.insider.retrofit.model.MessageGetRes
 import com.umc.insider.retrofit.model.MessagePostReq
 import com.umc.insider.viewmodel.ChatRoomViewModel
@@ -39,6 +40,7 @@ class ChatRoomActivity : AppCompatActivity() {
     private lateinit var adapter : ChatRoomAdapter
     private var chatRoom_id : Long? = null
     private var sender_id : Long? = null
+    private val userAPI = RetrofitInstance.getInstance().create(UserInterface::class.java)
     private val messageAPI = RetrofitInstance.getInstance().create(MessageInterface::class.java)
     private val goodsAPI = RetrofitInstance.getInstance().create(GoodsInterface::class.java)
     private val exchangesAPI = RetrofitInstance.getInstance().create(ExchangesInterface::class.java)
@@ -64,6 +66,11 @@ class ChatRoomActivity : AppCompatActivity() {
         chatRoom_id = intent.getStringExtra("chatRoom_id")!!.toLong()
         sender_id = UserManager.getUserIdx(this)!!.toLong()
         var status = intent.getIntExtra("status", 0)
+        var interlocutor : Long = -1
+
+        lifecycleScope.launch {
+
+        }
 
         lifecycleScope.launch {
 
@@ -77,8 +84,22 @@ class ChatRoomActivity : AppCompatActivity() {
                     val chatRoomInfo = response.result
                     goods_id = chatRoomInfo!!.goodsOrExchangesId
                     status = chatRoomInfo.status
+                    if (chatRoomInfo.sellerId == sender_id){
+                        interlocutor = chatRoomInfo.buyerId
+                    }else{
+                        interlocutor = chatRoomInfo.sellerId
+                    }
                 }
 
+            }catch (e : Exception){
+
+            }
+
+            try {
+                val response = withContext(Dispatchers.IO){
+                    userAPI.getUserById(interlocutor)
+                }
+                binding.interlocutor.text = response.nickname
             }catch (e : Exception){
 
             }
@@ -97,7 +118,7 @@ class ChatRoomActivity : AppCompatActivity() {
                                 .load(response.img_url)
                                 .placeholder(null)
                                 .into(binding.goodsImg)
-                            binding.interlocutor.text = response.users_id.nickname
+                            //binding.interlocutor.text = response.users_id.nickname
                             //binding.interlocutorRating.text = null
                         }
                     } catch (e: Exception) {
@@ -118,7 +139,7 @@ class ChatRoomActivity : AppCompatActivity() {
                                 .load(response.imageUrl)
                                 .placeholder(null)
                                 .into(binding.goodsImg)
-                            binding.interlocutor.text = response.user.nickname
+                            //binding.interlocutor.text = response.user.nickname
                             //binding.interlocutorRating.text = null
                         }
                     } catch (e: Exception) {
