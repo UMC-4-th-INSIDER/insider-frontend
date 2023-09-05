@@ -182,7 +182,7 @@ class LogInActivity : AppCompatActivity() {
             if ( result.resultCode == 101){
                 val code = result.data?.getStringExtra("code")
                 if (code != null) {
-                    Toast.makeText(this@LogInActivity, code,Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(this@LogInActivity, code,Toast.LENGTH_SHORT).show()
                     lifecycleScope.launch {
 
                         try {
@@ -191,9 +191,47 @@ class LogInActivity : AppCompatActivity() {
                             }
                             if (response.isSuccess){
                                 Log.d("카카오", response.result.toString())
+                                val result = response.result
+                                val id = result!!.userId
+                                val pwd = result!!.pw
+                                val loginPostReq = LoginPostReq(id,pwd)
+
+                                lifecycleScope.launch {
+                                    val response = withContext(Dispatchers.IO) {
+                                        userAPI.logIn(loginPostReq)
+                                    }
+                                    if(response.isSuccessful){
+
+                                        val baseResponse = response.body()
+
+                                        if(baseResponse?.isSuccess == true){
+
+                                            val loginPostRes = baseResponse.result
+                                            TokenManager.saveToken(this@LogInActivity, loginPostRes?.jwt)
+                                            UserManager.saveUserIdx(this@LogInActivity, loginPostRes?.id)
+                                            UserManager.setUserSellerOrBuyer(this@LogInActivity, loginPostRes?.sellerOrBuyer)
+                                            Toast.makeText(this@LogInActivity, loginPostRes?.id.toString(),Toast.LENGTH_SHORT).show()
+                                            if (binding.autoLoginSwitch.isChecked){
+                                                autoLoginManager.setAutoLogin(true)
+                                            }else{
+                                                autoLoginManager.setAutoLogin(false)
+                                            }
+
+                                            goMainActivity()
+                                        }else{
+                                            // baseResponse가 실패한 경우의 처리
+                                            //Log.d("loginerror",baseResponse!!.message)
+                                        }
+
+                                    }else{
+                                        // 네트워크 에러 처리
+                                    }
+                                }
+                            }else{
+                                Log.d("카카오", "다른 에러")
                             }
                         }catch (e : Exception){
-
+                            Log.d("카카오", "네트워크 에러")
                         }
                     }
                 } else {
