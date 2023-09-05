@@ -17,6 +17,12 @@ data class Users (
         val nickname: String,
 
         @SerializedName("address")
-        val address: Address
+        val address: Address,
+
+        @SerializedName("seller_or_buyer")
+        val sellerOrBuyer: Int?,
+
+        @SerializedName("register_number")
+        val registerNumber: Long?
 
 )

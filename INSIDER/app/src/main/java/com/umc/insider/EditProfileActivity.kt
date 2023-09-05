@@ -16,6 +16,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
@@ -27,8 +28,11 @@ import com.umc.insider.auth.UserManager
 import com.umc.insider.auth.login.LogInActivity
 import com.umc.insider.auth.signUp.AddressActivity
 import com.umc.insider.databinding.ActivityEditProfileBinding
+import com.umc.insider.retrofit.RegisterNumCheckInstance
 import com.umc.insider.retrofit.RetrofitInstance
+import com.umc.insider.retrofit.api.RegisterNumCheckInterface
 import com.umc.insider.retrofit.api.UserInterface
+import com.umc.insider.retrofit.model.UserPatchReq
 import com.umc.insider.retrofit.model.UserPutProfileReq
 import com.umc.insider.retrofit.model.UserPutReq
 import kotlinx.coroutines.Dispatchers
@@ -50,9 +54,14 @@ class EditProfileActivity : AppCompatActivity() {
 
     private lateinit var getSearchResult : ActivityResultLauncher<Intent>
 
+    private val registerNumCheckAPI = RegisterNumCheckInstance.getInstance().create(
+        RegisterNumCheckInterface::class.java)
+    private var registerNum : Long? = null
+
     private var imgUri : Uri? = null
     private var password : String = ""
     private var flag = false
+    private var isSeller = false
 
 
     private val selectImageResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -84,7 +93,7 @@ class EditProfileActivity : AppCompatActivity() {
         Log.d("EDITTT", "userIdx : {$userIdx}")
         val UserApi = RetrofitInstance.getInstance().create(UserInterface::class.java)
 
-
+        // 정보 가져오기
         lifecycleScope.launch{
             try {
                 val response = withContext(Dispatchers.IO){
@@ -104,6 +113,7 @@ class EditProfileActivity : AppCompatActivity() {
                     if(response.sellerOrBuyer == 1){
                         binding.registerNumCheck.text = "인증 완료"
                         binding.registerNumCheck.setBackgroundColor(R.color.lightMain)
+                        isSeller = true
                     }else{
 
                     }
@@ -122,6 +132,100 @@ class EditProfileActivity : AppCompatActivity() {
                 Log.e("EDITTT", "$e")
             }
         }
+
+        // 사업자 등록 -> 버튼을 누를 경우 isSeller를 true로 변경하고 true일 경우에 registerNum update
+        // 5683801056
+        binding.registerNumCheck.setOnClickListener {
+            if (binding.registerTextView.text.length != 10){
+                Toast.makeText(this@EditProfileActivity, "사업자 번호 형식을 입력해 주세요",Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val registerNumCheckInstance = lifecycleScope.launch {
+
+                try {
+
+                    val response = withContext(Dispatchers.IO) {
+                        registerNumCheckAPI.fetchData(
+                            key = getString(R.string.register_num_check_key),
+                            query = binding.registerTextView.text.toString()
+                        )
+                    }
+
+                    if (response.isSuccessful) {
+                        val result = response.body()!!.items[0]
+                        registerNum = binding.registerTextView.text.toString().toLong()
+                        if (result.bstt == "계속사업자"){
+                            isSeller = true
+                            Toast.makeText(this@EditProfileActivity, "사업자 인증되었습니다.", Toast.LENGTH_SHORT).show()
+                            binding.registerTextView.setCompoundDrawablesWithIntrinsicBounds(
+                                null, null,
+                                AppCompatResources.getDrawable(it.context, R.drawable.baseline_check_24), null
+                            )
+                        }else{
+                            Toast.makeText(this@EditProfileActivity, "사업자 번호가 존재하지 않습니다.", Toast.LENGTH_SHORT).show()
+                        }
+
+                    }
+
+                } catch (e: Exception) {
+                    withContext(Dispatchers.Main) {
+                        Log.e("REGISTERRR", e.message.toString())
+                    }
+                }
+            }
+
+            Log.d("REGISTERRR", "조건문 돌입 전")
+
+            lifecycleScope.launchWhenStarted{
+                registerNumCheckInstance.join()
+
+                if(isSeller){
+                    Log.d("REGISTERRR", "조건문 돌입 후")
+
+                    val patchUserReq = UserPatchReq(
+                        id = userIdx,
+                        registerNum = registerNum
+                    )
+
+                    Log.d("REGISTERRR", "코루틴 들어옴")
+
+                    try{
+                        val response = UserApi.patchTransfer(patchUserReq)
+                        Log.d("REGISTERRR", "진짜 끝일걸?")
+                        if(response.sellerOrBuyer == 1)
+                            Log.d("REGISTERRR", "성공!! ${response.registerNumber}")
+
+                    }catch(e:Exception){
+                        Log.e("REGISTERRR", "$e")
+                    }
+                }
+            }
+
+            /*
+            if(isSeller){
+                Log.d("REGISTERRR", "조건문 돌입 후")
+                val patchUserReq = UserPatchReq(
+                    id = userIdx,
+                    registerNum = binding.registerTextView.text.toString().toLong()
+                )
+
+                lifecycleScope.launch {
+                    Log.d("REGISTERRR", "코루틴 들어옴")
+
+                    try{
+                        val response = UserApi.patchTransfer(patchUserReq)
+                        Log.d("REGISTERRR", "진짜 끝일걸?")
+                        if(response.sellerOrBuyer == 1)
+                            Log.d("REGISTERRR", "성공!! ${response.registerNumber}")
+
+                    }catch(e:Exception){
+                        Log.e("REGISTERRR", "$e")
+                    }
+                }
+            }*/
+        }
+
 
 
 
@@ -149,7 +253,7 @@ class EditProfileActivity : AppCompatActivity() {
 
             Log.d("EDITTT", "성공 직전")
 
-            lifecycleScope.launch{
+            val editUserJob = lifecycleScope.launch{
                 try{
                     val response = UserApi.modifyUser(putUserReq)
                     Log.d("EDITTT", "${response.isSuccess}")
@@ -184,9 +288,9 @@ class EditProfileActivity : AppCompatActivity() {
 
             }
 
-
             lifecycleScope.launch {
-                imageUploadJob.join()  // Wait for the image upload job to complete
+                imageUploadJob.join()
+                editUserJob.join()
 
                 if(flag){
                     Toast.makeText(applicationContext, "이미지가 너무 큽니다!", Toast.LENGTH_SHORT).show()
