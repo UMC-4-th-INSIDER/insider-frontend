@@ -96,7 +96,9 @@ class SellerSignUpActivity : AppCompatActivity() {
                         }
 
                         if (response.isSuccessful) {
+                            Log.d("REGISTERRR", "여기는 왜")
                             val result = response.body()!!.items[0]
+                            Log.d("REGISTERRR", "됨?")
                             registerNum = binding.registerNumEdit.text.toString().toLong()
                             if (result.bstt == "계속사업자"){
                                 registerNumCheckResult = true
