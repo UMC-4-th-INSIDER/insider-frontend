@@ -18,5 +18,8 @@ data class ChatRoomsListRes (
     val createdAt : Date,
 
     @SerializedName("goodsId")
-    val goodsId : Long
+    val goodsId : Long,
+
+    @SerializedName("otherImgUrl")
+    val otherImgUrl : String
 )
