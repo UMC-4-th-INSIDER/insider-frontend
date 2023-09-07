@@ -39,7 +39,12 @@ class ExchangeAdapter(private val onNoteListener: OnNoteListener) :
                 if (exchangesPostRes.weight.isBlank()){
                     binding.itemWeightOrRest.text = "${exchangesPostRes.count}개"
                 }else{
-                    binding.itemWeightOrRest.text = "${exchangesPostRes.weight}g"
+                    val weightText = if (exchangesPostRes.weight.toLong() >= 1000) {
+                        String.format("(%.1fkg)", exchangesPostRes.weight.toLong() / 1000.0)
+                    } else {
+                        "(${exchangesPostRes.weight}g)"
+                    }
+                    binding.itemWeightOrRest.text = "$weightText"
                 }
                 binding.exchangeText.text = "${exchangesPostRes.wantItem} (이랑)\n교환 원해요!"
                 Glide.with(binding.goodsImg.context)

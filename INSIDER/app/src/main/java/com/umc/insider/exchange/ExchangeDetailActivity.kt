@@ -70,9 +70,14 @@ class ExchangeDetailActivity : AppCompatActivity() {
                     binding.productName.text = response.name
                     if (response.weight.isNullOrBlank()){
                         binding.productAmount.text = "(${response.count}개)"
-                        binding.PurchaseTotalamountTv.text = "${response.count}g"
+                        binding.PurchaseTotalamountTv.text = "${response.count}개"
                     }else{
-                        binding.productAmount.text = "(${response.weight}g)"
+                        val weightText = if (response.weight.toLong() >= 1000) {
+                            String.format("%.1fkg", response.weight.toLong() / 1000.0)
+                        } else {
+                            "(${response.weight}g)"
+                        }
+                        binding.productAmount.text = "$weightText"
                         binding.PurchaseTotalamountTv.text = "${response.count}개"
                     }
                     binding.PurchaseExpirationDate.text = response.shelfLife

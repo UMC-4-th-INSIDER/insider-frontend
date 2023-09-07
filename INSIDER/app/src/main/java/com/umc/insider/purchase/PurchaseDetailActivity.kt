@@ -70,7 +70,13 @@ class PurchaseDetailActivity : AppCompatActivity() {
                         binding.PurchaseTotalamountTv.text = "${response.rest}개"
                     }else{
                         binding.productUnit.text = "(100g당)"
-                        binding.PurchaseTotalamountTv.text = "${response.weight}g"
+
+                        val weightText = if (response.weight.toLong() >= 1000) {
+                            String.format("%.1fkg", response.weight.toLong() / 1000.0)
+                        } else {
+                            "${response.weight}g"
+                        }
+                        binding.PurchaseTotalamountTv.text = "$weightText"
                     }
 
                     binding.PurchaseExpirationDate.text= response.shelf_life
