@@ -28,6 +28,9 @@ data class UserGetByIdRes (
     val img : String,
 
     @SerializedName("sellerOrBuyer")
-    val sellerOrBuyer : Int
+    val sellerOrBuyer : Int,
+
+    @SerializedName("registerNum")
+    val registerNum : Long
 
 )

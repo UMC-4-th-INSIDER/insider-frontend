@@ -88,6 +88,7 @@ class SalesRegistrationActivity : AppCompatActivity() {
 
         // 1이면 셀러, 0이면 바이어
         sellerOrBuyer = UserManager.getUserSellerOrBuyer(applicationContext)!!.toInt()
+        Log.d("SELLERR", "$sellerOrBuyer")
 
 
         val categories = listOf("카테고리", "과일", "정육/계란", "채소", "유제품", "수산/건어물", "기타")
@@ -167,9 +168,8 @@ class SalesRegistrationActivity : AppCompatActivity() {
                         if(imageFile!=null){
                             val imageRequestBody = RequestBody.create("image/*".toMediaTypeOrNull(), imageFile)
                             val imagePart = MultipartBody.Part.createFormData("image", imageFile.name, imageRequestBody)
-                            val token = TokenManager.getToken(applicationContext)
                             try {
-                                val response = GoodsApi.createGoods(token!!, newGoodsRequestBody, imagePart)
+                                val response = GoodsApi.createGoods(newGoodsRequestBody, imagePart)
                                 if (response.isSuccessful){
                                     withContext(Dispatchers.Main){
                                         Toast.makeText(applicationContext, "상품 등록되었습니다.", Toast.LENGTH_SHORT).show()

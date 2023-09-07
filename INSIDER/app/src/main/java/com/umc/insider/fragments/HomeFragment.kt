@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.umc.insider.OnNoteListener
 import com.umc.insider.R
 import com.umc.insider.adapter.CategoryAdapter
@@ -25,6 +26,7 @@ import com.umc.insider.model.SearchItem
 import com.umc.insider.purchase.PurchaseDetailActivity
 import com.umc.insider.retrofit.RetrofitInstance
 import com.umc.insider.retrofit.api.GoodsInterface
+import com.umc.insider.retrofit.api.UserInterface
 import com.umc.insider.retrofit.api.WishListInterface
 import com.umc.insider.revise.SaleReviseDetailActivity
 import com.umc.insider.saleregistraion.SalesRegistrationActivity
@@ -46,7 +48,6 @@ class HomeFragment : Fragment(), CategoryClickListener, OnNoteListener {
     private val goodsShortAdapter = GoodsShortAdapter(this)
     private val goodsAPI = RetrofitInstance.getInstance().create(GoodsInterface::class.java)
     private val wishListAPI = RetrofitInstance.getInstance().create(WishListInterface::class.java)
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
