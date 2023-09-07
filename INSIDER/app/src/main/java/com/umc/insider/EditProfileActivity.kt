@@ -166,7 +166,8 @@ class EditProfileActivity : AppCompatActivity() {
                                 null, null,
                                 AppCompatResources.getDrawable(it.context, R.drawable.baseline_check_24), null
                             )
-                            
+                            UserManager.setUserSellerOrBuyer(applicationContext,1)
+
                         }else{
                             Toast.makeText(this@EditProfileActivity, "사업자 번호가 존재하지 않습니다.", Toast.LENGTH_SHORT).show()
                         }
