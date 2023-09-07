@@ -17,6 +17,8 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
@@ -112,7 +114,7 @@ class EditProfileActivity : AppCompatActivity() {
 
                     if(response.sellerOrBuyer == 1){
                         binding.registerNumCheck.text = "인증 완료"
-                        binding.registerNumCheck.setBackgroundColor(R.color.main)
+                        binding.registerNumCheck.setBackgroundColor(ContextCompat.getColor(this@EditProfileActivity, R.color.lightMain))
                         Log.d("EDITTT", "registerNum : ${response.registerNum}")
                         binding.registerTextView.setText(response.registerNum.toString())
                         isSeller = true
