@@ -63,8 +63,11 @@
 
                 <TextView
                     android:id="@+id/productName_Title"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:text="양파"
                     android:textColor="@color/black"
                     android:fontFamily="@font/roboto"

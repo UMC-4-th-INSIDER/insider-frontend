@@ -57,12 +57,12 @@ class LogInActivity : AppCompatActivity() {
         super.onStart()
 
         // Google
-        val account = GoogleSignIn.getLastSignedInAccount(this)
-        account?.let {
-//            startActivity(Intent(this, MainActivity::class.java))
-//            finish()
-            goMainActivity()
-        } ?: {}
+//        val account = GoogleSignIn.getLastSignedInAccount(this)
+//        account?.let {
+////            startActivity(Intent(this, MainActivity::class.java))
+////            finish()
+//            goMainActivity()
+//        } ?: {}
 
 
         if(!TokenManager.getToken(applicationContext).isNullOrBlank() &&
@@ -155,6 +155,7 @@ class LogInActivity : AppCompatActivity() {
                 startActivity(Intent(this@LogInActivity, SellerBuyerActivity::class.java))
             }
             googleBtn.setOnClickListener {
+                Toast.makeText(this@LogInActivity, "로그인은 되지만 미구현입니다.",Toast.LENGTH_SHORT).show()
                 signIn()
             }
 
@@ -174,8 +175,9 @@ class LogInActivity : AppCompatActivity() {
                 val task : Task<GoogleSignInAccount> =
                     GoogleSignIn.getSignedInAccountFromIntent(result.data)
                 handleSignInResult(task)
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
+                //startActivity(Intent(this, MainActivity::class.java))
+                //finish()
+                Toast.makeText(this@LogInActivity, "로그인 성공! - 연결 x.",Toast.LENGTH_SHORT).show()
             }else{
                 //Toast.makeText(this, "로그인 실패", Toast.LENGTH_SHORT).show()
             }
@@ -193,8 +195,7 @@ class LogInActivity : AppCompatActivity() {
                                 Log.d("카카오", response.result.toString())
                                 val result = response.result
                                 val id = result!!.userId
-                                val pwd = result!!.pw
-                                val loginPostReq = LoginPostReq(id,pwd)
+                                val loginPostReq = LoginPostReq(id,"111")
 
                                 lifecycleScope.launch {
                                     val response = withContext(Dispatchers.IO) {
