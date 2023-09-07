@@ -220,7 +220,8 @@ class SaleReviseRegistrationActivity : AppCompatActivity() {
                             shelfLife = expirationDate,
                             category = category,
                             sale_price = salePrice,
-                            sale_percent = salePercent
+                            sale_percent = salePercent,
+                            name = productName
                         )
 
                         //Log.d("modifyyy", "$imageFile")

@@ -10,6 +10,9 @@ data class PartialGoods(
     @SerializedName("title")
     val title: String,
 
+    @SerializedName("name")
+    val name: String,
+
     @SerializedName("price")
     val price: String,
 
