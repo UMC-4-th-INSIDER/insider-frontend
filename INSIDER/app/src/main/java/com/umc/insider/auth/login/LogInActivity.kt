@@ -210,7 +210,7 @@ class LogInActivity : AppCompatActivity() {
                                             TokenManager.saveToken(this@LogInActivity, loginPostRes?.jwt)
                                             UserManager.saveUserIdx(this@LogInActivity, loginPostRes?.id)
                                             UserManager.setUserSellerOrBuyer(this@LogInActivity, loginPostRes?.sellerOrBuyer)
-                                            Toast.makeText(this@LogInActivity, loginPostRes?.id.toString(),Toast.LENGTH_SHORT).show()
+                                            //Toast.makeText(this@LogInActivity, loginPostRes?.id.toString(),Toast.LENGTH_SHORT).show()
                                             if (binding.autoLoginSwitch.isChecked){
                                                 autoLoginManager.setAutoLogin(true)
                                             }else{
