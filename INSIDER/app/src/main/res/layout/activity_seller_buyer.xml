@@ -62,20 +62,10 @@
                     android:id="@+id/tv1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Seller"
+                    android:text="팔아유"
                     android:textSize="28dp"
                     android:textStyle="bold"
-                    android:fontFamily="@font/roboto"
-                    android:layout_marginRight="15dp"/>
-
-                <TextView
-                    android:id="@+id/tv2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="판매자"
-                    android:textSize="24dp"
-                    android:fontFamily="@font/roboto"
-                    android:textStyle="bold" />
+                    android:fontFamily="@font/roboto" />
 
             </LinearLayout>
 
@@ -106,19 +96,8 @@
                 android:id="@+id/tv3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Buyer"
+                android:text="사유"
                 android:textSize="28dp"
-                android:textStyle="bold"
-                android:fontFamily="@font/roboto"
-                android:layout_marginRight="15dp"/>
-
-            <TextView
-                android:id="@+id/tv4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="구매자"
-                android:textSize="24dp"
-                android:fontFamily="@font/roboto"
                 android:textStyle="bold" />
 
         </LinearLayout>

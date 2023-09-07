@@ -23,10 +23,10 @@ class KakaoWebViewActivity : AppCompatActivity() {
 
         binding.webview.settings.javaScriptEnabled = true
 
-        val client_id = getString(R.string.client_id)
-        val redirect_uri = getString(R.string.redirect_uri)
-        val response_type = getString(R.string.response_type)
-        val client_secret = getString(R.string.client_secret)
+        //val client_id = getString(R.string.client_id)
+        //val redirect_uri = getString(R.string.redirect_uri)
+        //val response_type = getString(R.string.response_type)
+        //val client_secret = getString(R.string.client_secret)
 
         binding.webview.webViewClient = object  : WebViewClient(){
             override fun shouldOverrideUrlLoading(
@@ -45,7 +45,7 @@ class KakaoWebViewActivity : AppCompatActivity() {
             }
         }
 
-        binding.webview.loadUrl("https://kauth.kakao.com/oauth/authorize?client_id=$client_id&redirect_uri=$redirect_uri&response_type=$response_type&client_secret=$client_secret")
+        //binding.webview.loadUrl("https://kauth.kakao.com/oauth/authorize?client_id=$client_id&redirect_uri=$redirect_uri&response_type=$response_type&client_secret=$client_secret")
 
     }
 }

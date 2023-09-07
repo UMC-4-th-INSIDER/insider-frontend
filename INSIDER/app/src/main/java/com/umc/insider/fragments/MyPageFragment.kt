@@ -1,6 +1,7 @@
 package com.umc.insider.fragments
 
 import android.app.Activity.RESULT_OK
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
@@ -10,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -78,11 +80,11 @@ class MyPageFragment : Fragment() {
                     binding.liveAddress.text = response.detailAddress
 
                     if(response.sellerOrBuyer == 1){
-                        binding.buyerTextView.text = "Seller"
+                        binding.buyerTextView.text = "팔아유"
                         binding.buyerTextView.background =
                             ContextCompat.getDrawable(requireContext(), R.drawable.yellow_round_rectangle)
                     }else{
-                        binding.buyerTextView.text = "Buyer"
+                        binding.buyerTextView.text = "사유"
                         binding.buyerTextView.background =
                             ContextCompat.getDrawable(requireContext(), R.drawable.main_round_rectangle)
                     }
@@ -165,29 +167,17 @@ class MyPageFragment : Fragment() {
             shoppingListRV.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             shoppingListRV.addItemDecoration(ShoppingSaleListAdapterDecoration())
 
-            // 판매하기 판매중
-            //saleListRV.adapter = saleListAdapter
-            //saleListRV.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            //saleListRV.addItemDecoration(ShoppingSaleListAdapterDecoration())
-            //saleListAdapter.submitList(SaleGoodsList)
-
             // 판매하기 판매완료
             saleEndListRV.adapter = saleendListAdapter
             saleEndListRV.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             saleEndListRV.addItemDecoration(ShoppingSaleListAdapterDecoration())
 
-
-            //val exdummies = exchangingDummyDate()
-            // 교환하기 교환중
-            //exchangeListRV.adapter = exchangingListAdapter
-            //exchangeListRV.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            //exchangeListRV.addItemDecoration(ShoppingSaleListAdapterDecoration())
-            //exchangingListAdapter.submitList(exdummies)
             // 교환하기 교환완료
             exchangeEndListRV.adapter = exchangeEndAdapter
             exchangeEndListRV.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             exchangeEndListRV.addItemDecoration(ShoppingSaleListAdapterDecoration())
 
+            // 로그아웃
             logoutTextView.setOnClickListener {
                 val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
                 val googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
@@ -198,6 +188,27 @@ class MyPageFragment : Fragment() {
                 UserManager.clearUserSellerOrBuyer(requireContext())
                 startActivity(Intent(activity, LogInActivity::class.java))
                 activity?.finish()
+            }
+
+            // 계정 탈퇴
+            withdrawalTextView.setOnClickListener {
+                AlertDialog.Builder(requireContext())
+                    .setTitle("계정 탈퇴")
+                    .setMessage("계정을 삭제하시겠습니까?")
+                    .setPositiveButton("네", DialogInterface.OnClickListener { dialog, which ->
+                        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
+                        val googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
+                        googleSignInClient.signOut()
+
+                        TokenManager.clearToken(requireContext())
+                        UserManager.clearUserIdx(requireContext())
+                        UserManager.clearUserSellerOrBuyer(requireContext())
+
+                        startActivity(Intent(activity, LogInActivity::class.java))
+                        activity?.finish()
+                    })
+                    .setNegativeButton("아니요", null)
+                    .show()
             }
 
             // 내 정보 수정하기 화면으로 넘어가기
@@ -269,6 +280,16 @@ class MyPageFragment : Fragment() {
                     binding.nicknameTextView.text = response.nickname + "님"
                     binding.idTextView.text = response.userId
                     binding.liveAddress.text = response.detailAddress
+
+                    if(response.sellerOrBuyer == 1){
+                        binding.buyerTextView.text = "팔아유"
+                        binding.buyerTextView.background =
+                            ContextCompat.getDrawable(requireContext(), R.drawable.yellow_round_rectangle)
+                    }else{
+                        binding.buyerTextView.text = "사유"
+                        binding.buyerTextView.background =
+                            ContextCompat.getDrawable(requireContext(), R.drawable.main_round_rectangle)
+                    }
 
                     if(response.img != null) {
                         Glide.with(binding.profileImg.context)

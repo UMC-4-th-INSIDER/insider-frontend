@@ -112,7 +112,9 @@ class EditProfileActivity : AppCompatActivity() {
 
                     if(response.sellerOrBuyer == 1){
                         binding.registerNumCheck.text = "인증 완료"
-                        binding.registerNumCheck.setBackgroundColor(R.color.lightMain)
+                        binding.registerNumCheck.setBackgroundColor(R.color.main)
+                        Log.d("EDITTT", "registerNum : ${response.registerNum}")
+                        binding.registerTextView.setText(response.registerNum.toString())
                         isSeller = true
                     }else{
 
@@ -175,11 +177,13 @@ class EditProfileActivity : AppCompatActivity() {
                 }
             }
 
-            Log.d("REGISTERRR", "조건문 돌입 전")
 
+
+            Log.d("REGISTERRR", "lifecycle 돌입 전")
             lifecycleScope.launchWhenStarted{
                 registerNumCheckInstance.join()
 
+                Log.d("REGISTERRR", "조건문 돌입 전")
                 if(isSeller){
                     Log.d("REGISTERRR", "조건문 돌입 후")
 
@@ -199,31 +203,10 @@ class EditProfileActivity : AppCompatActivity() {
                     }catch(e:Exception){
                         Log.e("REGISTERRR", "$e")
                     }
+                }else{
+                    Log.d("REGISTERRR", "변경할 게 없음")
                 }
             }
-
-            /*
-            if(isSeller){
-                Log.d("REGISTERRR", "조건문 돌입 후")
-                val patchUserReq = UserPatchReq(
-                    id = userIdx,
-                    registerNum = binding.registerTextView.text.toString().toLong()
-                )
-
-                lifecycleScope.launch {
-                    Log.d("REGISTERRR", "코루틴 들어옴")
-
-                    try{
-                        val response = UserApi.patchTransfer(patchUserReq)
-                        Log.d("REGISTERRR", "진짜 끝일걸?")
-                        if(response.sellerOrBuyer == 1)
-                            Log.d("REGISTERRR", "성공!! ${response.registerNumber}")
-
-                    }catch(e:Exception){
-                        Log.e("REGISTERRR", "$e")
-                    }
-                }
-            }*/
         }
 
 
@@ -348,6 +331,7 @@ class EditProfileActivity : AppCompatActivity() {
                 startActivity(Intent(this@EditProfileActivity, LogInActivity::class.java))
                 finish()
             }
+
         }
     }
 
