@@ -168,9 +168,8 @@ class SalesRegistrationActivity : AppCompatActivity() {
                         if(imageFile!=null){
                             val imageRequestBody = RequestBody.create("image/*".toMediaTypeOrNull(), imageFile)
                             val imagePart = MultipartBody.Part.createFormData("image", imageFile.name, imageRequestBody)
-                            val token = TokenManager.getToken(applicationContext)
                             try {
-                                val response = GoodsApi.createGoods(token!!, newGoodsRequestBody, imagePart)
+                                val response = GoodsApi.createGoods(newGoodsRequestBody, imagePart)
                                 if (response.isSuccessful){
                                     withContext(Dispatchers.Main){
                                         Toast.makeText(applicationContext, "상품 등록되었습니다.", Toast.LENGTH_SHORT).show()

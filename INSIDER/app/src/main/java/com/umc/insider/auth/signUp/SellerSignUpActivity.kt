@@ -70,7 +70,6 @@ class SellerSignUpActivity : AppCompatActivity() {
             registerNumEdit.addTextChangedListener {
                 viewModel.setResgisterNum((it.toString()))
                 if (registerNumCheckResult) { registerNumCheckResult = false }
-                Toast.makeText(this@SellerSignUpActivity, registerNumCheckResult.toString(), Toast.LENGTH_SHORT).show()
             }
 
             addressFindBtn.setOnClickListener {

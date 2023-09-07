@@ -29,7 +29,6 @@ interface GoodsInterface {
     @Multipart
     @POST("/goods/create")
     suspend fun createGoods(
-        @Header("X-ACCESS-TOKEN") token: String,
         @Part("postgoodsReq") postgoodsReq: RequestBody,
         @Part image: MultipartBody.Part
     ): Response<BaseResponse<GoodsPostRes>>
