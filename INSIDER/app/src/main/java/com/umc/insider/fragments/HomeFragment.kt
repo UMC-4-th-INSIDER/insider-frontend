@@ -48,9 +48,6 @@ class HomeFragment : Fragment(), CategoryClickListener, OnNoteListener {
     private val goodsShortAdapter = GoodsShortAdapter(this)
     private val goodsAPI = RetrofitInstance.getInstance().create(GoodsInterface::class.java)
     private val wishListAPI = RetrofitInstance.getInstance().create(WishListInterface::class.java)
-    private val userAPI = RetrofitInstance.getInstance().create(UserInterface::class.java)
-
-    private var isSeller = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -64,24 +61,6 @@ class HomeFragment : Fragment(), CategoryClickListener, OnNoteListener {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-
-        val userIdx = UserManager.getUserIdx(requireActivity().applicationContext)!!.toLong()
-
-        lifecycleScope.launch{
-            try {
-                val response = withContext(Dispatchers.IO){
-                    userAPI.getUserById(userIdx)
-                }
-                Log.d("MYPAGEEE", "$response")
-
-                withContext(Dispatchers.Main){
-                    isSeller = response.sellerOrBuyer == 1
-                }
-
-            }catch( e : Exception){
-                Log.e("MYPAGEEE", "$e")
-            }
-        }
 
         initView()
 
@@ -112,13 +91,8 @@ class HomeFragment : Fragment(), CategoryClickListener, OnNoteListener {
 
             // 판매 등록 바로가기
             sellLayout.setOnClickListener {
-                if(isSeller){
-                    val intent = Intent(requireContext(), SalesRegistrationActivity::class.java)
-                    startActivity(intent)
-                }else{
-                    Toast.makeText(requireContext(), "구매자는 판매 등록할 수 없습니다.", Toast.LENGTH_SHORT).show()
-                }
-
+                val intent = Intent(requireContext(), SalesRegistrationActivity::class.java)
+                startActivity(intent)
             }
 
             hotGoodsListShow.setOnClickListener {
@@ -169,27 +143,6 @@ class HomeFragment : Fragment(), CategoryClickListener, OnNoteListener {
         }
 
 
-    }
-
-    override fun onResume() {
-        super.onResume()
-        val userIdx = UserManager.getUserIdx(requireActivity().applicationContext)!!.toLong()
-
-        lifecycleScope.launch{
-            try {
-                val response = withContext(Dispatchers.IO){
-                    userAPI.getUserById(userIdx)
-                }
-                Log.d("MYPAGEEE", "$response")
-
-                withContext(Dispatchers.Main){
-                    isSeller = response.sellerOrBuyer == 1
-                }
-
-            }catch( e : Exception){
-                Log.e("MYPAGEEE", "$e")
-            }
-        }
     }
 
     override fun onDestroyView() {

@@ -88,6 +88,7 @@ class SalesRegistrationActivity : AppCompatActivity() {
 
         // 1이면 셀러, 0이면 바이어
         sellerOrBuyer = UserManager.getUserSellerOrBuyer(applicationContext)!!.toInt()
+        Log.d("SELLERR", "$sellerOrBuyer")
 
 
         val categories = listOf("카테고리", "과일", "정육/계란", "채소", "유제품", "수산/건어물", "기타")
