@@ -33,6 +33,7 @@ import com.umc.insider.databinding.ActivityLogInBinding
 import com.umc.insider.retrofit.RetrofitInstance
 import com.umc.insider.retrofit.api.KakaoInterface
 import com.umc.insider.retrofit.api.UserInterface
+import com.umc.insider.retrofit.model.KakaoPostReq
 import com.umc.insider.retrofit.model.LoginPostReq
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -195,35 +196,26 @@ class LogInActivity : AppCompatActivity() {
                                 Log.d("카카오", response.result.toString())
                                 val result = response.result
                                 val id = result!!.userId
-                                val loginPostReq = LoginPostReq(id,"111")
+                                val kakaoPostReq = KakaoPostReq(id)
 
                                 lifecycleScope.launch {
                                     val response = withContext(Dispatchers.IO) {
-                                        userAPI.logIn(loginPostReq)
+                                        kakaoAPI.logIn(kakaoPostReq)
                                     }
-                                    if(response.isSuccessful){
+                                    if(response.isSuccess){
 
-                                        val baseResponse = response.body()
+                                        val baseResponse = response.result
 
-                                        if(baseResponse?.isSuccess == true){
-
-                                            val loginPostRes = baseResponse.result
-                                            TokenManager.saveToken(this@LogInActivity, loginPostRes?.jwt)
-                                            UserManager.saveUserIdx(this@LogInActivity, loginPostRes?.id)
-                                            UserManager.setUserSellerOrBuyer(this@LogInActivity, loginPostRes?.sellerOrBuyer)
-                                            //Toast.makeText(this@LogInActivity, loginPostRes?.id.toString(),Toast.LENGTH_SHORT).show()
-                                            if (binding.autoLoginSwitch.isChecked){
-                                                autoLoginManager.setAutoLogin(true)
-                                            }else{
-                                                autoLoginManager.setAutoLogin(false)
-                                            }
-
-                                            goMainActivity()
+                                        TokenManager.saveToken(this@LogInActivity, "empty")
+                                        UserManager.saveUserIdx(this@LogInActivity, baseResponse?.id)
+                                        UserManager.setUserSellerOrBuyer(this@LogInActivity, baseResponse?.sellerOrBuyer)
+                                        //Toast.makeText(this@LogInActivity, loginPostRes?.id.toString(),Toast.LENGTH_SHORT).show()
+                                        if (binding.autoLoginSwitch.isChecked){
+                                            autoLoginManager.setAutoLogin(true)
                                         }else{
-                                            // baseResponse가 실패한 경우의 처리
-                                            //Log.d("loginerror",baseResponse!!.message)
+                                            autoLoginManager.setAutoLogin(false)
                                         }
-
+                                        goMainActivity()
                                     }else{
                                         // 네트워크 에러 처리
                                     }
